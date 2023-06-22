@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 
-class Pomodoro(ctk.CTk):
+class PomoWork(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("1200x800")
@@ -9,5 +9,5 @@ class Pomodoro(ctk.CTk):
 
 
 if __name__ == "__main__":
-    app = Pomodoro()
+    app = PomoWork()
     app.mainloop()
