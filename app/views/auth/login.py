@@ -12,7 +12,8 @@ class LoginView(ctk.CTkFrame):
     def create_widgets(self) -> None:
         self.main_frame = MainFrame(self)
         self.signup_btn = ctk.CTkButton(
-            self, text="Signup", fg_color="transparent", text_color="#719CD6", font=("Roboto", 16)
+            self, text="Signup", fg_color="transparent",
+            text_color="#719CD6", font=("Roboto", 16)
         )
 
     def load_widgets(self) -> None:
@@ -25,7 +26,9 @@ class LoginView(ctk.CTkFrame):
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master=master, width=400, height=400, border_width=5, corner_radius=15)
+        super().__init__(
+            master=master, width=400, height=400,
+            border_width=5, corner_radius=15)
         self.pack_propagate(False)
 
         self.create_widgets()
@@ -46,9 +49,7 @@ class MainFrame(ctk.CTkFrame):
 class FormFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master, fg_color="transparent")
-        self.rowconfigure(0, weight=1, uniform="a")
-        self.rowconfigure(1, weight=1, uniform="a")
-        self.rowconfigure(2, weight=1, uniform="a")
+        self.rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.columnconfigure(0, weight=1, uniform="a")
         self.columnconfigure(1, weight=3, uniform="a")
 
