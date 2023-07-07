@@ -49,30 +49,23 @@ class MainFrame(ctk.CTkFrame):
 class FormFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master, fg_color="transparent")
-        self.rowconfigure((0, 1, 2), weight=1, uniform="a")
-        self.columnconfigure(0, weight=1, uniform="a")
-        self.columnconfigure(1, weight=3, uniform="a")
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.username_label = ctk.CTkLabel(self, text="Username:", font=("Roboto", 18))
-        self.username_entry = ctk.CTkEntry(self, placeholder_text="Username")
+        self.username_entry = ctk.CTkEntry(
+            self, placeholder_text="Username", height=40)
+        self.password_entry = ctk.CTkEntry(
+            self, placeholder_text="Password", height=40)
 
-        self.password_label = ctk.CTkLabel(self, text="Password:", font=("Roboto", 18))
-        self.password_entry = ctk.CTkEntry(self, placeholder_text="Password")
-
-        self.login_btn = ctk.CTkButton(self, text="Login")
+        self.login_btn = ctk.CTkButton(self, text="Crear Cuenta", height=40)
 
     def load_widgets(self) -> None:
-        self.username_label.grid(column=0, row=0, sticky="w", pady=10)
-        self.username_entry.grid(column=1, row=0, sticky="we", padx=7, pady=10)
+        self.username_entry.pack(fill="x", expand=True, pady=3)
+        self.password_entry.pack(fill="x", expand=True, pady=3)
 
-        self.password_label.grid(column=0, row=1, sticky="w")
-        self.password_entry.grid(column=1, row=1, sticky="we", padx=7)
-
-        self.login_btn.grid(row=2, column=0, columnspan=2)
+        self.login_btn.pack(fill="x", expand=True, pady=3)
 
     def show(self) -> None:
-        self.pack(expand=True, padx=15)
+        self.pack(expand=True, padx=15, fill="x")
