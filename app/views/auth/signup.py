@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from utils.auth import signup_handler
 
 
 class SignupView(ctk.CTkFrame):
@@ -57,20 +58,29 @@ class FormFrame(ctk.CTkFrame):
         self.username_entry = ctk.CTkEntry(
             self, placeholder_text="Username", height=40)
         self.password_entry = ctk.CTkEntry(
-            self, placeholder_text="Password", height=40)
+            self, placeholder_text="Password", height=40, show="*")
         self.password_repeat_entry = ctk.CTkEntry(
-            self, placeholder_text="Repite Password", height=40)
+            self, placeholder_text="Repite Password", height=40, show="*")
         self.email_entry = ctk.CTkEntry(
             self, placeholder_text="Email: example@example.com", height=40)
 
-        self.login_btn = ctk.CTkButton(self, text="Crear Cuenta", height=40)
+        self.signup_btn = ctk.CTkButton(
+            self, text="Crear Cuenta", height=40, command=self.send_data)
 
     def load_widgets(self) -> None:
         self.username_entry.pack(fill="x", expand=True, pady=3)
         self.password_entry.pack(fill="x", expand=True, pady=3)
         self.password_repeat_entry.pack(fill="x", expand=True, pady=3)
         self.email_entry.pack(fill="x", expand=True, pady=3)
-        self.login_btn.pack(fill="x", expand=True, pady=3)
+        self.signup_btn.pack(fill="x", expand=True, pady=3)
 
     def show(self) -> None:
         self.pack(expand=True, padx=15, fill="x")
+
+    def send_data(self) -> None:
+        signup_handler(
+            self.username_entry.get(),
+            self.password_entry.get(),
+            self.password_repeat_entry.get(),
+            self.email_entry.get(),
+        )
