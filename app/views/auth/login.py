@@ -20,8 +20,11 @@ class LoginView(ctk.CTkFrame):
         self.signup_btn.place(anchor="ne", relx=1, rely=0.01)
         self.main_frame.show()
 
-    def show(self):
+    def show(self) -> None:
         self.pack(expand=True, fill="both")
+
+    def remove(self) -> None:
+        self.pack_forget()
 
 
 class MainFrame(ctk.CTkFrame):

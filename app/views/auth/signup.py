@@ -24,6 +24,9 @@ class SignupView(ctk.CTkFrame):
     def show(self):
         self.pack(expand=True, fill="both")
 
+    def remove(self) -> None:
+        self.pack_forget()
+
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master):
