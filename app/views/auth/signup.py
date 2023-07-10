@@ -1,11 +1,14 @@
 import customtkinter as ctk
+
 from utils.auth import signup_handler
 
 
 class SignupView(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, controller):
         super().__init__(master=master)
         self.pack_propagate(False)
+
+        self.view_controller = controller
 
         self.create_widgets()
         self.load_widgets()
@@ -14,7 +17,8 @@ class SignupView(ctk.CTkFrame):
         self.main_frame = MainFrame(self)
         self.login_btn = ctk.CTkButton(
             self, text="Login", fg_color="transparent",
-            text_color="#719CD6", font=("Roboto", 16)
+            text_color="#719CD6", font=("Roboto", 16),
+            command=self.go_login
         )
 
     def load_widgets(self) -> None:
@@ -26,6 +30,9 @@ class SignupView(ctk.CTkFrame):
 
     def remove(self) -> None:
         self.pack_forget()
+
+    def go_login(self) -> None:
+        self.view_controller.change_view("login", self.master)
 
 
 class MainFrame(ctk.CTkFrame):
