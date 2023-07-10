@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-from views.utils import view_controller
+from views.utils import ViewController
 
 
 class PomoWork(ctk.CTk):
@@ -10,7 +10,8 @@ class PomoWork(ctk.CTk):
         self.title("PomoWork")
 
         # TODO: Borrar al acabar test
-        view_controller.change_view("login", self)
+        self.view_controller = ViewController()
+        self.view_controller.change_view("login", self)
 
 
 if __name__ == "__main__":

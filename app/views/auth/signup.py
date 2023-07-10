@@ -4,11 +4,9 @@ from utils.auth import signup_handler
 
 
 class SignupView(ctk.CTkFrame):
-    def __init__(self, master, controller):
+    def __init__(self, master):
         super().__init__(master=master)
         self.pack_propagate(False)
-
-        self.view_controller = controller
 
         self.create_widgets()
         self.load_widgets()
@@ -32,7 +30,7 @@ class SignupView(ctk.CTkFrame):
         self.pack_forget()
 
     def go_login(self) -> None:
-        self.view_controller.change_view("login", self.master)
+        self.master.view_controller.change_view("login", self.master)
 
 
 class MainFrame(ctk.CTkFrame):

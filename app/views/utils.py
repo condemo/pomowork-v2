@@ -15,14 +15,11 @@ class ViewController:
 
     def change_view(self, view: str, master) -> None:
         if not self.current_view:
-            new_view = views_list[view](master, self)
+            new_view = views_list[view](master)
             new_view.show()
             self.current_view = new_view
         else:
             self.current_view.remove()
-            new_view = views_list[view](master, self)
+            new_view = views_list[view](master)
             new_view.show()
             self.current_view = new_view
-
-
-view_controller = ViewController()
