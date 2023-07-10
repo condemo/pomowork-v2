@@ -1,13 +1,12 @@
 import customtkinter as ctk
 
-from views.utils import view_controller
-from views.auth.signup import SignupView
-
 
 class LoginView(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, controller):
         super().__init__(master=master)
         self.pack_propagate(False)
+
+        self.view_controller = controller
 
         self.create_widgets()
         self.load_widgets()
@@ -32,7 +31,7 @@ class LoginView(ctk.CTkFrame):
         self.pack_forget()
 
     def go_signup(self) -> None:
-        view_controller.change_view(SignupView(self.master))
+        self.view_controller.change_view("signup", self.master)
 
 
 class MainFrame(ctk.CTkFrame):

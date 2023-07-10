@@ -1,6 +1,4 @@
 import customtkinter as ctk
-# from views.auth import SignupView
-from views.auth import LoginView
 
 from views.utils import view_controller
 
@@ -12,11 +10,7 @@ class PomoWork(ctk.CTk):
         self.title("PomoWork")
 
         # TODO: Borrar al acabar test
-        # self.login_view = LoginView(self)
-        # self.login_view.show()
-        # self.signup_view = SignupView(self)
-        # self.signup_view.show()
-        view_controller.change_view(LoginView(self))
+        view_controller.change_view("login", self)
 
 
 if __name__ == "__main__":
