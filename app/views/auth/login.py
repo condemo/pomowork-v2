@@ -88,14 +88,7 @@ class FormFrame(ctk.CTkFrame):
 
     def send_data(self) -> None:
         login_try = login_handler(self.username_entry.get(), self.password_entry.get())
-        match login_try.status_code:
-            case 403:
-                showerror(login_try.json()["detail"], "User not Found")
-                self.reset_values()
-
-            case 422:
-                showerror("Data Error", "Invalid Format")
-                self.reset_values()
-
-            case 200:
-                print(login_try.json())
+        if not login_try:
+            self.reset_values()
+        else:
+            print("TODO OK")
