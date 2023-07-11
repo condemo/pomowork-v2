@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from tkinter.messagebox import showerror
 
 from utils.auth import login_handler
 
