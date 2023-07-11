@@ -84,6 +84,7 @@ class FormFrame(ctk.CTkFrame):
     def reset_values(self) -> None:
         self.username_entry.delete(0, "end")
         self.password_entry.delete(0, "end")
+        self.username_entry.focus()
 
     def send_data(self) -> None:
         login_try = login_handler(self.username_entry.get(), self.password_entry.get())
