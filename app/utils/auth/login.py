@@ -12,5 +12,6 @@ def login_handler(username: str, password: str):
     }
     # TODO: Terminar la implementación
 
-    response = requests.post(LOGIN_URL, data=data, headers=headers).json()
-    print(response)
+    response = requests.post(LOGIN_URL, data=data, headers=headers)
+
+    return response

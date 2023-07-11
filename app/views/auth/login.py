@@ -1,4 +1,7 @@
 import customtkinter as ctk
+from tkinter.messagebox import showerror
+
+from utils.auth import login_handler
 
 
 class LoginView(ctk.CTkFrame):
@@ -65,9 +68,10 @@ class FormFrame(ctk.CTkFrame):
         self.username_entry = ctk.CTkEntry(
             self, placeholder_text="Username", height=40)
         self.password_entry = ctk.CTkEntry(
-            self, placeholder_text="Password", height=40)
+            self, placeholder_text="Password", height=40, show="*")
 
-        self.login_btn = ctk.CTkButton(self, text="Crear Cuenta", height=40)
+        self.login_btn = ctk.CTkButton(
+            self, text="Ingresar", height=40, command=self.send_data)
 
     def load_widgets(self) -> None:
         self.username_entry.pack(fill="x", expand=True, pady=3)
@@ -77,3 +81,21 @@ class FormFrame(ctk.CTkFrame):
 
     def show(self) -> None:
         self.pack(expand=True, padx=15, fill="x")
+
+    def reset_values(self) -> None:
+        self.username_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+
+    def send_data(self) -> None:
+        login_try = login_handler(self.username_entry.get(), self.password_entry.get())
+        match login_try.status_code:
+            case 403:
+                showerror(login_try.json()["detail"], "User not Found")
+                self.reset_values()
+
+            case 422:
+                showerror("Data Error", "Invalid Format")
+                self.reset_values()
+
+            case 200:
+                print(login_try.json())
