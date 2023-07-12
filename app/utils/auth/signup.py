@@ -2,26 +2,28 @@ import requests
 import json
 from re import fullmatch
 
+from tkinter.messagebox import showerror
+
 from config import SIGNUP_URL
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 
 def send_signup_request(data: dict) -> dict | Exception:
-    # TODO: Completar la gestion de errores
     data_send = json.dumps(data)
-    send = requests.post(url=SIGNUP_URL, data=data_send).json()
+    send = requests.post(url=SIGNUP_URL, data=data_send)
 
     return send
 
 
 def signup_handler(username: str, password: str, repeated_password: str, email: str):
-    # TODO: Mejorar la gestion de errores coordinando con send_signup_request
     if password != repeated_password:
-        return "Passwords do not match"
+        showerror("Password Error", "Password does not match")
+        return False
 
     if not fullmatch(regex, email):
-        return "Invalid email"
+        showerror("Email Error", "Invalid email format")
+        return False
 
     data: dict = {
         "username": username,
@@ -30,4 +32,12 @@ def signup_handler(username: str, password: str, repeated_password: str, email: 
     }
 
     response = send_signup_request(data)
-    print(response)
+
+    match response.status_code:
+        case 422:
+            showerror("Data Error", "Invalid format")
+            return False
+
+        case 201:
+            print(response.json())
+            return True
