@@ -85,10 +85,22 @@ class FormFrame(ctk.CTkFrame):
     def show(self) -> None:
         self.pack(expand=True, padx=15, fill="x")
 
+    def reset_values(self) -> None:
+        self.username_entry.delete(0, "end")
+        self.password_entry.delete(0, "end")
+        self.password_repeat_entry.delete(0, "end")
+        self.email_entry.delete(0, "end")
+
+        self.username_entry.focus()
+
     def send_data(self) -> None:
-        signup_handler(
+        signup = signup_handler(
             self.username_entry.get(),
             self.password_entry.get(),
             self.password_repeat_entry.get(),
             self.email_entry.get(),
         )
+        if not signup:
+            self.reset_values()
+        else:
+            print("TODO OK")
