@@ -54,6 +54,9 @@ class MainFrame(ctk.CTkFrame):
     def show(self) -> None:
         self.pack(expand=True)
 
+    def go_login(self) -> None:
+        self.master.go_login()
+
 
 class FormFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -103,4 +106,4 @@ class FormFrame(ctk.CTkFrame):
         if not signup:
             self.reset_values()
         else:
-            print("TODO OK")
+            self.master.go_login()
