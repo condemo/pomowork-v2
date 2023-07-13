@@ -25,4 +25,4 @@ def login_handler(username: str, password: str):
 
         case 200:
             print(response.json())
-            return True
+            return response.json()

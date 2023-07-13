@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from utils.auth import login_handler
+from data.oauth2 import save_jwt
 
 
 class LoginView(ctk.CTkFrame):
@@ -91,4 +92,4 @@ class FormFrame(ctk.CTkFrame):
         if not login_try:
             self.reset_values()
         else:
-            print("TODO OK")
+            save_jwt(login_try)
