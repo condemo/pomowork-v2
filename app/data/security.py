@@ -7,8 +7,6 @@ def create_key():
     with open(DATA_DIR + "/.key", "wb") as file:
         file.write(key)
 
-    print(type(key))
-
     return key
 
 
