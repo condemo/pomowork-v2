@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from views.utils import ViewController
+from utils.auth import JWTChecker
 
 
 class PomoWork(ctk.CTk):
@@ -10,8 +11,10 @@ class PomoWork(ctk.CTk):
         self.title("PomoWork")
 
         # TODO: Borrar al acabar test
+        self.credentials_view = JWTChecker()
         self.view_controller = ViewController()
-        self.view_controller.change_view("login", self)
+
+        self.view_controller.change_view(self.credentials_view.check_credentials(), self)
 
 
 if __name__ == "__main__":
