@@ -2,10 +2,12 @@ from lib.views import View
 
 from views.auth.login import LoginView
 from views.auth.signup import SignupView
+from views.main.home import HomeView
 
 views_list = {
     "login": LoginView,
-    "signup": SignupView
+    "signup": SignupView,
+    "main": HomeView
 }
 
 
