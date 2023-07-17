@@ -10,3 +10,7 @@ PROJECTS_BASE_URL = SERVICE_URL + "/products"
 CARDS_BASE_URL = SERVICE_URL + "/cards"
 LOGIN_URL = SERVICE_URL + "/login"
 SIGNUP_URL = SERVICE_URL + "/users"
+USER_HEADERS = {
+    "accept": "application/json",
+    "Authorization": "",
+}
