@@ -34,6 +34,9 @@ class LoginView(ctk.CTkFrame):
     def go_signup(self) -> None:
         self.master.view_controller.change_view("signup", self.master)
 
+    def go_main(self) -> None:
+        self.master.view_controller.change_view("main", self.master)
+
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -55,6 +58,9 @@ class MainFrame(ctk.CTkFrame):
 
     def show(self) -> None:
         self.pack(expand=True)
+
+    def go_main(self) -> None:
+        self.master.go_main()
 
 
 class FormFrame(ctk.CTkFrame):
@@ -82,6 +88,9 @@ class FormFrame(ctk.CTkFrame):
     def show(self) -> None:
         self.pack(expand=True, padx=15, fill="x")
 
+    def go_main(self) -> None:
+        self.master.go_main()
+
     def reset_values(self) -> None:
         self.username_entry.delete(0, "end")
         self.password_entry.delete(0, "end")
@@ -93,3 +102,4 @@ class FormFrame(ctk.CTkFrame):
             self.reset_values()
         else:
             save_jwt(login_try)
+            self.go_main()
