@@ -20,5 +20,3 @@ class JWTChecker:
                 return "main"
             else:
                 return "login"
-
-            return self.token
