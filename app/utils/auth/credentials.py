@@ -3,6 +3,7 @@ import requests
 
 from config import DATA_DIR, USER_HEADERS, SERVICE_URL
 from data.oauth2 import get_token
+from data.cache import cache_fetch
 
 
 class JWTChecker:
@@ -17,6 +18,7 @@ class JWTChecker:
             response = requests.get(SERVICE_URL, headers=USER_HEADERS)
 
             if response.status_code == 200:
+                cache_fetch()
                 return "main"
             else:
                 return "login"
