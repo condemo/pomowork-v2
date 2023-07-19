@@ -13,7 +13,7 @@ class JWTChecker:
 
         else:
             self.token = get_token()
-            # TODO: Implementar checkeo de expiración de el token
+
             USER_HEADERS["Authorization"] = f"Bearer {self.token}"
             response = requests.get(SERVICE_URL, headers=USER_HEADERS)
 
