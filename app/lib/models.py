@@ -3,7 +3,7 @@ from datetime import date
 
 
 @dataclass
-class Cards:
+class Card:
     id: int
     project_id: int
     collected: bool
@@ -21,4 +21,4 @@ class Project:
     salary_collected: float | None
     pending_salary: float | None
     total_money: float | None
-    cards: list[Cards]
+    cards: list[Card]
