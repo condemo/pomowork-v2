@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from data.cache import load_projects
 
 
 class HomeView(ctk.CTkFrame):
@@ -6,8 +7,12 @@ class HomeView(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
 
+        self.load_data()
         self.create_widgets()
         self.load_widgets()
+
+    def load_data(self) -> None:
+        self.projects_list = load_projects()
 
     def create_widgets(self) -> None:
         self.title = ctk.CTkLabel(self, text="HOME VIEW", font=("Roboto", 24))
