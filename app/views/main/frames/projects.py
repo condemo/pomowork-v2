@@ -5,6 +5,7 @@ from data.cache import load_projects
 class ProjectsFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master, width=20)
+        self.pack_propagate(False)
 
         self.create_widgets()
         self.load_widgets()
