@@ -99,14 +99,43 @@ class ClockFrame(ctk.CTkFrame):
 
 class InfoFrame(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master=master, fg_color="orange")
+        super().__init__(master=master)
         self.pack_propagate(False)
 
+        self.create_widgets()
+        self.load_widgets()
+
     def create_widgets(self) -> None:
-        pass
+        self.price_h_label = ctk.CTkLabel(
+            self, text="Price/h: 15€", font=("Roboto", 18))
+        self.date_label = ctk.CTkLabel(
+            self, text="24/06/23", font=("Roboto", 30))
+
+        self.main_frame = ctk.CTkFrame(self)
+        self.info_container_frame = ctk.CTkFrame(self.main_frame)
+        self.pomo_num_label = ctk.CTkLabel(
+            self.info_container_frame, text="Pomodoros: 9", font=("Roboto", 30))
+        self.pomo_rest_label = ctk.CTkLabel(
+            self.info_container_frame, text="Descansos cortos: 6", font=("Roboto", 30))
+        self.pomo_long_rest_label = ctk.CTkLabel(
+            self.info_container_frame, text="Descansos largos: 2", font=("Roboto", 30))
+
+        self.bottom_frame = ctk.CTkFrame(self)
+        self.total_money_label = ctk.CTkLabel(
+            self.bottom_frame, text="Total Hoy: 50€", font=("Roboto", 50))
 
     def load_widgets(self) -> None:
-        pass
+        self.price_h_label.place(relx=.03, rely=.014, anchor="nw")
+        self.date_label.pack()
+
+        self.pomo_num_label.pack(pady=5)
+        self.pomo_rest_label.pack(pady=5)
+        self.pomo_long_rest_label.pack(pady=5)
+        self.info_container_frame.pack(expand=True)
+        self.main_frame.pack(expand=True, fill="both")
+
+        self.total_money_label.pack(fill="x")
+        self.bottom_frame.pack(fill="x")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
