@@ -77,6 +77,9 @@ class FormFrame(ctk.CTkFrame):
         self.password_entry = ctk.CTkEntry(
             self, placeholder_text="Password", height=40, show="*")
 
+        self.username_entry.bind("<KeyRelease-Return>", self.send_data)
+        self.password_entry.bind("<KeyRelease-Return>", self.send_data)
+
         self.login_btn = ctk.CTkButton(
             self, text="Ingresar", height=40, command=self.send_data)
 
@@ -97,7 +100,7 @@ class FormFrame(ctk.CTkFrame):
         self.password_entry.delete(0, "end")
         self.username_entry.focus()
 
-    def send_data(self) -> None:
+    def send_data(self, event=None) -> None:
         login_try = login_handler(self.username_entry.get(), self.password_entry.get())
         if not login_try:
             self.reset_values()
