@@ -58,7 +58,7 @@ class ProjectProfileCard(ctk.CTkFrame):
     def __init__(self, master, id: int, name: str):
         super().__init__(
             master=master, fg_color="orange", corner_radius=5,
-            border_width=3, border_color="red", height=50)
+            border_width=3, border_color="red", height=50, cursor="hand2")
         self.grid_propagate(False)
         self.columnconfigure(0, weight=6, uniform="a")
         self.columnconfigure(1, weight=1, uniform="a")
@@ -75,6 +75,8 @@ class ProjectProfileCard(ctk.CTkFrame):
             self, text=self.name, font=("Roboto", 18), bg_color="transparent")
         self.config_btn = ctk.CTkButton(self, text="C", fg_color="brown")
 
+        self.name_label.bind("<Button-1>", self.clicked)
+
     def load_widgets(self) -> None:
         self.name_label.grid(
             column=0, row=0, rowspan=2, sticky="nswe", padx=5, pady=5)
@@ -82,3 +84,6 @@ class ProjectProfileCard(ctk.CTkFrame):
 
     def show(self) -> None:
         self.pack(fill="x", pady=5)
+
+    def clicked(self, event) -> None:
+        print("ProfileCard")
