@@ -7,7 +7,7 @@ from utils.auth import JWTChecker
 class PomoWork(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("1200x800")
+        self.geometry("1400x800")
         self.title("PomoWork")
 
         # TODO: Borrar al acabar test
