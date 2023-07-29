@@ -1,11 +1,13 @@
 import customtkinter as ctk
-from data.cache import load_projects
+from lib.models import Project
 
 
 class ProjectsFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, project_list: list[Project]):
         super().__init__(master=master, width=20)
         self.pack_propagate(False)
+
+        self.project_list = project_list
 
         self.create_widgets()
         self.load_widgets()
@@ -15,7 +17,7 @@ class ProjectsFrame(ctk.CTkFrame):
         self.burger_btn = ctk.CTkButton(
             self.top_frame, text="III", width=30, height=30, corner_radius=60)
 
-        self.mid_frame = ProjectsCardFrame(self)
+        self.mid_frame = ProjectsCardFrame(self, self.project_list)
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(self.bottom_frame, text="ADD")
@@ -34,15 +36,12 @@ class ProjectsFrame(ctk.CTkFrame):
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master):
+    def __init__(self, master, project_list: list[Project]):
         super().__init__(master=master, width=20)
 
-        self.load_data()
+        self.projects_list = project_list
         self.create_widgets()
         self.load_widgets()
-
-    def load_data(self) -> None:
-        self.projects_list = load_projects()
 
     def create_widgets(self) -> None:
         self.profile_list = [ProjectProfileCard(self, i.id, i.name) for i in self.projects_list]
