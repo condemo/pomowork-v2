@@ -5,6 +5,7 @@ from lib.models import Project
 class ProjectsFrame(ctk.CTkFrame):
     def __init__(self, master, project_list: list[Project]):
         super().__init__(master=master, width=20)
+        self.master = master
         self.pack_propagate(False)
 
         self.project_list = project_list
@@ -31,6 +32,9 @@ class ProjectsFrame(ctk.CTkFrame):
         self.add_btn.pack(fill="x")
         self.bottom_frame.pack(fill="x", pady=10, padx=5)
 
+    def change_active_project(self, id: int) -> None:
+        self.master.data_hander.change_active_project(id)
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
 
@@ -38,6 +42,7 @@ class ProjectsFrame(ctk.CTkFrame):
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, project_list: list[Project]):
         super().__init__(master=master, width=20)
+        self.master = master
 
         self.projects_list = project_list
         self.create_widgets()
@@ -49,6 +54,9 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
     def load_widgets(self) -> None:
         [i.show() for i in self.profile_list]
 
+    def change_active_project(self, id: int) -> None:
+        self.master.change_active_project(id)
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -59,6 +67,7 @@ class ProjectProfileCard(ctk.CTkFrame):
             master=master, fg_color="orange", corner_radius=5,
             border_width=3, border_color="red", height=50, cursor="hand2")
         self.grid_propagate(False)
+        self.master = master
         self.columnconfigure(0, weight=6, uniform="a")
         self.columnconfigure(1, weight=1, uniform="a")
         self.rowconfigure((0, 1), weight=1, uniform="a")
@@ -85,4 +94,4 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.pack(fill="x", pady=5)
 
     def clicked(self, event) -> None:
-        print("ProfileCard")
+        self.master.change_active_project(self.id)

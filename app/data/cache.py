@@ -23,17 +23,28 @@ def cache_fetch():
     os.chmod(CACHE_FILE, 0o600)
 
 
-def load_projects() -> list[Project]:
-    projects_list = []
-    with open(CACHE_FILE, "r") as file:
-        data: dict = json.load(file)
+class ProjectDataHandler:
+    def __init__(self):
 
-    for i in data:
-        project = Project(**i)
-        project.cards = []
-        for j in i["cards"]:
-            card = Card(**j)
-            project.cards.append(card)
-        projects_list.append(project)
+        self.active_project: int
+        self.projects_list = []
+        self.cards_list = []
 
-    return projects_list
+        with open(CACHE_FILE, "r") as file:
+            data: dict = json.load(file)
+
+        for i in data:
+            project = Project(**i)
+            project.cards = []
+            for j in i["cards"]:
+                card = Card(**j)
+                project.cards.append(card)
+                self.cards_list.append(card)
+            self.projects_list.append(project)
+
+    def get_projects(self) -> list[Project]:
+        return self.projects_list
+
+    def change_active_project(self, id: int) -> None:
+        self.active_project = id
+        print(self.active_project)

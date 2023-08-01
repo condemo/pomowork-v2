@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from data.cache import load_projects
+from data.cache import ProjectDataHandler
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
 
 
@@ -8,7 +8,8 @@ class HomeView(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
 
-        self.projects_list = load_projects()
+        self.data_hander = ProjectDataHandler()
+        self.projects_list = self.data_hander.get_projects()
 
         self.create_widgets()
         self.load_widgets()
