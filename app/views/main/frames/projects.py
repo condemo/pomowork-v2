@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from lib.models import Project
+from lib.models import Project, Card
 
 
 class ProjectsFrame(ctk.CTkFrame):
@@ -33,7 +33,7 @@ class ProjectsFrame(ctk.CTkFrame):
         self.bottom_frame.pack(fill="x", pady=10, padx=5)
 
     def change_active_project(self, id: int) -> None:
-        self.master.data_hander.change_active_project(id)
+        return self.master.data_handler.get_project_cards(id)
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
@@ -55,7 +55,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         [i.show() for i in self.profile_list]
 
     def change_active_project(self, id: int) -> None:
-        self.master.change_active_project(id)
+        return self.master.change_active_project(id)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
@@ -90,8 +90,12 @@ class ProjectProfileCard(ctk.CTkFrame):
             column=0, row=0, rowspan=2, sticky="nswe", padx=5, pady=5)
         self.config_btn.grid(column=1, row=0, rowspan=2, padx=5)
 
+    def reload_cards_frame(self, card_list: list[Card] | None) -> None:
+        print(card_list)
+
     def show(self) -> None:
         self.pack(fill="x", pady=5)
 
     def clicked(self, event) -> None:
-        self.master.change_active_project(self.id)
+        card_list = self.master.change_active_project(self.id)
+        self.reload_cards_frame(card_list)

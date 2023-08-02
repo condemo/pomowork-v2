@@ -1,10 +1,13 @@
 import customtkinter as ctk
+from lib.models import Card
 
 
 class CardsFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, card_list: list[Card]):
         super().__init__(master=master)
         self.pack_propagate(False)
+
+        self.card_list = card_list
 
         self.create_widgets()
         self.load_widgets()
@@ -14,7 +17,7 @@ class CardsFrame(ctk.CTkFrame):
         self.total_time_label = ctk.CTkLabel(
             self.top_frame, text="12:30 horas en total", font=("Roboto", 20))
 
-        self.mid_frame = CardListFrame(self)
+        self.mid_frame = CardListFrame(self, self.card_list)
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.money_collected_label = ctk.CTkLabel(
@@ -40,44 +43,44 @@ class CardsFrame(ctk.CTkFrame):
 
 
 class CardListFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master):
+    def __init__(self, master, card_list: list[Card]):
         super().__init__(master=master)
+        self.card_list = card_list
 
-        self.load_data()
         self.create_widgets()
         self.load_widgets()
 
-    def load_data(self) -> None:
-        pass
-
     def create_widgets(self) -> None:
-        self.test_card = PomoCard(self)
+        self.card_widget_list = [PomoCard(self, card) for card in self.card_list]
 
     def load_widgets(self) -> None:
-        self.test_card.show()
+        [card.show() for card in self.card_widget_list]
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
 
 class PomoCard(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, card_data: Card):
         super().__init__(master=master, fg_color="#B13F39", height=50)
         self.grid_propagate(False)
         self.columnconfigure(7, weight=2, uniform="a")
         self.columnconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
 
+        self.card_data = card_data
+
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.date_label = ctk.CTkLabel(
-            self, text="14/06/2023", font=("Roboto", 16))
-        self.price_h_label = ctk.CTkLabel(self, text="15€/h")
-        self.pomo_count_label = ctk.CTkLabel(self, text="Pomos: 20")
+            self, text=self.card_data.created_at, font=("Roboto", 16))
+        self.price_h_label = ctk.CTkLabel(self, text=f"{self.card_data.price_per_hour}€/h")
+        self.pomo_count_label = ctk.CTkLabel(self, text=f"Pomos: {self.card_data.pomo_count}")
         self.total_money_label = ctk.CTkLabel(
-            self, text="150€", font=("Roboto", 14))
+            self, text=f"{self.card_data.total_price}€", font=("Roboto", 14))
+        # TODO: Automatizar el texto en caso de que el campo collected sea true o false
         self.check_box = ctk.CTkCheckBox(
             self, text="No cobrado", checkbox_width=20, checkbox_height=20)
 

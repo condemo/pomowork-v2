@@ -8,8 +8,11 @@ class HomeView(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
 
-        self.data_hander = ProjectDataHandler()
-        self.projects_list = self.data_hander.get_projects()
+        self.data_handler = ProjectDataHandler()
+        self.projects_list = self.data_handler.get_projects()
+        self.initial_cards_list = self.data_handler.get_project_cards(
+            self.projects_list[0].id
+        )
 
         self.create_widgets()
         self.load_widgets()
@@ -17,7 +20,7 @@ class HomeView(ctk.CTkFrame):
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.projects_list)
         self.main_frame = MainFrame(self)
-        self.cards_frame = CardsFrame(self)
+        self.cards_frame = CardsFrame(self, self.initial_cards_list)
 
     def load_widgets(self) -> None:
         self.projects_frame.show()

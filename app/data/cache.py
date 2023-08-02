@@ -28,7 +28,6 @@ class ProjectDataHandler:
 
         self.active_project: int
         self.projects_list = []
-        self.cards_list = []
 
         with open(CACHE_FILE, "r") as file:
             data: dict = json.load(file)
@@ -39,12 +38,13 @@ class ProjectDataHandler:
             for j in i["cards"]:
                 card = Card(**j)
                 project.cards.append(card)
-                self.cards_list.append(card)
             self.projects_list.append(project)
 
     def get_projects(self) -> list[Project]:
         return self.projects_list
 
-    def change_active_project(self, id: int) -> None:
-        self.active_project = id
-        print(self.active_project)
+    def get_project_cards(self, id: int) -> list[Card]:
+        for project in self.projects_list:
+            if project.id == id:
+                self.active_project = project
+                return project.cards
