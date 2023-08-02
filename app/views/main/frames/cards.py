@@ -38,6 +38,9 @@ class CardsFrame(ctk.CTkFrame):
         self.total_money_label.pack(side="left", expand=True)
         self.bottom_frame.pack(fill="x")
 
+    def load_new_cards(self, card_list: list[Card]) -> None:
+        self.mid_frame.load_new_cards(card_list)
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
 
@@ -55,6 +58,12 @@ class CardListFrame(ctk.CTkScrollableFrame):
 
     def load_widgets(self) -> None:
         [card.show() for card in self.card_widget_list]
+
+    def load_new_cards(self, card_list: list[Card]) -> None:
+        [card.pack_forget() for card in self.card_widget_list]
+        self.card_list = card_list
+        self.create_widgets()
+        self.load_widgets()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
