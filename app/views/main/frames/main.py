@@ -1,20 +1,29 @@
+from datetime import datetime
 import customtkinter as ctk
+from lib.models import Card
 
 
 class MainFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, last_card: Card):
         super().__init__(master=master)
         self.pack_propagate(False)
+        self.last_card = last_card
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.pomo_frame = PomoFrame(self)
-        self.info_frame = InfoFrame(self)
+        self.info_frame = InfoFrame(self, self.last_card)
 
     def load_widgets(self) -> None:
         self.pomo_frame.show()
+        self.info_frame.show()
+
+    def load_new_data(self, last_card: Card) -> None:
+        self.info_frame.pack_forget()
+        self.last_card = last_card
+        self.info_frame = InfoFrame(self, self.last_card)
         self.info_frame.show()
 
     def show(self) -> None:
@@ -98,39 +107,39 @@ class ClockFrame(ctk.CTkFrame):
 
 
 class InfoFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, last_card: Card):
         super().__init__(master=master)
         self.pack_propagate(False)
+        self.last_card = last_card
+
+        self.last_card_date = datetime.strptime(
+            self.last_card.created_at, "%Y-%m-%d"
+        ).strftime("%d/%m/%Y")
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.price_h_label = ctk.CTkLabel(
-            self, text="Price/h: 15€", font=("Roboto", 18))
-        self.date_label = ctk.CTkLabel(
-            self, text="24/06/23", font=("Roboto", 30))
+            self, text=f"Price/h: {self.last_card.price_per_hour}€", font=("Roboto", 18))
+        self.date_label = ctk.CTkLabel(self, text=f"{self.last_card_date}", font=("Roboto", 30))
 
         self.main_frame = ctk.CTkFrame(self)
         self.info_container_frame = ctk.CTkFrame(self.main_frame)
         self.pomo_num_label = ctk.CTkLabel(
-            self.info_container_frame, text="Pomodoros: 9", font=("Roboto", 30))
-        self.pomo_rest_label = ctk.CTkLabel(
-            self.info_container_frame, text="Descansos cortos: 6", font=("Roboto", 30))
-        self.pomo_long_rest_label = ctk.CTkLabel(
-            self.info_container_frame, text="Descansos largos: 2", font=("Roboto", 30))
+            self.info_container_frame,
+            text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.total_money_label = ctk.CTkLabel(
-            self.bottom_frame, text="Total Hoy: 50€", font=("Roboto", 50))
+            self.bottom_frame,
+            text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60))
 
     def load_widgets(self) -> None:
         self.price_h_label.place(relx=.03, rely=.014, anchor="nw")
         self.date_label.pack()
 
         self.pomo_num_label.pack(pady=5)
-        self.pomo_rest_label.pack(pady=5)
-        self.pomo_long_rest_label.pack(pady=5)
         self.info_container_frame.pack(expand=True)
         self.main_frame.pack(expand=True, fill="both")
 
