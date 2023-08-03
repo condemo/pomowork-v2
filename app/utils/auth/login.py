@@ -11,7 +11,6 @@ def login_handler(username: str, password: str):
         "username": username,
         "password": password
     }
-    # TODO: Terminar la implementación
 
     response = requests.post(LOGIN_URL, data=data, headers=headers)
     match response.status_code:
