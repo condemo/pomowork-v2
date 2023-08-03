@@ -38,6 +38,7 @@ class ProjectDataHandler:
             for j in i["cards"]:
                 card = Card(**j)
                 project.cards.append(card)
+            project.cards.sort(key=lambda x: x.created_at, reverse=True)
             self.projects_list.append(project)
 
     def get_projects(self) -> list[Project]:
