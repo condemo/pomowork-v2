@@ -1,5 +1,6 @@
 from datetime import datetime
 import customtkinter as ctk
+import tkinter as tk
 from lib.models import Card
 
 
@@ -76,6 +77,16 @@ class ClockFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
 
+        self.min = tk.StringVar(self)
+        self.min.set("30")
+        self.sec = tk.StringVar(self)
+        self.sec.set("00")
+        self.time = tk.StringVar(self)
+        self.time.set(self.min.get() + ":" + self.sec.get())
+
+        self.play_text = tk.StringVar(self)
+        self.play_text.set("II")
+
         self.create_widgets()
         self.load_widgets()
 
@@ -84,13 +95,15 @@ class ClockFrame(ctk.CTkFrame):
 
         self.main_frame = ctk.CTkFrame(self)
         self.timer = ctk.CTkLabel(
-            self.main_frame, text="30:00", font=("Roboto", 100))
+            self.main_frame, textvariable=self.time, font=("Roboto", 100))
 
         self.control_frame = ctk.CTkFrame(self.main_frame)
         self.pause_btn = ctk.CTkButton(
-            self.control_frame, text="II", font=("Roboto", 50), fg_color="transparent")
+            self.control_frame, textvariable=self.play_text, font=("Roboto", 50),
+            fg_color="transparent", command=self.play)
         self.stop_btn = ctk.CTkButton(
-            self.control_frame, text="ST", font=("Roboto", 50), fg_color="transparent")
+            self.control_frame, text="ST", font=("Roboto", 50),
+            fg_color="transparent", command=self.stop)
 
     def load_widgets(self) -> None:
         self.mode_label.pack()
@@ -101,6 +114,19 @@ class ClockFrame(ctk.CTkFrame):
         self.pause_btn.pack(side="left", padx=10)
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
+
+    def stop(self) -> None:
+        if self.stop_btn.cget("state") == "normal":
+            print("STOP")
+            self.stop_btn.configure(state="disable")
+
+    def play(self) -> None:
+        self.stop_btn.configure(state="normal")
+        if self.play_text.get() == "II":
+            self.play_text.set("PL")
+        else:
+            self.play_text.set("II")
+        print("PLAY")
 
     def show(self) -> None:
         self.pack(side="left", fill="both", expand=True)
