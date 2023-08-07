@@ -80,11 +80,8 @@ class ClockFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.master = master
 
-        self.timer = 60 * 30
-        self.minutes, self.seconds = divmod(self.timer, 60)
-
         self.time = tk.StringVar(self)
-        self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
+        self.set_timer()
 
         self.play_text = tk.StringVar(self)
         self.play_text.set("PL")
@@ -120,6 +117,13 @@ class ClockFrame(ctk.CTkFrame):
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
 
+    def set_timer(self, timer: int = 60 * 30) -> None:
+        self.timer = timer
+        self.minutes, self.seconds = divmod(self.timer, 60)
+
+        self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
+        self.winfo_toplevel().update()
+
     def start_timer_thread(self) -> None:
         t = threading.Thread(target=self.start_timer)
         t.start()
@@ -131,9 +135,10 @@ class ClockFrame(ctk.CTkFrame):
         while self.timer > 0 and not self.paused and not self.stopped:
             # TODO: Al dormir 1 segundo en sistema es menos responsivo, buscar la manera de
             # hacerlo con floats
-            self.minutes, self.seconds = divmod(self.timer, 60)
-            self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
-            self.winfo_toplevel().update()
+            # self.minutes, self.seconds = divmod(self.timer, 60)
+            # self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
+            self.set_timer(self.timer)
+            # self.winfo_toplevel().update()
             time.sleep(1)
             self.timer -= 1
 
@@ -148,10 +153,7 @@ class ClockFrame(ctk.CTkFrame):
         if self.stop_btn.cget("state") == "normal":
             self.stopped = True
             self.play_text.set("PL")
-            self.timer = 60 * 30
-            self.minutes, self.seconds = divmod(self.timer, 60)
-            self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
-            self.winfo_toplevel().update()
+            self.set_timer()
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
@@ -159,6 +161,7 @@ class ClockFrame(ctk.CTkFrame):
         if self.play_text.get() == "II":
             self.play_text.set("PL")
             self.paused = True
+            self.thread_is_on = False
         else:
             self.play_text.set("II")
             self.start_timer_thread()
