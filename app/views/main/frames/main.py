@@ -128,11 +128,11 @@ class ClockFrame(ctk.CTkFrame):
         self.stopped = False
         self.paused = False
 
-        while self.timer > 0 and not self.paused:
+        while self.timer > 0 and not self.paused and not self.stopped:
             # TODO: Al dormir 1 segundo en sistema es menos responsivo, buscar la manera de
             # hacerlo con floats
-            minutes, seconds = divmod(self.timer, 60)
-            self.time.set(f"{minutes:02d}:{seconds:02d}")
+            self.minutes, self.seconds = divmod(self.timer, 60)
+            self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
             self.winfo_toplevel().update()
             time.sleep(1)
             self.timer -= 1
@@ -144,13 +144,14 @@ class ClockFrame(ctk.CTkFrame):
     def reset_clock(self) -> None:
         pass
 
-    def skip_clock(self) -> None:
-        pass
-
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
             self.stopped = True
             self.play_text.set("PL")
+            self.timer = 60 * 30
+            self.minutes, self.seconds = divmod(self.timer, 60)
+            self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
+            self.winfo_toplevel().update()
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
