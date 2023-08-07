@@ -9,6 +9,7 @@ from lib.models import Card
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, last_card: Card):
         super().__init__(master=master)
+        self.master = master
         self.pack_propagate(False)
         self.last_card = last_card
 
@@ -30,13 +31,13 @@ class MainFrame(ctk.CTkFrame):
         self.info_frame.show()
 
     def show(self) -> None:
-        self.pack(
-            side="left", expand=True, fill="both", padx=15)
+        self.pack(side="left", expand=True, fill="both", padx=15)
 
 
 class PomoFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
+        self.master = master
         self.pack_propagate(False)
         self.columnconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
                              weight=1, uniform="a")
@@ -71,6 +72,9 @@ class PomoFrame(ctk.CTkFrame):
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
 
+    def update_pomo_count(amount: int) -> None:
+        print(f"Pomo sum: {amount}")
+
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
 
@@ -79,6 +83,9 @@ class ClockFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
         self.master = master
+        print(
+            self.master.master.master.last_card.pomo_count
+        )
 
         self.time = tk.StringVar(self)
         self.set_timer()
@@ -117,7 +124,7 @@ class ClockFrame(ctk.CTkFrame):
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
 
-    def set_timer(self, timer: int = 60 * 30) -> None:
+    def set_timer(self, timer: int = 60 * 1) -> None:
         self.timer = timer
         self.minutes, self.seconds = divmod(self.timer, 60)
 
@@ -132,22 +139,16 @@ class ClockFrame(ctk.CTkFrame):
         self.stopped = False
         self.paused = False
 
-        while self.timer > 0 and not self.paused and not self.stopped:
+        while self.timer >= 0 and not self.paused and not self.stopped:
             # TODO: Al dormir 1 segundo en sistema es menos responsivo, buscar la manera de
             # hacerlo con floats
-            # self.minutes, self.seconds = divmod(self.timer, 60)
-            # self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
             self.set_timer(self.timer)
-            # self.winfo_toplevel().update()
             time.sleep(1)
             self.timer -= 1
 
         # TODO: Implementar sistema para sumar un pomodoro a la tarjeta actual
-        if not self.stopped:
-            pass
-
-    def reset_clock(self) -> None:
-        pass
+        if not self.stopped and not self.paused:
+            self.master.master.master.last_card.pomo_count += 1
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
@@ -158,10 +159,11 @@ class ClockFrame(ctk.CTkFrame):
 
     def play(self) -> None:
         self.stop_btn.configure(state="normal")
+        # FIX: AL pulsar muy rápido el botón se general varios threads
+        # y el tiempo baja muy rapido
         if self.play_text.get() == "II":
             self.play_text.set("PL")
             self.paused = True
-            self.thread_is_on = False
         else:
             self.play_text.set("II")
             self.start_timer_thread()
