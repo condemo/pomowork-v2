@@ -85,7 +85,7 @@ class ClockFrame(ctk.CTkFrame):
         self.time.set(self.min.get() + ":" + self.sec.get())
 
         self.play_text = tk.StringVar(self)
-        self.play_text.set("II")
+        self.play_text.set("PL")
 
         self.create_widgets()
         self.load_widgets()
@@ -118,6 +118,7 @@ class ClockFrame(ctk.CTkFrame):
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
             print("STOP")
+            self.play_text.set("PL")
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
@@ -126,7 +127,7 @@ class ClockFrame(ctk.CTkFrame):
             self.play_text.set("PL")
         else:
             self.play_text.set("II")
-        print("PLAY")
+            print("PLAY")
 
     def show(self) -> None:
         self.pack(side="left", fill="both", expand=True)
