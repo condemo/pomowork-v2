@@ -1,4 +1,6 @@
 from datetime import datetime
+import time
+import threading
 import customtkinter as ctk
 import tkinter as tk
 from lib.models import Card
@@ -76,16 +78,19 @@ class PomoFrame(ctk.CTkFrame):
 class ClockFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
+        self.master = master
 
-        self.min = tk.StringVar(self)
-        self.min.set("30")
-        self.sec = tk.StringVar(self)
-        self.sec.set("00")
+        self.timer = 60 * 30
+        self.minutes, self.seconds = divmod(self.timer, 60)
+
         self.time = tk.StringVar(self)
-        self.time.set(self.min.get() + ":" + self.sec.get())
+        self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
 
         self.play_text = tk.StringVar(self)
         self.play_text.set("PL")
+
+        self.stopped: bool = False
+        self.paused: bool = False
 
         self.create_widgets()
         self.load_widgets()
@@ -94,7 +99,7 @@ class ClockFrame(ctk.CTkFrame):
         self.mode_label = ctk.CTkLabel(self, text="Work", font=("Roboto", 45))
 
         self.main_frame = ctk.CTkFrame(self)
-        self.timer = ctk.CTkLabel(
+        self.timer_label = ctk.CTkLabel(
             self.main_frame, textvariable=self.time, font=("Roboto", 100))
 
         self.control_frame = ctk.CTkFrame(self.main_frame)
@@ -108,16 +113,43 @@ class ClockFrame(ctk.CTkFrame):
     def load_widgets(self) -> None:
         self.mode_label.pack()
 
-        self.timer.pack()
+        self.timer_label.pack()
         self.main_frame.place(relx=.5, rely=.5, anchor="center")
 
         self.pause_btn.pack(side="left", padx=10)
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
 
+    def start_timer_thread(self) -> None:
+        t = threading.Thread(target=self.start_timer)
+        t.start()
+
+    def start_timer(self) -> None:
+        self.stopped = False
+        self.paused = False
+
+        while self.timer > 0 and not self.paused:
+            # TODO: Al dormir 1 segundo en sistema es menos responsivo, buscar la manera de
+            # hacerlo con floats
+            minutes, seconds = divmod(self.timer, 60)
+            self.time.set(f"{minutes:02d}:{seconds:02d}")
+            self.winfo_toplevel().update()
+            time.sleep(1)
+            self.timer -= 1
+
+        # TODO: Implementar sistema para sumar un pomodoro a la tarjeta actual
+        if not self.stopped:
+            pass
+
+    def reset_clock(self) -> None:
+        pass
+
+    def skip_clock(self) -> None:
+        pass
+
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
-            print("STOP")
+            self.stopped = True
             self.play_text.set("PL")
             self.stop_btn.configure(state="disable")
 
@@ -125,9 +157,10 @@ class ClockFrame(ctk.CTkFrame):
         self.stop_btn.configure(state="normal")
         if self.play_text.get() == "II":
             self.play_text.set("PL")
+            self.paused = True
         else:
             self.play_text.set("II")
-            print("PLAY")
+            self.start_timer_thread()
 
     def show(self) -> None:
         self.pack(side="left", fill="both", expand=True)
