@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from data.cache import ProjectDataHandler
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
+from utils.cards import CardDataHandler
 
 
 class HomeView(ctk.CTkFrame):
@@ -14,12 +15,13 @@ class HomeView(ctk.CTkFrame):
             self.projects_list[0].id
         )
 
+        self.card_handler = CardDataHandler(self.initial_cards_list[0])
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.projects_list)
-        self.main_frame = MainFrame(self, self.initial_cards_list[0])
+        self.main_frame = MainFrame(self, self.card_handler.get_last_card())
         self.cards_frame = CardsFrame(self, self.initial_cards_list)
 
     def load_widgets(self) -> None:
