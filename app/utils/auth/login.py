@@ -23,5 +23,4 @@ def login_handler(username: str, password: str):
             return False
 
         case 200:
-            print(response.json())
             return response.json()
