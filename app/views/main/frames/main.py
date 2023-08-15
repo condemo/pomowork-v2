@@ -83,9 +83,6 @@ class ClockFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
         self.master = master
-        print(
-            self.master.master.master.last_card.pomo_count
-        )
 
         self.time = tk.StringVar(self)
         self.set_timer()
