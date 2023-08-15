@@ -178,12 +178,13 @@ class InfoFrame(ctk.CTkFrame):
         self.pack_propagate(False)
         self.last_card = last_card
 
-        self.last_card_date = datetime.strptime(
-            self.last_card.created_at, "%Y-%m-%d"
-        ).strftime("%d/%m/%Y")
+        if self.last_card:
+            self.last_card_date = datetime.strptime(
+                self.last_card.created_at, "%Y-%m-%d"
+            ).strftime("%d/%m/%Y")
 
-        self.create_widgets()
-        self.load_widgets()
+            self.create_widgets()
+            self.load_widgets()
 
     def create_widgets(self) -> None:
         self.price_h_label = ctk.CTkLabel(
