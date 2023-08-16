@@ -6,8 +6,9 @@ from data.datasend import create_new_card
 class CardDataHandler:
     def __init__(self, card_list: list[Card]):
         # Determina si la última tarjeta es de hoy o de otro día anterior
-        if card_list:
-            last_card = card_list[0]
+        self.card_list = card_list
+        if self.card_list:
+            last_card = self.card_list[0]
             if last_card.created_at == str(date.today()):
                 self.last_card = last_card
             else:
@@ -23,8 +24,14 @@ class CardDataHandler:
 
     def get_last_card(self) -> Card | None:
         return self.last_card
+
+    def card_list(self) -> list[Card]:
+        return self.card_list
+
+    # Tiene un método para cambiar el proyecto activa
+    def change_card_list(self, new_card_list: list[Card]) -> None:
+        self.card_list = new_card_list
         # Tiene un método para actualizar la tarjeta
-        # Envía una post request en caso de creación o actualización de una tarjeta
+        # Envía una post o put request en caso de creación o actualización de una tarjeta
         # Actualiza el cache también
         # Crea una nueva tarjeta en caso de actualizar un pomo justo después de las 12??
-        # Tiene un método para cambiar la tarjeta activa?????

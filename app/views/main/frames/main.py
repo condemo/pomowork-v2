@@ -3,31 +3,31 @@ import time
 import threading
 import customtkinter as ctk
 import tkinter as tk
-from lib.models import Card
+from utils.cards import CardDataHandler
 
 
 class MainFrame(ctk.CTkFrame):
-    def __init__(self, master, last_card: Card):
+    def __init__(self, master, card_hander: CardDataHandler):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
-        self.last_card = last_card
+        self.card_hander = card_hander
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.pomo_frame = PomoFrame(self)
-        self.info_frame = InfoFrame(self, self.last_card)
+        self.info_frame = InfoFrame(self, self.card_hander)
 
     def load_widgets(self) -> None:
         self.pomo_frame.show()
         self.info_frame.show()
 
-    def load_new_data(self, last_card: Card) -> None:
+    def load_new_data(self) -> None:
         self.info_frame.pack_forget()
-        self.last_card = last_card
-        self.info_frame = InfoFrame(self, self.last_card)
+        # self.last_card = self.card_hander.get_last_card()
+        self.info_frame = InfoFrame(self, self.card_hander)
         self.info_frame.show()
 
     def show(self) -> None:
@@ -170,12 +170,13 @@ class ClockFrame(ctk.CTkFrame):
 
 
 class InfoFrame(ctk.CTkFrame):
-    def __init__(self, master, last_card: Card):
+    def __init__(self, master, card_hander: CardDataHandler):
         super().__init__(master=master)
         self.pack_propagate(False)
-        self.last_card = last_card
+        self.card_handler = card_hander
 
-        if self.last_card:
+        if self.card_handler.get_last_card():
+            self.last_card = self.card_handler.get_last_card()
             self.last_card_date = datetime.strptime(
                 self.last_card.created_at, "%Y-%m-%d"
             ).strftime("%d/%m/%Y")
