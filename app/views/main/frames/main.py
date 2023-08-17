@@ -17,7 +17,7 @@ class MainFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.pomo_frame = PomoFrame(self)
+        self.pomo_frame = PomoFrame(self, self.card_hander)
         self.info_frame = InfoFrame(self, self.card_hander)
 
     def load_widgets(self) -> None:
@@ -26,7 +26,6 @@ class MainFrame(ctk.CTkFrame):
 
     def load_new_data(self) -> None:
         self.info_frame.pack_forget()
-        # self.last_card = self.card_hander.get_last_card()
         self.info_frame = InfoFrame(self, self.card_hander)
         self.info_frame.show()
 
@@ -35,7 +34,7 @@ class MainFrame(ctk.CTkFrame):
 
 
 class PomoFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, card_hander: CardDataHandler):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
@@ -43,6 +42,8 @@ class PomoFrame(ctk.CTkFrame):
                              weight=1, uniform="a")
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7),
                           weight=1, uniform="a")
+
+        self.card_hander = card_hander
 
         self.create_widgets()
         self.load_widgets()
@@ -57,7 +58,7 @@ class PomoFrame(ctk.CTkFrame):
             self.main_frame, text="<",
             width=30, height=30, corner_radius=30,
             font=("Roboto", 50), fg_color="transparent")
-        self.clock_frame = ClockFrame(self.main_frame)
+        self.clock_frame = ClockFrame(self.main_frame, self.card_hander)
         self.forward_btn = ctk.CTkButton(
             self.main_frame, text=">", width=30,
             height=30, corner_radius=30,
@@ -80,9 +81,10 @@ class PomoFrame(ctk.CTkFrame):
 
 
 class ClockFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, card_handler: CardDataHandler):
         super().__init__(master=master)
         self.master = master
+        self.card_handler = card_handler
 
         self.time = tk.StringVar(self)
         self.set_timer()
@@ -145,7 +147,9 @@ class ClockFrame(ctk.CTkFrame):
 
         # TODO: Implementar sistema para sumar un pomodoro a la tarjeta actual
         if not self.stopped and not self.paused:
-            self.master.master.master.last_card.pomo_count += 1
+            self.card_handler.update_card(1)
+            self.play_text.set("PL")
+            self.set_timer()
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
