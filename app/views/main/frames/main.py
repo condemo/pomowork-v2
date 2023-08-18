@@ -146,7 +146,7 @@ class ClockFrame(ctk.CTkFrame):
             notification.notify(
                 title="Timer Ended",
                 message="Ha acababo el pomodoro",
-                app_icon=None,
+                app_icon="",
                 timeout=5
             )
 
