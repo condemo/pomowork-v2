@@ -1,12 +1,13 @@
 from datetime import date
-from lib.models import Card
+from lib.models import Card, Project
 from data.datasend import CardDataSender
 
 
 class CardDataHandler:
-    def __init__(self, view, card_list: list[Card]):
+    def __init__(self, view, project: Project, card_list: list[Card]):
         # Determina si la última tarjeta es de hoy o de otro día anterior
         self.home_view = view
+        self.project = project
         self.card_list = card_list
         self.data_sender = CardDataSender()
         if self.card_list:
@@ -14,22 +15,23 @@ class CardDataHandler:
             if last_card.created_at == str(date.today()):
                 self.last_card = last_card
             else:
-                # Devuelve la última tarjeta o crea una nueva
-                self.last_card = self.data_sender.create_new_card({
-                    "project_id": last_card.project_id,
-                    "price_per_hour": last_card.price_per_hour,
-                    "total_price": 0,
-                    "collected": False
-                })
+                self.create_card()
         else:
-            # FIX: Implementar mejor, siempre debe haber una tarjeta
-            self.last_card = None
+            self.create_card()
 
-    def get_last_card(self) -> Card | None:
+    def get_last_card(self) -> Card:
         return self.last_card
 
     def card_list(self) -> list[Card]:
         return self.card_list
+
+    def create_card(self) -> None:
+        self.last_card = self.data_sender.create_new_card({
+            "project_id": self.project.id,
+            "price_per_hour": self.project.price_per_hour,
+            "total_price": 0,
+            "collected": False
+        })
 
     # Tiene un método para cambiar el proyecto activa
     def change_card_list(self, new_card_list: list[Card]) -> None:

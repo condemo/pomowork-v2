@@ -15,7 +15,8 @@ class HomeView(ctk.CTkFrame):
             self.projects_list[0].id
         )
 
-        self.card_handler = CardDataHandler(self, self.initial_cards_list)
+        self.card_handler = CardDataHandler(
+            self, self.data_handler.get_active_project(), self.initial_cards_list)
         self.create_widgets()
         self.load_widgets()
 

@@ -26,7 +26,7 @@ def cache_fetch():
 class ProjectDataHandler:
     def __init__(self):
 
-        self.active_project: int
+        self.active_project: Project
         self.projects_list = []
 
         with open(CACHE_FILE, "r") as file:
@@ -49,3 +49,6 @@ class ProjectDataHandler:
             if project.id == id:
                 self.active_project = project
                 return project.cards
+
+    def get_active_project(self) -> int:
+        return self.active_project
