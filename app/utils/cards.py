@@ -40,10 +40,9 @@ class CardDataHandler:
     # Tiene un método para actualizar la tarjeta
     def update_card(self, count: int = 0) -> None:
         self.last_card.pomo_count += count
+        self.last_card.total_price = (self.last_card.pomo_count / 2) * self.last_card.price_per_hour
         new_card = self.data_sender.update_card(self.last_card)
         if new_card:
             self.last_card = new_card
             self.home_view.update_current_card()
-        # Envía una post o put request en caso de creación o actualización de una tarjeta
-        # Actualiza el cache también
-        # Crea una nueva tarjeta en caso de actualizar un pomo justo después de las 12??
+        # TODO: Crea una nueva tarjeta en caso de actualizar un pomo justo después de las 12??

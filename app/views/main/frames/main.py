@@ -119,7 +119,7 @@ class ClockFrame(ctk.CTkFrame):
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
 
-    def set_timer(self, timer: float = 60 * 1) -> None:
+    def set_timer(self, timer: float = 60 * .1) -> None:
         self.timer = timer
         self.minutes, self.seconds = divmod(self.timer, 60)
 
@@ -187,7 +187,7 @@ class InfoFrame(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         self.price_h_label = ctk.CTkLabel(
-            self, text=f"Price/h: {self.last_card.price_per_hour}€", font=("Roboto", 18))
+            self, text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18))
         self.date_label = ctk.CTkLabel(self, text=f"{self.last_card_date}", font=("Roboto", 30))
 
         self.main_frame = ctk.CTkFrame(self)
@@ -216,6 +216,8 @@ class InfoFrame(ctk.CTkFrame):
         self.last_card = self.card_handler.get_last_card()
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
+        self.total_money_label.configure(
+            text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60))
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
