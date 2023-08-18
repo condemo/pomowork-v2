@@ -3,6 +3,7 @@ import time
 import threading
 import customtkinter as ctk
 import tkinter as tk
+from plyer import notification
 from utils.cards import CardDataHandler
 
 
@@ -25,9 +26,6 @@ class MainFrame(ctk.CTkFrame):
         self.info_frame.show()
 
     def load_new_data(self) -> None:
-        # self.info_frame.pack_forget()
-        # self.info_frame = InfoFrame(self, self.card_hander)
-        # self.info_frame.show()
         self.info_frame.update_data()
 
     def show(self) -> None:
@@ -73,9 +71,6 @@ class PomoFrame(ctk.CTkFrame):
         self.clock_frame.show()
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
-
-    def update_pomo_count(amount: int) -> None:
-        print(f"Pomo sum: {amount}")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
@@ -148,6 +143,12 @@ class ClockFrame(ctk.CTkFrame):
             self.card_handler.update_card(1)
             self.play_text.set("PL")
             self.set_timer()
+            notification.notify(
+                title="Timer Ended",
+                message="Ha acababo el pomodoro",
+                app_icon=None,
+                timeout=5
+            )
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
