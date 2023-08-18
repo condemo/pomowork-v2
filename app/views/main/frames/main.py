@@ -124,11 +124,11 @@ class ClockFrame(ctk.CTkFrame):
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
 
-    def set_timer(self, timer: int = 60 * 1) -> None:
+    def set_timer(self, timer: float = 60 * 1) -> None:
         self.timer = timer
         self.minutes, self.seconds = divmod(self.timer, 60)
 
-        self.time.set(f"{self.minutes:02d}:{self.seconds:02d}")
+        self.time.set(f"{int(self.minutes):02d}:{int(self.seconds):02d}")
         self.winfo_toplevel().update()
 
     def start_timer_thread(self) -> None:
@@ -140,13 +140,10 @@ class ClockFrame(ctk.CTkFrame):
         self.paused = False
 
         while self.timer >= 0 and not self.paused and not self.stopped:
-            # TODO: Al dormir 1 segundo en sistema es menos responsivo, buscar la manera de
-            # hacerlo con floats
             self.set_timer(self.timer)
-            time.sleep(1)
-            self.timer -= 1
+            time.sleep(.100)
+            self.timer -= .100
 
-        # TODO: Implementar sistema para sumar un pomodoro a la tarjeta actual
         if not self.stopped and not self.paused:
             self.card_handler.update_card(1)
             self.play_text.set("PL")
@@ -161,8 +158,6 @@ class ClockFrame(ctk.CTkFrame):
 
     def play(self) -> None:
         self.stop_btn.configure(state="normal")
-        # FIX: AL pulsar muy rápido el botón se general varios threads
-        # y el tiempo baja muy rapido
         if self.play_text.get() == "II":
             self.play_text.set("PL")
             self.paused = True
