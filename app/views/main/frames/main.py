@@ -25,9 +25,10 @@ class MainFrame(ctk.CTkFrame):
         self.info_frame.show()
 
     def load_new_data(self) -> None:
-        self.info_frame.pack_forget()
-        self.info_frame = InfoFrame(self, self.card_hander)
-        self.info_frame.show()
+        # self.info_frame.pack_forget()
+        # self.info_frame = InfoFrame(self, self.card_hander)
+        # self.info_frame.show()
+        self.info_frame.update_data()
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both", padx=15)
@@ -214,6 +215,11 @@ class InfoFrame(ctk.CTkFrame):
 
         self.total_money_label.pack(fill="x")
         self.bottom_frame.pack(fill="x")
+
+    def update_data(self) -> None:
+        self.last_card = self.card_handler.get_last_card()
+        self.pomo_num_label.configure(
+            text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
