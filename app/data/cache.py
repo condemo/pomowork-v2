@@ -3,52 +3,52 @@ import os
 import json
 
 import config
-from lib.models import Project, Card
 from data.oauth2 import get_token
 
 
 CACHE_FILE = config.DATA_DIR + "/data.json"
 
 
-def cache_fetch():
-    user_credentials = config.USER_HEADERS
-    user_credentials["Authorization"] = f"Bearer {get_token()}"
-
-    data_fetch = requests.get(
-        config.PROJECTS_BASE_URL, headers=user_credentials).json()
-
-    with open(CACHE_FILE, "w") as file:
-        json.dump(data_fetch, file, indent=2)
-
-    os.chmod(CACHE_FILE, 0o600)
-
-
-class ProjectDataHandler:
+class CacheHandler:
     def __init__(self):
+        self.user_credentials = config.USER_HEADERS
+        self.user_credentials["Authorization"] = f"Bearer {get_token()}"
 
-        self.active_project: Project
-        self.projects_list = []
+        data_fetch = requests.get(
+            config.PROJECTS_BASE_URL, headers=self.user_credentials).json()
 
+        data_dict = {
+            "projects": data_fetch
+        }
+        data_dict["project_list"] = []
+
+        for project in data_dict["projects"]:
+            project_list = [project["id"], project["name"]]
+            data_dict["project_list"].append(project_list)
+
+        with open(CACHE_FILE, "w") as file:
+            json.dump(data_dict, file, indent=2)
+
+        os.chmod(CACHE_FILE, 0o600)
+
+    @staticmethod
+    def get_project_list() -> list[tuple[int, str]]:
         with open(CACHE_FILE, "r") as file:
-            data: dict = json.load(file)
+            data = json.load(file)
 
-        for i in data:
-            project = Project(**i)
-            project.cards = []
-            for j in i["cards"]:
-                card = Card(**j)
-                project.cards.append(card)
-            project.cards.sort(key=lambda x: x.created_at, reverse=True)
-            self.projects_list.append(project)
+        project_list = [tuple(project) for project in data["project_list"]]
+        del data
 
-    def get_projects(self) -> list[Project]:
-        return self.projects_list
+        return project_list
 
-    def get_project_cards(self, id: int) -> list[Card]:
-        for project in self.projects_list:
-            if project.id == id:
-                self.active_project = project
-                return project.cards
+    @staticmethod
+    def get_card_list(id: int) -> list[dict]:
+        with open(CACHE_FILE, "r") as file:
+            data = json.load(file)
 
-    def get_active_project(self) -> int:
-        return self.active_project
+        for project in data["projects"]:
+            for card in project["cards"]:
+                if card["project_id"] == id:
+                    del data
+                    return project["cards"]
+        del data

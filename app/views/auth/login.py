@@ -2,7 +2,6 @@ import customtkinter as ctk
 
 from utils.auth import login_handler
 from data.oauth2 import save_jwt
-from data.cache import cache_fetch
 
 
 class LoginView(ctk.CTkFrame):
@@ -106,5 +105,4 @@ class FormFrame(ctk.CTkFrame):
             self.reset_values()
         else:
             save_jwt(login_try)
-            cache_fetch()
             self.go_main()

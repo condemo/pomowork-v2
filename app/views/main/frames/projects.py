@@ -1,9 +1,8 @@
 import customtkinter as ctk
-from lib.models import Project
 
 
 class ProjectsFrame(ctk.CTkFrame):
-    def __init__(self, master, project_list: list[Project]):
+    def __init__(self, master, project_list: list[tuple[int, str]]):
         super().__init__(master=master, width=20)
         self.master = master
         self.pack_propagate(False)
@@ -40,7 +39,7 @@ class ProjectsFrame(ctk.CTkFrame):
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, project_list: list[Project]):
+    def __init__(self, master, project_list: list[tuple[int, str]]):
         super().__init__(master=master, width=20)
         self.master = master
 
@@ -49,7 +48,9 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.profile_list = [ProjectProfileCard(self, i.id, i.name) for i in self.projects_list]
+        self.profile_list = [
+            ProjectProfileCard(self, id=i[0], name=i[1]) for i in self.projects_list
+        ]
 
     def load_widgets(self) -> None:
         [i.show() for i in self.profile_list]
@@ -94,4 +95,5 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.pack(fill="x", pady=5)
 
     def clicked(self, event) -> None:
-        self.master.change_active_project(self.id)
+        print(f"clicked: {self.id}")
+        # self.master.change_active_project(self.id)

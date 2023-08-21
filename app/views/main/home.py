@@ -1,7 +1,6 @@
 import customtkinter as ctk
-from data.cache import ProjectDataHandler
+from data.datahandlers import ProjectDataHandler
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
-from utils.cards import CardDataHandler
 
 
 class HomeView(ctk.CTkFrame):
@@ -10,25 +9,25 @@ class HomeView(ctk.CTkFrame):
         self.pack_propagate(False)
 
         self.data_handler = ProjectDataHandler()
-        self.projects_list = self.data_handler.get_projects()
-        self.initial_cards_list = self.data_handler.get_project_cards(
-            self.projects_list[0].id
-        )
-
-        self.card_handler = CardDataHandler(
-            self, self.data_handler.get_active_project(), self.initial_cards_list)
+        # self.projects_list = self.data_handler.get_projects()
+        # self.initial_cards_list = self.data_handler.get_project_cards(
+        #     self.projects_list[0].id
+        # )
+        #
+        # self.card_handler = CardDataHandler(
+        #     self, self.data_handler.get_active_project(), self.initial_cards_list)
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.projects_frame = ProjectsFrame(self, self.projects_list)
-        self.main_frame = MainFrame(self, self.card_handler)
-        self.cards_frame = CardsFrame(self, self.initial_cards_list)
+        self.projects_frame = ProjectsFrame(self, self.data_handler.get_project_list())
+        # self.main_frame = MainFrame(self, self.card_handler)
+        # self.cards_frame = CardsFrame(self, self.initial_cards_list)
 
     def load_widgets(self) -> None:
         self.projects_frame.show()
-        self.main_frame.show()
-        self.cards_frame.show()
+        # self.main_frame.show()
+        # self.cards_frame.show()
 
     def change_active_project(self, id: int) -> None:
         card_list = self.data_handler.get_project_cards(id)
