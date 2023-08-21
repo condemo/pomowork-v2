@@ -4,22 +4,22 @@ import threading
 import customtkinter as ctk
 import tkinter as tk
 from plyer import notification
-from utils.cards import CardDataHandler
+from data.datahandlers import ProjectDataHandler
 
 
 class MainFrame(ctk.CTkFrame):
-    def __init__(self, master, card_hander: CardDataHandler):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
-        self.card_hander = card_hander
+        self.data_handler = data_handler
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.pomo_frame = PomoFrame(self, self.card_hander)
-        self.info_frame = InfoFrame(self, self.card_hander)
+        self.pomo_frame = PomoFrame(self, self.data_handler)
+        self.info_frame = InfoFrame(self, self.data_handler)
 
     def load_widgets(self) -> None:
         self.pomo_frame.show()
@@ -33,7 +33,7 @@ class MainFrame(ctk.CTkFrame):
 
 
 class PomoFrame(ctk.CTkFrame):
-    def __init__(self, master, card_hander: CardDataHandler):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
@@ -42,7 +42,7 @@ class PomoFrame(ctk.CTkFrame):
         self.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7),
                           weight=1, uniform="a")
 
-        self.card_hander = card_hander
+        self.data_handler = data_handler
 
         self.create_widgets()
         self.load_widgets()
@@ -57,7 +57,7 @@ class PomoFrame(ctk.CTkFrame):
             self.main_frame, text="<",
             width=30, height=30, corner_radius=30,
             font=("Roboto", 50), fg_color="transparent")
-        self.clock_frame = ClockFrame(self.main_frame, self.card_hander)
+        self.clock_frame = ClockFrame(self.main_frame, self.data_handler)
         self.forward_btn = ctk.CTkButton(
             self.main_frame, text=">", width=30,
             height=30, corner_radius=30,
@@ -77,10 +77,10 @@ class PomoFrame(ctk.CTkFrame):
 
 
 class ClockFrame(ctk.CTkFrame):
-    def __init__(self, master, card_handler: CardDataHandler):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master)
         self.master = master
-        self.card_handler = card_handler
+        self.data_handler = data_handler
 
         self.time = tk.StringVar(self)
         self.set_timer()
@@ -171,19 +171,21 @@ class ClockFrame(ctk.CTkFrame):
 
 
 class InfoFrame(ctk.CTkFrame):
-    def __init__(self, master, card_hander: CardDataHandler):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master)
         self.pack_propagate(False)
-        self.card_handler = card_hander
+        self.data_handler = data_handler
+        # self.current_card = self.data_handler.get_current_card()
+        self.test_card = self.data_handler.get_project_cards()
 
-        if self.card_handler.get_last_card():
-            self.last_card = self.card_handler.get_last_card()
-            self.last_card_date = datetime.strptime(
-                self.last_card.created_at, "%Y-%m-%d"
-            ).strftime("%d/%m/%Y")
-
-            self.create_widgets()
-            self.load_widgets()
+        # if self.card_handler.get_last_card():
+        #     self.last_card = self.card_handler.get_last_card()
+        #     self.last_card_date = datetime.strptime(
+        #         self.last_card.created_at, "%Y-%m-%d"
+        #     ).strftime("%d/%m/%Y")
+        #
+        # self.create_widgets()
+        # self.load_widgets()
 
     def create_widgets(self) -> None:
         self.price_h_label = ctk.CTkLabel(

@@ -1,13 +1,16 @@
 import customtkinter as ctk
+from data.datahandlers import ProjectDataHandler
 
 
 class ProjectsFrame(ctk.CTkFrame):
-    def __init__(self, master, project_list: list[tuple[int, str]]):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master, width=20)
         self.master = master
         self.pack_propagate(False)
 
-        self.project_list = project_list
+        self.data_handler = data_handler
+
+        self.project_list = self.data_handler.get_project_list()
 
         self.create_widgets()
         self.load_widgets()
