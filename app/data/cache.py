@@ -48,6 +48,11 @@ class CacheHandler:
 
         return data
 
+    @staticmethod
+    def save_data_file(data: dict) -> None:
+        with open(CACHE_FILE, "w") as file:
+            json.dump(data, file, indent=2)
+
     def get_project_list(self) -> list[tuple[int, str]]:
         data = self.read_data_file()
 
@@ -86,4 +91,10 @@ class CacheHandler:
         del data
 
     def set_project(self, new_project: dict) -> Project:
-        pass
+        project = self.data_sender.create_project(new_project)
+        if project:
+            data = self.read_data_file()
+
+            data["projects"].append(project.__dict__)
+            self.save_data_file(data)
+            return project

@@ -44,9 +44,13 @@ class ProjectsFrame(ctk.CTkFrame):
         else:
             self.create_window.focus()
 
-    def create_project(self, name: str, price: int = 0) -> None:
-        print(f"{name} - - {price}")
+    def create_project(self, name: str, price: float = 0) -> None:
+        new_project = self.data_handler.create_project({
+            "name": name,
+            "price_per_hour": price
+        })
         self.create_window.destroy()
+        self.mid_frame.add_project(new_project.id, new_project.name)
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
@@ -68,6 +72,12 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         ]
 
     def load_widgets(self) -> None:
+        [i.show() for i in self.profile_list]
+
+    def add_project(self, id: int, name: str) -> None:
+        [i.pack_forget() for i in self.profile_list]
+        new_project = ProjectProfileCard(self, id=id, name=name)
+        self.profile_list.insert(0, new_project)
         [i.show() for i in self.profile_list]
 
     def change_active_project(self, id: int) -> None:

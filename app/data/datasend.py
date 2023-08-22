@@ -1,10 +1,10 @@
 import requests
-from lib.models import Card
+from lib.models import Card, Project
 from data.oauth2 import get_token
-from config import CARDS_BASE_URL, USER_HEADERS
+from config import CARDS_BASE_URL, USER_HEADERS, PROJECTS_BASE_URL
 
 
-class CardDataSender:
+class DataSender:
     def __init__(self):
         self.user_credentials = USER_HEADERS
         self.user_credentials["Authorization"] = f"Bearer {get_token()}"
@@ -31,3 +31,10 @@ class CardDataSender:
             return updated_card
 
         print(f"{data.json()['detail']}")
+
+    def create_project(self, project: dict) -> Project:
+        data = requests.post(PROJECTS_BASE_URL, json=project, headers=self.user_credentials)
+
+        if data.status_code == 201:
+            new_project = Project(**data.json())
+            return new_project

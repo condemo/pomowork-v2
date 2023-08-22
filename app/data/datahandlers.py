@@ -29,3 +29,9 @@ class ProjectDataHandler:
     def get_current_card(self) -> Card:
         if self.card_list:
             return self.card_list[0]
+
+    def create_project(self, project_data: dict) -> Project:
+        self.current_project = self.cache_handler.set_project(project_data)
+        self.current_project_id = self.current_project.id
+
+        return self.current_project

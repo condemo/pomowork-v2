@@ -1,6 +1,6 @@
 from datetime import date
 from lib.models import Card, Project
-from data.datasend import CardDataSender
+from data.datasend import DataSender
 
 
 class CardDataHandler:
@@ -9,7 +9,7 @@ class CardDataHandler:
         self.home_view = view
         self.project = project
         self.card_list = card_list
-        self.data_sender = CardDataSender()
+        self.data_sender = DataSender()
         if self.card_list:
             last_card = self.card_list[0]
             if last_card.created_at == str(date.today()):
