@@ -44,6 +44,10 @@ class ProjectsFrame(ctk.CTkFrame):
         else:
             self.create_window.focus()
 
+    def create_project(self, name: str, price: int = 0) -> None:
+        print(f"{name} - - {price}")
+        self.create_window.destroy()
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
 
@@ -133,7 +137,7 @@ class NewProjectWindow(ctk.CTkToplevel):
             )
 
         self.create_btn = ctk.CTkButton(
-            self, text="Crear", font=("Roboto", 24)
+            self, text="Crear", font=("Roboto", 24), command=self.create_project
             )
 
         self.name_label.grid(column=0, row=0, padx=2, pady=2)
@@ -141,3 +145,6 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.name_entry.grid(column=1, row=0, columnspan=2, padx=2, pady=2)
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
+
+    def create_project(self) -> None:
+        self.master.create_project(self.name_entry.get(), self.price_entry.get())
