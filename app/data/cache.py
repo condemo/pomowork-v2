@@ -5,7 +5,7 @@ from datetime import date
 
 import config
 from lib.models import Card, Project
-from data.datasend import CardDataSender
+from data.datasend import DataSender
 from data.oauth2 import get_token
 
 
@@ -15,7 +15,7 @@ CACHE_FILE = config.DATA_DIR + "/data.json"
 class CacheHandler:
     def __init__(self, project_id: int):
         self.data_fetch()
-        self.data_sender = CardDataSender
+        self.data_sender = DataSender()
         self.current_project_id = project_id
         self.current_project = self.load_project(self.current_project_id)
 
@@ -53,6 +53,7 @@ class CacheHandler:
 
         project_list = [tuple(project) for project in data["project_list"]]
         del data
+        project_list.sort(key=lambda e: e[0], reverse=True)
 
         return project_list
 
@@ -83,3 +84,6 @@ class CacheHandler:
                 self.current_project_id = self.current_project.id
                 return self.current_project
         del data
+
+    def set_project(self, new_project: dict) -> Project:
+        pass
