@@ -9,8 +9,7 @@ class ProjectsFrame(ctk.CTkFrame):
         self.pack_propagate(False)
 
         self.data_handler = data_handler
-
-        self.project_list = self.data_handler.get_project_list()
+        self.create_window = None
 
         self.create_widgets()
         self.load_widgets()
@@ -20,10 +19,12 @@ class ProjectsFrame(ctk.CTkFrame):
         self.burger_btn = ctk.CTkButton(
             self.top_frame, text="III", width=30, height=30, corner_radius=60)
 
-        self.mid_frame = ProjectsCardFrame(self, self.project_list)
+        self.mid_frame = ProjectsCardFrame(self, self.data_handler)
 
         self.bottom_frame = ctk.CTkFrame(self)
-        self.add_btn = ctk.CTkButton(self.bottom_frame, text="ADD")
+        self.add_btn = ctk.CTkButton(
+            self.bottom_frame, text="ADD", command=self.create_project_window
+        )
 
     def load_widgets(self) -> None:
         self.burger_btn.pack(side="right")
@@ -37,16 +38,23 @@ class ProjectsFrame(ctk.CTkFrame):
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
 
+    def create_project_window(self) -> None:
+        if self.create_window is None or not self.create_window.winfo_exists():
+            self.create_window = NewProjectWindow(self)
+        else:
+            self.create_window.focus()
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, project_list: list[tuple[int, str]]):
+    def __init__(self, master, data_handler: ProjectDataHandler):
         super().__init__(master=master, width=20)
         self.master = master
 
-        self.projects_list = project_list
+        self.data_handler = data_handler
+        self.projects_list = self.data_handler.get_project_list()
         self.create_widgets()
         self.load_widgets()
 
@@ -100,3 +108,36 @@ class ProjectProfileCard(ctk.CTkFrame):
     def clicked(self, event) -> None:
         print(f"clicked: {self.id}")
         # self.master.change_active_project(self.id)
+
+
+class NewProjectWindow(ctk.CTkToplevel):
+    def __init__(self, master):
+        super().__init__(master=master)
+        self.geometry("400x150")
+        self.title("Crea un Proyecto")
+        self.columnconfigure((0, 1, 2), weight=1, uniform="a")
+        self.rowconfigure((0, 1, 2), weight=1, uniform="a")
+
+        self.name_label = ctk.CTkLabel(
+            self, text="Nombre:", font=("Roboto", 22)
+            )
+        self.price_label = ctk.CTkLabel(
+            self, text="€/h", font=("Roboto", 22), anchor="w"
+            )
+
+        self.name_entry = ctk.CTkEntry(
+            self, width=200, height=50
+            )
+        self.price_entry = ctk.CTkEntry(
+            self, width=50, height=50
+            )
+
+        self.create_btn = ctk.CTkButton(
+            self, text="Crear", font=("Roboto", 24)
+            )
+
+        self.name_label.grid(column=0, row=0, padx=2, pady=2)
+        self.price_label.grid(column=2, row=1, padx=2, pady=2, sticky="w")
+        self.name_entry.grid(column=1, row=0, columnspan=2, padx=2, pady=2)
+        self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
+        self.create_btn.grid(column=1, row=2, padx=2, pady=6)
