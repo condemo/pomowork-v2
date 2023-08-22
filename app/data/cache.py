@@ -13,14 +13,19 @@ CACHE_FILE = config.DATA_DIR + "/data.json"
 
 
 class CacheHandler:
-    def __init__(self):
-        self.user_credentials = config.USER_HEADERS
-        self.user_credentials["Authorization"] = f"Bearer {get_token()}"
-
+    def __init__(self, project_id: int):
+        self.data_fetch()
         self.data_sender = CardDataSender
+        self.current_project_id = project_id
+        self.current_project = self.load_project(self.current_project_id)
+
+    @staticmethod
+    def data_fetch() -> None:
+        user_credentials = config.USER_HEADERS
+        user_credentials["Authorization"] = f"Bearer {get_token()}"
 
         data_fetch = requests.get(
-            config.PROJECTS_BASE_URL, headers=self.user_credentials).json()
+            config.PROJECTS_BASE_URL, headers=user_credentials).json()
 
         data_dict = {
             "projects": data_fetch
@@ -52,23 +57,29 @@ class CacheHandler:
         return project_list
 
     def get_card_list(self) -> list[Card]:
-        self.card_list = [Card(**i) for i in self.current_project.cards]
-        self.card_list.sort(key=lambda e: e.id, reverse=True)
-        if self.card_list[0].created_at != str(date.today()):
-            self.card_list.insert(0, self.data_sender.create_new_card({
-                "project_id": self.current_project.id,
-                "price_per_hour": self.current_project.price_per_hour,
-                "total_price": 0,
-                "collected": False
-            }))
-        return self.card_list
+        if self.current_project:
+            if self.current_project.cards:
+                self.card_list = [Card(**i) for i in self.current_project.cards]
+                self.card_list.sort(key=lambda e: e.id, reverse=True)
+                if self.card_list[0].created_at != str(date.today()):
+                    self.card_list.insert(0, self.data_sender.create_new_card({
+                        "project_id": self.current_project.id,
+                        "price_per_hour": self.current_project.price_per_hour,
+                        "total_price": 0,
+                        "collected": False
+                    }))
+                return self.card_list
 
-    def get_project_info(self, id: int) -> Project:
+    def get_current_project(self) -> Project:
+        return self.current_project
+
+    def load_project(self, id: int) -> Project:
         data = self.read_data_file()
 
         for project in data["projects"]:
             if project["id"] == id:
                 del data
                 self.current_project = Project(**project)
+                self.current_project_id = self.current_project.id
                 return self.current_project
         del data
