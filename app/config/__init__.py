@@ -1,24 +1,5 @@
 import os
-import tomli
-import tomli_w
-
-
-def load_config() -> dict:
-    with open(USER_CONF_FILE, "rb") as file:
-        user_conf = tomli.load(file)
-
-    return user_conf
-
-
-def create_config() -> dict:
-    # TODO: Completar la implementació
-    initial_config = {
-        "core": {"last_open_project": 0}
-    }
-    with open(USER_CONF_FILE, "wb") as file:
-        tomli_w.dump(initial_config, file)
-
-    return initial_config
+import tomlkit
 
 
 CURRENT_DIRECTORY = os.getcwd() + "/app"
@@ -36,6 +17,24 @@ USER_HEADERS = {
     "accept": "application/json",
     "Authorization": "",
 }
+
+
+def load_config() -> dict:
+    with open(USER_CONF_FILE, "rt", encoding="utf-8") as file:
+        user_conf = tomlkit.load(file)
+
+    return user_conf
+
+
+def create_config() -> dict:
+    initial_config = {
+        "core": {"last_open_project": 0}
+    }
+    with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
+        tomlkit.dump(initial_config, file)
+
+    return initial_config
+
 
 if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
     user_conf = load_config()
