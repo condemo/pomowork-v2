@@ -36,10 +36,14 @@ class CacheHandler:
             project_list = [project["id"], project["name"]]
             data_dict["project_list"].append(project_list)
 
-        with open(CACHE_FILE, "w") as file:
-            json.dump(data_dict, file, indent=2)
-
-        os.chmod(CACHE_FILE, 0o600)
+        if os.path.isfile(CACHE_FILE):
+            with open(CACHE_FILE, "w") as file:
+                json.dump(data_dict, file, indent=2)
+        else:
+            with open(CACHE_FILE, "w") as file:
+                json.dump(data_dict, file, indent=2)
+            print("Aplicando chmod")
+            os.chmod(CACHE_FILE, 0o600)
 
     @staticmethod
     def read_data_file() -> dict:
