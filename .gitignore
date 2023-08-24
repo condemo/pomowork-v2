@@ -5,3 +5,4 @@ venv/
 *.key
 *.token
 data.json
+app/config/user_conf.toml
