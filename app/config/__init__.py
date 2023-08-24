@@ -3,14 +3,14 @@ import tomli
 import tomli_w
 
 
-def load_config():
+def load_config() -> dict:
     with open(USER_CONF_FILE, "rb") as file:
         user_conf = tomli.load(file)
 
-    print(user_conf["core"]["last_open_project"])
+    return user_conf
 
 
-def create_config():
+def create_config() -> dict:
     # TODO: Completar la implementació
     initial_config = {
         "core": {"last_open_project": 0}
@@ -18,8 +18,7 @@ def create_config():
     with open(USER_CONF_FILE, "wb") as file:
         tomli_w.dump(initial_config, file)
 
-    user_conf = initial_config
-    print(user_conf["core"]["last_open_project"])
+    return initial_config
 
 
 CURRENT_DIRECTORY = os.getcwd() + "/app"
@@ -39,6 +38,6 @@ USER_HEADERS = {
 }
 
 if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
-    load_config()
+    user_conf = load_config()
 else:
-    create_config()
+    user_conf = create_config()
