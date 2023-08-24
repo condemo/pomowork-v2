@@ -42,7 +42,6 @@ class CacheHandler:
         else:
             with open(CACHE_FILE, "w") as file:
                 json.dump(data_dict, file, indent=2)
-            print("Aplicando chmod")
             os.chmod(CACHE_FILE, 0o600)
 
     @staticmethod
@@ -78,7 +77,16 @@ class CacheHandler:
                         "total_price": 0,
                         "collected": False
                     }))
-                return self.card_list
+            else:
+                self.card_list: list = []
+                self.card_list.insert(0, self.data_sender.create_new_card({
+                    "project_id": self.current_project.id,
+                    "price_per_hour": self.current_project.price_per_hour,
+                    "total_price": 0,
+                    "collected": False
+                }))
+
+        return self.card_list
 
     def get_current_project(self) -> Project:
         return self.current_project

@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 import threading
 import customtkinter as ctk
 import tkinter as tk
@@ -174,16 +175,12 @@ class InfoFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
         self.data_handler = data_handler
-        # self.current_card = self.data_handler.get_current_card()
         self.last_card = self.data_handler.get_current_card()
 
-        # if self.card_handler.get_last_card():
-        #     self.last_card = self.card_handler.get_last_card()
-        #     self.last_card_date = datetime.strptime(
-        #         self.last_card.created_at, "%Y-%m-%d"
-        #     ).strftime("%d/%m/%Y")
-        #
         if self.last_card:
+            self.last_card_date = datetime.strptime(
+                self.last_card.created_at, "%Y-%m-%d"
+            ).strftime("%d/%m/%Y")
             self.create_widgets()
             self.load_widgets()
 
