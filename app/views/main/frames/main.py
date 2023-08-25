@@ -25,8 +25,11 @@ class MainFrame(ctk.CTkFrame):
         self.pomo_frame.show()
         self.info_frame.show()
 
-    def load_new_data(self) -> None:
+    def update_data(self) -> None:
         self.info_frame.update_data()
+
+    def load_last_card(self) -> None:
+        self.info_frame.load_last_card()
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both", padx=15)
@@ -178,11 +181,15 @@ class InfoFrame(ctk.CTkFrame):
         self.last_card = self.data_handler.get_current_card()
 
         if self.last_card:
+            self.check_card_date()
+            self.create_widgets()
+            self.load_widgets()
+
+    def check_card_date(self) -> str:
+        if self.last_card:
             self.last_card_date = datetime.strptime(
                 self.last_card.created_at, "%Y-%m-%d"
             ).strftime("%d/%m/%Y")
-            self.create_widgets()
-            self.load_widgets()
 
     def create_widgets(self) -> None:
         self.price_h_label = ctk.CTkLabel(
@@ -211,8 +218,23 @@ class InfoFrame(ctk.CTkFrame):
         self.total_money_label.pack(fill="x")
         self.bottom_frame.pack(fill="x")
 
+    def load_last_card(self) -> None:
+        self.last_card = self.data_handler.get_current_card()
+        self.check_card_date()
+        self.price_h_label.configure(
+            text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18)
+        )
+        self.date_label.configure(
+            text=f"{self.last_card_date}", font=("Roboto", 30)
+        )
+        self.pomo_num_label.configure(
+            text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
+        )
+        self.total_money_label.configure(
+            text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60)
+        )
+
     def update_data(self) -> None:
-        self.last_card = self.card_handler.get_last_card()
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
         self.total_money_label.configure(

@@ -25,7 +25,6 @@ class ProjectDataHandler:
         if self.current_project:
             self.card_list = self.cache_handler.get_card_list()
             self.current_project_id = id
-            return self.current_project
 
     def get_current_card(self) -> Card:
         if self.card_list:

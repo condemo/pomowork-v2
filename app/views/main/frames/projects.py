@@ -120,8 +120,7 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.pack(fill="x", pady=5)
 
     def clicked(self, event) -> None:
-        print(f"clicked: {self.id}")
-        # self.master.change_active_project(self.id)
+        self.master.change_active_project(self.id)
 
 
 class NewProjectWindow(ctk.CTkToplevel):

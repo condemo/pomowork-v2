@@ -30,14 +30,11 @@ class HomeView(ctk.CTkFrame):
         # self.cards_frame.show()
 
     def change_active_project(self, id: int) -> None:
-        card_list = self.data_handler.get_project_cards(id)
-        self.cards_frame.load_new_cards(card_list)
-        if card_list:
-            self.card_handler.change_card_list(card_list)
-            self.main_frame.load_new_data()
+        self.data_handler.change_current_project(id)
+        self.main_frame.load_last_card()
 
     def update_current_card(self) -> None:
-        self.main_frame.load_new_data()
+        self.main_frame.update_data()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
