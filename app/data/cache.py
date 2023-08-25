@@ -113,5 +113,12 @@ class CacheHandler:
             config.save_config(config.user_conf)
             return project
 
-    def update_card(self, card: Card) -> Card:
-        return self.data_sender.update_card(card)
+    def update_card(self, updated_card: Card) -> None:
+        card = self.data_sender.update_card(updated_card)
+        if card:
+            data = self.read_data_file()
+            for project in data["projects"]:
+                if project["id"] == card.project_id:
+                    project["cards"][0] = card.__dict__
+                    self.save_data_file(data)
+                    return card
