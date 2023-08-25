@@ -1,10 +1,12 @@
 from lib.models import Card, Project
+from lib.views import View
 from data.cache import CacheHandler
 from config import user_conf
 
 
 class ProjectDataHandler:
-    def __init__(self):
+    def __init__(self, view: View):
+        self.view = view
         # TODO: Implementar config para leer el proyecto que debe cargarse primero
         self.current_project_id = user_conf["core"]["last_open_project"]
         # TODO: Implementar el conseguir el current project id dentro de el propio handler
@@ -28,7 +30,15 @@ class ProjectDataHandler:
 
     def get_current_card(self) -> Card:
         if self.card_list:
-            return self.card_list[0]
+            self.current_card = self.card_list[0]
+            return self.current_card
+
+    def update_card(self, count: int = 1) -> None:
+        self.current_card.pomo_count += count
+        self.current_card.total_price = \
+            (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
+        self.current_card = self.cache_handler.update_card(self.current_card)
+        self.view.update_current_card()
 
     def create_project(self, project_data: dict) -> Project:
         self.current_project = self.cache_handler.set_project(project_data)

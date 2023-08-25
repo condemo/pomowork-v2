@@ -8,7 +8,7 @@ class HomeView(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
 
-        self.data_handler = ProjectDataHandler()
+        self.data_handler = ProjectDataHandler(self)
         # self.projects_list = self.data_handler.get_projects()
         # self.initial_cards_list = self.data_handler.get_project_cards(
         #     self.projects_list[0].id

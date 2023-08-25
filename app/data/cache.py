@@ -112,3 +112,6 @@ class CacheHandler:
             config.user_conf["core"]["last_open_project"] = project.id
             config.save_config(config.user_conf)
             return project
+
+    def update_card(self, card: Card) -> Card:
+        return self.data_sender.update_card(card)

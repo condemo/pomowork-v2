@@ -143,7 +143,7 @@ class ClockFrame(ctk.CTkFrame):
             self.timer -= .100
 
         if not self.stopped and not self.paused:
-            self.card_handler.update_card(1)
+            self.data_handler.update_card(1)
             self.play_text.set("PL")
             self.set_timer()
             notification.notify(
@@ -235,6 +235,7 @@ class InfoFrame(ctk.CTkFrame):
         )
 
     def update_data(self) -> None:
+        self.last_card = self.data_handler.get_current_card()
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
         self.total_money_label.configure(
