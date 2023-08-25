@@ -1,16 +1,13 @@
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
-from config import user_conf
 
 
 class ProjectDataHandler:
     def __init__(self, view: View):
         self.view = view
-        # TODO: Implementar config para leer el proyecto que debe cargarse primero
-        self.current_project_id = user_conf["core"]["last_open_project"]
         # TODO: Implementar el conseguir el current project id dentro de el propio handler
-        self.cache_handler = CacheHandler(self.current_project_id)
+        self.cache_handler = CacheHandler()
         self.project_list = self.cache_handler.get_project_list()
         self.current_project: Project = self.cache_handler \
             .get_current_project()

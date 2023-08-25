@@ -13,10 +13,10 @@ CACHE_FILE = config.DATA_DIR + "/data.json"
 
 
 class CacheHandler:
-    def __init__(self, project_id: int):
+    def __init__(self):
         self.data_fetch()
         self.data_sender = DataSender()
-        self.current_project_id = project_id
+        self.current_project_id = config.user_conf["core"]["last_open_project"]
         self.current_project = self.load_project(self.current_project_id)
 
     @staticmethod
