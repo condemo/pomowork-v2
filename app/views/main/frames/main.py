@@ -237,9 +237,9 @@ class InfoFrame(ctk.CTkFrame):
     def update_data(self) -> None:
         self.last_card = self.data_handler.get_current_card()
         self.pomo_num_label.configure(
-            text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
+            text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(
-            text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60))
+            text=f"Total Hoy: {self.last_card.total_price:.2f}€")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
