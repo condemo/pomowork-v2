@@ -109,4 +109,6 @@ class CacheHandler:
 
             data["projects"].append(project.__dict__)
             self.save_data_file(data)
+            config.user_conf["core"]["last_open_project"] = project.id
+            config.save_config(config.user_conf)
             return project

@@ -36,6 +36,11 @@ def create_config() -> dict:
     return initial_config
 
 
+def save_config(user_conf: dict) -> None:
+    with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
+        tomlkit.dump(user_conf, file)
+
+
 if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
     user_conf = load_config()
 else:
