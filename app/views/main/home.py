@@ -22,19 +22,21 @@ class HomeView(ctk.CTkFrame):
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.data_handler)
         self.main_frame = MainFrame(self, self.data_handler)
-        # self.cards_frame = CardsFrame(self, self.initial_cards_list)
+        self.cards_frame = CardsFrame(self, self.data_handler)
 
     def load_widgets(self) -> None:
         self.projects_frame.show()
         self.main_frame.show()
-        # self.cards_frame.show()
+        self.cards_frame.show()
 
     def change_active_project(self, id: int) -> None:
         self.data_handler.change_current_project(id)
         self.main_frame.load_last_card()
+        self.cards_frame.load_new_cards()
 
     def update_current_card(self) -> None:
         self.main_frame.update_data()
+        self.cards_frame.update_data()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
