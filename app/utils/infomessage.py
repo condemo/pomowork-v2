@@ -1,0 +1,52 @@
+import customtkinter as ctk
+import threading
+import time
+from typing import Literal
+
+
+class InfoMessage(ctk.CTkFrame):
+    def __init__(self, master,
+                 mode: Literal["error", "info", "success"], text: str):
+        match mode:
+            case "error":
+                border_color = "red"
+            case "info":
+                border_color = "blue"
+            case "success":
+                border_color = "green"
+
+        super().__init__(
+            master=master,
+            border_width=5, border_color=border_color, corner_radius=15
+        )
+
+        self.text = text
+
+        self.x_pos = 1
+        self.relwidth = .25
+        self.load_widgets()
+        self.show()
+
+    def load_widgets(self) -> None:
+        self.text_label = ctk.CTkLabel(self, text=self.text, font=("Roboto", 22))
+        self.text_label.pack(expand=True)
+
+    def animate(self) -> None:
+        self.x_pos -= .004
+        if self.x_pos >= 1 - self.relwidth:
+            self.place(relx=self.x_pos, rely=0, relwidth=self.relwidth, relheight=.09)
+            self.winfo_toplevel().after(20, self.animate)
+        else:
+            time.sleep(3)
+            self.remove()
+
+    def start_animate(self) -> None:
+        t = threading.Thread(target=self.animate)
+        t.start()
+
+    def remove(self) -> None:
+        self.place_forget()
+
+    def show(self) -> None:
+        self.place(relx=self.x_pos, rely=0, relwidth=self.relwidth, relheight=.09)
+        self.start_animate()
