@@ -5,6 +5,7 @@ import customtkinter as ctk
 import tkinter as tk
 from plyer import notification
 from data.datahandlers import ProjectDataHandler
+from utils.infomessage import InfoMessage
 
 
 class MainFrame(ctk.CTkFrame):
@@ -146,12 +147,14 @@ class ClockFrame(ctk.CTkFrame):
             self.data_handler.update_card(1)
             self.play_text.set("PL")
             self.set_timer()
-            notification.notify(
-                title="Timer Ended",
-                message="Ha acababo el pomodoro",
-                app_icon="",
-                timeout=5
-            )
+            InfoMessage(self.winfo_toplevel(), "success", "Pomodoro acabado")
+            if not self.winfo_toplevel().focus_displayof():
+                notification.notify(
+                    title="Timer Ended",
+                    message="Ha acababo el pomodoro",
+                    app_icon="",
+                    timeout=5
+                )
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
