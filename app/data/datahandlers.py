@@ -6,7 +6,6 @@ from data.cache import CacheHandler
 class ProjectDataHandler:
     def __init__(self, view: View):
         self.view = view
-        # TODO: Implementar el conseguir el current project id dentro de el propio handler
         self.cache_handler = CacheHandler()
         self.project_list = self.cache_handler.get_project_list()
         self.current_project: Project = self.cache_handler \

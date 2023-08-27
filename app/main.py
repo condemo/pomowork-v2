@@ -10,7 +10,6 @@ class PomoWork(ctk.CTk):
         self.geometry("1400x800")
         self.title("PomoWork")
 
-        # TODO: Borrar al acabar test
         self.credentials_view = JWTChecker()
         self.view_controller = ViewController()
 
