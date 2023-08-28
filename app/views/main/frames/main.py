@@ -29,8 +29,9 @@ class MainFrame(ctk.CTkFrame):
     def update_data(self) -> None:
         self.info_frame.update_data()
 
-    def load_last_card(self) -> None:
+    def load_active_project(self) -> None:
         self.info_frame.load_last_card()
+        self.pomo_frame.update_title()
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both", padx=15)
@@ -53,6 +54,10 @@ class PomoFrame(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         self.top_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.title_label = ctk.CTkLabel(
+            self.top_frame, text=f"{self.data_handler.get_current_project_name()}",
+            font=("Roboto", 28)
+        )
         self.config_btn = ctk.CTkButton(
             self.top_frame, text="C", width=30, height=30, corner_radius=30)
 
@@ -68,6 +73,7 @@ class PomoFrame(ctk.CTkFrame):
             font=("Roboto", 50), fg_color="transparent")
 
     def load_widgets(self) -> None:
+        self.title_label.pack()
         self.config_btn.pack(side="right")
         self.top_frame.pack(fill="x", pady=10, padx=5)
 
@@ -75,6 +81,11 @@ class PomoFrame(ctk.CTkFrame):
         self.clock_frame.show()
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
+
+    def update_title(self) -> None:
+        self.title_label.configure(
+            text=f"{self.data_handler.get_current_project_name()}"
+        )
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)

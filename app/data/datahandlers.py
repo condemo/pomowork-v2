@@ -15,6 +15,9 @@ class ProjectDataHandler:
     def get_project_list(self) -> list[tuple[int, str]]:
         return self.project_list
 
+    def get_current_project_name(self) -> str:
+        return self.current_project.name
+
     def get_project_cards(self) -> list[Card]:
         return self.card_list
 
