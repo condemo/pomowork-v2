@@ -111,8 +111,8 @@ class ClockFrame(ctk.CTkFrame):
         self.play_text = tk.StringVar(self)
         self.play_text.set("PL")
 
-        self.stopped: bool = False
-        self.paused: bool = False
+        self.stopped: bool = True
+        self.paused: bool = True
 
         self.modes_list = ["Work", "Short Break", "Long Break"]
         self.current_mode_index = 0
@@ -147,32 +147,34 @@ class ClockFrame(ctk.CTkFrame):
         self.control_frame.pack(fill="x", pady=10)
 
     def back_mode(self) -> None:
-        if self.current_mode_index == 0:
-            self.current_mode_index = 2
-            self.mode = self.modes_list[self.current_mode_index]
-        else:
-            self.current_mode_index -= 1
-            self.mode = self.modes_list[self.current_mode_index]
+        if self.stopped or self.paused:
+            if self.current_mode_index == 0:
+                self.current_mode_index = 2
+                self.mode = self.modes_list[self.current_mode_index]
+            else:
+                self.current_mode_index -= 1
+                self.mode = self.modes_list[self.current_mode_index]
 
-        self.change_timer_mode()
+            self.change_timer_mode()
 
-        self.mode_label.configure(
-            text=f"{self.mode}"
-        )
+            self.mode_label.configure(
+                text=f"{self.mode}"
+            )
 
     def forward_mode(self) -> None:
-        if self.current_mode_index == 2:
-            self.current_mode_index = 0
-            self.mode = self.modes_list[self.current_mode_index]
-        else:
-            self.current_mode_index += 1
-            self.mode = self.modes_list[self.current_mode_index]
+        if self.stopped or self.paused:
+            if self.current_mode_index == 2:
+                self.current_mode_index = 0
+                self.mode = self.modes_list[self.current_mode_index]
+            else:
+                self.current_mode_index += 1
+                self.mode = self.modes_list[self.current_mode_index]
 
-        self.change_timer_mode()
+            self.change_timer_mode()
 
-        self.mode_label.configure(
-            text=f"{self.mode}"
-        )
+            self.mode_label.configure(
+                text=f"{self.mode}"
+            )
 
     def change_timer_mode(self) -> None:
         match self.current_mode_index:
