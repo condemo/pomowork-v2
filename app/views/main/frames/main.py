@@ -181,6 +181,7 @@ class ClockFrame(ctk.CTkFrame):
             self.paused = True
         else:
             self.play_text.set("II")
+            self.paused = False
             self.start_timer_thread()
 
     def show(self) -> None:
