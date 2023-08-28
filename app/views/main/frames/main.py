@@ -63,14 +63,16 @@ class PomoFrame(ctk.CTkFrame):
 
         self.main_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.back_btn = ctk.CTkButton(
-            self.main_frame, text="<",
-            width=30, height=30, corner_radius=30,
-            font=("Roboto", 50), fg_color="transparent")
+            self.main_frame, text="<", width=30, height=30,
+            corner_radius=30, font=("Roboto", 50), fg_color="transparent",
+            command=self.back_mode
+        )
         self.clock_frame = ClockFrame(self.main_frame, self.data_handler)
         self.forward_btn = ctk.CTkButton(
-            self.main_frame, text=">", width=30,
-            height=30, corner_radius=30,
-            font=("Roboto", 50), fg_color="transparent")
+            self.main_frame, text=">", width=30, height=30,
+            corner_radius=30, font=("Roboto", 50), fg_color="transparent",
+            command=self.forward_mode
+        )
 
     def load_widgets(self) -> None:
         self.title_label.pack()
@@ -81,6 +83,12 @@ class PomoFrame(ctk.CTkFrame):
         self.clock_frame.show()
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
+
+    def back_mode(self) -> None:
+        self.clock_frame.back_mode()
+
+    def forward_mode(self) -> None:
+        self.clock_frame.forward_mode()
 
     def update_title(self) -> None:
         self.title_label.configure(
@@ -103,14 +111,18 @@ class ClockFrame(ctk.CTkFrame):
         self.play_text = tk.StringVar(self)
         self.play_text.set("PL")
 
-        self.stopped: bool = False
-        self.paused: bool = False
+        self.stopped: bool = True
+        self.paused: bool = True
+
+        self.modes_list = ["Work", "Short Break", "Long Break"]
+        self.current_mode_index = 0
+        self.mode = self.modes_list[self.current_mode_index]
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.mode_label = ctk.CTkLabel(self, text="Work", font=("Roboto", 45))
+        self.mode_label = ctk.CTkLabel(self, text=f"{self.mode}", font=("Roboto", 40))
 
         self.main_frame = ctk.CTkFrame(self)
         self.timer_label = ctk.CTkLabel(
@@ -133,6 +145,47 @@ class ClockFrame(ctk.CTkFrame):
         self.pause_btn.pack(side="left", padx=10)
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
+
+    def back_mode(self) -> None:
+        if self.stopped or self.paused:
+            if self.current_mode_index == 0:
+                self.current_mode_index = 2
+                self.mode = self.modes_list[self.current_mode_index]
+            else:
+                self.current_mode_index -= 1
+                self.mode = self.modes_list[self.current_mode_index]
+
+            self.change_timer_mode()
+
+            self.mode_label.configure(
+                text=f"{self.mode}"
+            )
+
+    def forward_mode(self) -> None:
+        if self.stopped or self.paused:
+            if self.current_mode_index == 2:
+                self.current_mode_index = 0
+                self.mode = self.modes_list[self.current_mode_index]
+            else:
+                self.current_mode_index += 1
+                self.mode = self.modes_list[self.current_mode_index]
+
+            self.change_timer_mode()
+
+            self.mode_label.configure(
+                text=f"{self.mode}"
+            )
+
+    def change_timer_mode(self) -> None:
+        match self.current_mode_index:
+            case 0:
+                new_timer = 60 * 30
+            case 1:
+                new_timer = 60 * 5
+            case 2:
+                new_timer = 60 * 15
+
+        self.set_timer(new_timer)
 
     def set_timer(self, timer: float = 60 * .1) -> None:
         self.timer = timer
