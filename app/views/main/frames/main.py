@@ -179,11 +179,11 @@ class ClockFrame(ctk.CTkFrame):
     def change_timer_mode(self) -> None:
         match self.current_mode_index:
             case 0:
-                new_timer = 60 * 30
+                new_timer = 60 * .1
             case 1:
-                new_timer = 60 * 5
+                new_timer = 60 * .1
             case 2:
-                new_timer = 60 * 15
+                new_timer = 60 * .1
 
         self.set_timer(new_timer)
 
@@ -208,17 +208,44 @@ class ClockFrame(ctk.CTkFrame):
             self.timer -= .100
 
         if not self.stopped and not self.paused:
-            self.data_handler.update_card(1)
-            self.play_text.set("PL")
-            self.set_timer()
-            InfoMessage(self.winfo_toplevel(), "success", "Pomodoro acabado")
-            if not self.winfo_toplevel().focus_displayof():
-                notification.notify(
-                    title="Timer Ended",
-                    message="Ha acababo el pomodoro",
-                    app_icon="",
-                    timeout=5
-                )
+            match self.mode:
+                case "Work":
+                    self.data_handler.update_card(1)
+                    self.play_text.set("PL")
+                    self.stopped = True
+                    self.forward_mode()
+                    InfoMessage(self.winfo_toplevel(), "success", "Pomodoro acabado")
+                    if not self.winfo_toplevel().focus_displayof():
+                        notification.notify(
+                            title="Timer Ended",
+                            message="Ha acababo el pomodoro",
+                            app_icon="",
+                            timeout=5
+                        )
+                case "Short Break":
+                    self.play_text.set("PL")
+                    self.stopped = True
+                    self.back_mode()
+                    InfoMessage(self.winfo_toplevel(), "info", "Descanso acabado")
+                    if not self.winfo_toplevel().focus_displayof():
+                        notification.notify(
+                            title="Timer Ended",
+                            message="Ha acababo el descanso corto",
+                            app_icon="",
+                            timeout=5
+                        )
+                case "Long Break":
+                    self.play_text.set("PL")
+                    self.stopped = True
+                    self.forward_mode()
+                    InfoMessage(self.winfo_toplevel(), "info", "Descanso acabado")
+                    if not self.winfo_toplevel().focus_displayof():
+                        notification.notify(
+                            title="Timer Ended",
+                            message="Ha acababo el descanso largo",
+                            app_icon="",
+                            timeout=5
+                        )
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
