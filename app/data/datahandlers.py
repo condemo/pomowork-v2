@@ -32,6 +32,13 @@ class ProjectDataHandler:
             self.current_card = self.card_list[0]
             return self.current_card
 
+    def get_project_total_info(self) -> tuple[float, float, float]:
+        return (
+            self.current_project.pending_salary,
+            self.current_project.salary_collected,
+            self.current_project.total_money
+        )
+
     def update_card(self, count: int = 1) -> None:
         self.current_card.pomo_count += count
         self.current_card.total_price = \
@@ -44,3 +51,11 @@ class ProjectDataHandler:
         self.current_project_id = self.current_project.id
 
         return self.current_project
+
+    def update_project(self) -> None:
+        total: float = 0
+        for card in self.card_list:
+            total += card.total_price
+        self.current_project.total_money = total
+        self.cache_handler.update_project(self.current_project)
+        self.view.update_project_data()

@@ -38,3 +38,14 @@ class DataSender:
         if data.status_code == 201:
             new_project = Project(**data.json())
             return new_project
+
+    def update_project(self, project: Project) -> Project:
+        project_dict = project.__dict__
+        del project_dict["cards"]
+        data = requests.put(PROJECTS_BASE_URL, json=project_dict, headers=self.user_credentials)
+
+        if data.status_code == 200:
+            updated_project = Project(**data.json())
+            return updated_project
+
+        print(f"{data.json()['detail']}")
