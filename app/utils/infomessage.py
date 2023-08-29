@@ -1,6 +1,5 @@
 import customtkinter as ctk
 import threading
-import time
 from typing import Literal
 
 
@@ -36,8 +35,9 @@ class InfoMessage(ctk.CTkFrame):
         if self.x_pos >= 1 - self.relwidth:
             self.place(relx=self.x_pos, rely=0, relwidth=self.relwidth, relheight=.09)
             self.winfo_toplevel().after(20, self.animate)
+        elif self.x_pos >= .74:
+            self.winfo_toplevel().after(1500, self.animate)
         else:
-            time.sleep(3)
             self.remove()
 
     def start_animate(self) -> None:
