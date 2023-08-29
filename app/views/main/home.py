@@ -27,9 +27,12 @@ class HomeView(ctk.CTkFrame):
         self.main_frame.load_active_project()
         self.cards_frame.load_new_cards()
 
+    def update_project_data(self) -> None:
+        self.cards_frame.update_project_data()
+
     def update_current_card(self) -> None:
         self.main_frame.update_data()
-        self.cards_frame.update_data()
+        self.cards_frame.update_card_data()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")

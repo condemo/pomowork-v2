@@ -10,6 +10,12 @@ class CardsFrame(ctk.CTkFrame):
 
         self.data_handler = data_handler
 
+        (
+            self.pending_salary,
+            self.salary_collected,
+            self.total_money
+        ) = self.data_handler.get_project_total_info()
+
         self.create_widgets()
         self.load_widgets()
 
@@ -22,11 +28,11 @@ class CardsFrame(ctk.CTkFrame):
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.money_collected_label = ctk.CTkLabel(
-            self.bottom_frame, text="Cobrado: 300€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Cobrado: {self.salary_collected:.2f}€", font=("Roboto", 20))
         self.unpaid_money_label = ctk.CTkLabel(
-            self.bottom_frame, text="Falta: 400€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Falta: {self.pending_salary:.2f}€", font=("Roboto", 20))
         self.total_money_label = ctk.CTkLabel(
-            self.bottom_frame, text="Total: 700€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Total: {self.total_money:.2f}€", font=("Roboto", 20))
 
     def load_widgets(self) -> None:
         self.total_time_label.pack()
@@ -39,10 +45,26 @@ class CardsFrame(ctk.CTkFrame):
         self.total_money_label.pack(side="left", expand=True)
         self.bottom_frame.pack(fill="x")
 
+    def update_project_data(self) -> None:
+        (
+            self.pending_salary,
+            self.salary_collected,
+            self.total_money
+        ) = self.data_handler.get_project_total_info()
+        self.money_collected_label.configure(
+            text=f"Cobrado: {self.salary_collected:.2f}€"
+        )
+        self.unpaid_money_label.configure(
+            text=f"Falta: {self.pending_salary:.2f}€"
+        )
+        self.total_money_label.configure(
+            text=f"Total: {self.total_money:.2f}€"
+        )
+
     def load_new_cards(self) -> None:
         self.mid_frame.load_new_cards()
 
-    def update_data(self) -> None:
+    def update_card_data(self) -> None:
         self.mid_frame.update_data()
 
     def show(self) -> None:

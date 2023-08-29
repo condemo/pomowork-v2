@@ -211,6 +211,7 @@ class ClockFrame(ctk.CTkFrame):
             match self.mode:
                 case "Work":
                     self.data_handler.update_card(1)
+                    self.data_handler.update_project()
                     self.play_text.set("PL")
                     self.stopped = True
                     self.forward_mode()
