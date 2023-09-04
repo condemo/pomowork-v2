@@ -95,6 +95,10 @@ class CardListFrame(ctk.CTkScrollableFrame):
     def update_data(self) -> None:
         self.card_widget_list[0].update_data(self.data_handler.get_current_card())
 
+    def change_status(self, id: int, status: bool):
+        new_card = self.data_handler.update_card_status(id, status)
+        return new_card
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -102,26 +106,39 @@ class CardListFrame(ctk.CTkScrollableFrame):
 class PomoCard(ctk.CTkFrame):
     def __init__(self, master, card_data: Card):
         super().__init__(master=master, fg_color="#B13F39", height=50)
+        self.master = master
         self.grid_propagate(False)
         self.columnconfigure(7, weight=2, uniform="a")
         self.columnconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
 
-        self.card_data = card_data
+        self.id = card_data.id
+        self.date = card_data.created_at
+        self.project_id = card_data.project_id
+        self.pomo_count = card_data.pomo_count
+        self.price_h = card_data.price_per_hour
+        self.status = card_data.collected
+        if self.status:
+            self.status_text = "Cobrado"
+        else:
+            self.status_text = "No Cobrado"
+        self.total_price = card_data.total_price
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.date_label = ctk.CTkLabel(
-            self, text=self.card_data.created_at, font=("Roboto", 16))
-        self.price_h_label = ctk.CTkLabel(self, text=f"{self.card_data.price_per_hour:.2f}€/h")
-        self.pomo_count_label = ctk.CTkLabel(self, text=f"Pomos: {self.card_data.pomo_count}")
+            self, text=self.date, font=("Roboto", 16))
+        self.price_h_label = ctk.CTkLabel(self, text=f"{self.price_h:.2f}€/h")
+        self.pomo_count_label = ctk.CTkLabel(self, text=f"Pomos: {self.pomo_count}")
         self.total_money_label = ctk.CTkLabel(
-            self, text=f"{self.card_data.total_price:.2f}€", font=("Roboto", 14))
+            self, text=f"{self.total_price:.2f}€", font=("Roboto", 14))
         # TODO: Automatizar el texto en caso de que el campo collected sea true o false
         self.check_box = ctk.CTkCheckBox(
-            self, text="No cobrado", checkbox_width=20, checkbox_height=20)
+            self, text=self.status_text, checkbox_width=20, checkbox_height=20,
+            command=self.change_status
+        )
 
     def load_widgets(self) -> None:
         self.date_label.grid(
@@ -135,13 +152,35 @@ class PomoCard(ctk.CTkFrame):
     def update_data(self, card_data: Card) -> None:
         # TODO: Implementar la actualizacion de la check_box y el price_per_hour en caso de
         # que sea configurado un cambio y la tarjeta no tenga se haya sido actualizada aún
-        self.card_data = card_data
+        self.id = card_data.id
+        self.date = card_data.created_at
+        self.project_id = card_data.project_id
+        self.pomo_count = card_data.pomo_count
+        self.price_h = card_data.price_per_hour
+        self.status = card_data.collected
+        if self.status:
+            self.status_text = "Cobrado"
+        else:
+            self.status_text = "No Cobrado"
+        self.total_price = card_data.total_price
+
         self.pomo_count_label.configure(
-            text=f"Pomos: {card_data.pomo_count}"
+            text=f"Pomos: {self.pomo_count}"
         )
         self.total_money_label.configure(
-            text=f"{self.card_data.total_price:.2f}€"
+            text=f"{self.total_price:.2f}€"
         )
+        self.check_box.configure(
+            text=self.status_text
+        )
+
+    def change_status(self) -> None:
+        if self.check_box.get() == 0:
+            card_data = self.master.change_status(self.id, False)
+        else:
+            card_data = self.master.change_status(self.id, True)
+
+        self.update_data(card_data)
 
     def show(self) -> None:
         self.pack(fill="x", pady=4)

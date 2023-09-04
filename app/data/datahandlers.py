@@ -39,7 +39,13 @@ class ProjectDataHandler:
             self.current_project.total_money
         )
 
-    def update_card(self, count: int = 1) -> None:
+    def update_card_status(self, id: int, status: bool) -> Card:
+        for card in self.card_list:
+            if card.id == id:
+                card.collected = status
+                return self.cache_handler.update_card(card)
+
+    def update_card(self, count: int = 0) -> None:
         self.current_card.pomo_count += count
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
