@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from tkinter import IntVar
 from lib.models import Card
 from data.datahandlers import ProjectDataHandler
 
@@ -120,8 +121,10 @@ class PomoCard(ctk.CTkFrame):
         self.status = card_data.collected
         if self.status:
             self.status_text = "Cobrado"
+            self.check_var = IntVar(self, 1)
         else:
             self.status_text = "No Cobrado"
+            self.check_var = IntVar(self, 0)
         self.total_price = card_data.total_price
 
         self.create_widgets()
@@ -137,7 +140,7 @@ class PomoCard(ctk.CTkFrame):
         # TODO: Automatizar el texto en caso de que el campo collected sea true o false
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
-            command=self.change_status
+            command=self.change_status, variable=self.check_var
         )
 
     def load_widgets(self) -> None:
