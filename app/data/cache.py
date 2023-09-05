@@ -129,6 +129,10 @@ class CacheHandler:
             data = self.read_data_file()
             for project in data["projects"]:
                 if project["id"] == card.project_id:
-                    project["cards"][0] = card.__dict__
-                    self.save_data_file(data)
-                    return card
+                    project_cards: list = project["cards"]
+                    for c in project_cards:
+                        if c["id"] == card.id:
+                            project_cards.remove(c)
+                            project_cards.append(card.__dict__)
+                            self.save_data_file(data)
+                            return card
