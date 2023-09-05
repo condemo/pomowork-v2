@@ -122,6 +122,8 @@ class CacheHandler:
                 if p["id"] == project.id:
                     p = project.__dict__
                     self.save_data_file(data)
+                    self.current_project = project
+                    return project
 
     def update_card(self, updated_card: Card) -> Card:
         card = self.data_sender.update_card(updated_card)

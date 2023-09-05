@@ -26,6 +26,7 @@ class HomeView(ctk.CTkFrame):
         self.data_handler.change_current_project(id)
         self.main_frame.load_active_project()
         self.cards_frame.load_new_cards()
+        self.cards_frame.update_project_data()
 
     def update_project_data(self) -> None:
         self.cards_frame.update_project_data()

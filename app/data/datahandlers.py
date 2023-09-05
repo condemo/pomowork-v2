@@ -60,8 +60,18 @@ class ProjectDataHandler:
 
     def update_project(self) -> None:
         total: float = 0
+        collected: float = 0
+        pending: float = 0
         for card in self.card_list:
             total += card.total_price
+            if card.collected:
+                collected += card.total_price
+            else:
+                pending += card.total_price
+
         self.current_project.total_money = total
-        self.cache_handler.update_project(self.current_project)
+        self.current_project.salary_collected = collected
+        self.current_project.pending_salary = pending
+        self.current_project = self.cache_handler.update_project(self.current_project)
+        self.card_list = self.cache_handler.get_card_list()
         self.view.update_project_data()
