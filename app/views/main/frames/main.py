@@ -155,8 +155,6 @@ class ClockFrame(ctk.CTkFrame):
                 self.current_mode_index -= 1
                 self.mode = self.modes_list[self.current_mode_index]
 
-            print(self.mode)
-
             self.change_timer_mode()
 
             self.mode_label.configure(
@@ -172,7 +170,6 @@ class ClockFrame(ctk.CTkFrame):
                 self.current_mode_index += 1
                 self.mode = self.modes_list[self.current_mode_index]
 
-            print(self.mode)
             self.change_timer_mode()
 
             self.mode_label.configure(
@@ -335,8 +332,6 @@ class InfoFrame(ctk.CTkFrame):
 
     def update_data(self, updated_card) -> None:
         self.last_card = updated_card
-        print(self.last_card.pomo_count)
-        print(self.last_card.total_price)
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(
