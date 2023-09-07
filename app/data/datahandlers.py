@@ -50,7 +50,7 @@ class ProjectDataHandler:
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
         self.current_card = self.cache_handler.update_card(self.current_card)
-        self.view.update_current_card()
+        self.view.update_current_card(self.current_card)
 
     def create_project(self, project_data: dict) -> Project:
         self.current_project = self.cache_handler.set_project(project_data)

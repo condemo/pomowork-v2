@@ -71,21 +71,10 @@ class CacheHandler:
                 self.card_list = [Card(**i) for i in self.current_project.cards]
                 self.card_list.sort(key=lambda e: e.id, reverse=True)
                 if self.card_list[0].created_at != str(date.today()):
-                    self.card_list.insert(0, self.data_sender.create_new_card({
-                        "project_id": self.current_project.id,
-                        "price_per_hour": self.current_project.price_per_hour,
-                        "total_price": 0,
-                        "collected": False
-                    }))
+                    self.card_list.insert(0, self.set_card())
             else:
                 self.card_list: list = []
-                self.card_list.insert(0, self.data_sender.create_new_card({
-                    "project_id": self.current_project.id,
-                    "price_per_hour": self.current_project.price_per_hour,
-                    "total_price": 0,
-                    "collected": False
-                }))
-
+                self.card_list.insert(0, self.set_card())
         return self.card_list
 
     def get_current_project(self) -> Project:
@@ -124,6 +113,22 @@ class CacheHandler:
                     self.save_data_file(data)
                     self.current_project = project
                     return project
+
+    def set_card(self) -> Card:
+        new_card = self.data_sender.create_new_card({
+            "project_id": self.current_project.id,
+            "price_per_hour": self.current_project.price_per_hour,
+            "total_price": 0,
+            "collected": False
+        })
+        if new_card:
+            data = self.read_data_file()
+
+            for p in data["projects"]:
+                if p["id"] == new_card.project_id:
+                    p["cards"].insert(0, new_card.__dict__)
+                    self.save_data_file(data)
+                    return new_card
 
     def update_card(self, updated_card: Card) -> Card:
         card = self.data_sender.update_card(updated_card)
