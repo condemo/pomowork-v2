@@ -65,8 +65,8 @@ class CardsFrame(ctk.CTkFrame):
     def load_new_cards(self) -> None:
         self.mid_frame.load_new_cards()
 
-    def update_card_data(self) -> None:
-        self.mid_frame.update_data()
+    def update_card_data(self, current_card) -> None:
+        self.mid_frame.update_data(current_card)
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
@@ -93,8 +93,8 @@ class CardListFrame(ctk.CTkScrollableFrame):
         self.create_widgets()
         self.load_widgets()
 
-    def update_data(self) -> None:
-        self.card_widget_list[0].update_data(self.data_handler.get_current_card())
+    def update_data(self, updated_card) -> None:
+        self.card_widget_list[0].update_data(updated_card)
 
     def change_status(self, id: int, status: bool):
         new_card = self.data_handler.update_card_status(id, status)

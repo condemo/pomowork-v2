@@ -33,7 +33,7 @@ class HomeView(ctk.CTkFrame):
 
     def update_current_card(self, current_card) -> None:
         self.main_frame.update_data(current_card)
-        self.cards_frame.update_card_data()
+        self.cards_frame.update_card_data(current_card)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
