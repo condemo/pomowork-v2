@@ -1,5 +1,6 @@
 import os
 import requests
+from tkinter.messagebox import showerror
 
 from config import DATA_DIR, USER_HEADERS, SERVICE_URL
 from data.oauth2 import get_token
@@ -14,7 +15,14 @@ class JWTChecker:
             self.token = get_token()
 
             USER_HEADERS["Authorization"] = f"Bearer {self.token}"
-            response = requests.get(SERVICE_URL, headers=USER_HEADERS)
+            try:
+                response = requests.get(SERVICE_URL, headers=USER_HEADERS)
+            except requests.exceptions.ConnectionError:
+                showerror(
+                    "Error de Conexión",
+                    "Ha sido imposible conectarse al servidor"
+                )
+                exit()
 
             if response.status_code == 200:
                 return "main"
