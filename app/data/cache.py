@@ -2,6 +2,7 @@ import requests
 import os
 import json
 from datetime import date
+from tkinter.messagebox import showerror
 
 import config
 from lib.models import Card, Project
@@ -24,8 +25,15 @@ class CacheHandler:
         user_credentials = config.USER_HEADERS
         user_credentials["Authorization"] = f"Bearer {get_token()}"
 
-        data_fetch = requests.get(
-            config.PROJECTS_BASE_URL, headers=user_credentials).json()
+        try:
+            data_fetch = requests.get(
+                config.PROJECTS_BASE_URL, headers=user_credentials).json()
+        except requests.exceptions.ConnectionError:
+            showerror(
+                "Error de Conexión",
+                "Ha sido imposible conectar con el servidor"
+            )
+            exit()
 
         data_dict = {
             "projects": data_fetch
