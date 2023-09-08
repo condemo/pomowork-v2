@@ -38,6 +38,9 @@ class ProjectsFrame(ctk.CTkFrame):
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
 
+    def switch_projects_state(self, state: bool) -> None:
+        self.mid_frame.switch_projects_state(state)
+
     def create_project_window(self) -> None:
         if self.create_window is None or not self.create_window.winfo_exists():
             self.create_window = NewProjectWindow(self)
@@ -96,6 +99,10 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
                     fg_color="blue"
                 )
 
+    def switch_projects_state(self, state: bool) -> None:
+        for p in self.profile_list:
+            p.switch_state(state)
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -122,12 +129,18 @@ class ProjectProfileCard(ctk.CTkFrame):
             self, text=self.name, font=("Roboto", 18), bg_color="transparent")
         self.config_btn = ctk.CTkButton(self, text="C", fg_color="brown")
 
-        self.name_label.bind("<Button-1>", self.clicked)
+        self.switch_state(True)
 
     def load_widgets(self) -> None:
         self.name_label.grid(
             column=0, row=0, rowspan=2, sticky="nswe", padx=5, pady=5)
         self.config_btn.grid(column=1, row=0, rowspan=2, padx=5)
+
+    def switch_state(self, state: bool) -> None:
+        if state:
+            self.name_label.bind("<Button-1>", self.clicked)
+        else:
+            self.name_label.unbind("<Button-1>")
 
     def show(self) -> None:
         self.pack(fill="x", pady=5)

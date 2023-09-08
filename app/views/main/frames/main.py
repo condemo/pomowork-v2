@@ -208,6 +208,7 @@ class ClockFrame(ctk.CTkFrame):
             self.timer -= .100
 
         if not self.stopped and not self.paused:
+            self.data_handler.switch_projects_state(True)
             match self.mode:
                 case "Work":
                     self.data_handler.update_card(1)
@@ -253,6 +254,7 @@ class ClockFrame(ctk.CTkFrame):
             self.stopped = True
             self.play_text.set("PL")
             self.set_timer()
+            self.data_handler.switch_projects_state(True)
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
@@ -260,9 +262,11 @@ class ClockFrame(ctk.CTkFrame):
         if self.play_text.get() == "II":
             self.play_text.set("PL")
             self.paused = True
+            self.data_handler.switch_projects_state(True)
         else:
             self.play_text.set("II")
             self.paused = False
+            self.data_handler.switch_projects_state(False)
             self.start_timer_thread()
 
     def show(self) -> None:
