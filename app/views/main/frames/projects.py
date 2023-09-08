@@ -66,8 +66,11 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
         self.data_handler = data_handler
         self.projects_list = self.data_handler.get_project_list()
-        self.create_widgets()
-        self.load_widgets()
+        if self.projects_list:
+            self.create_widgets()
+            self.load_widgets()
+        else:
+            self.active_project = None
 
     def create_widgets(self) -> None:
         self.profile_list = [
@@ -82,16 +85,22 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         [i.show() for i in self.profile_list]
 
     def add_project(self, id: int, name: str) -> None:
-        [i.pack_forget() for i in self.profile_list]
+        if self.projects_list:
+            [i.pack_forget() for i in self.profile_list]
+        else:
+            self.profile_list: list = []
+            self.projects_list: list = []
+        self.projects_list.insert(0, (id, name))
         new_project = ProjectProfileCard(self, id=id, name=name)
         self.profile_list.insert(0, new_project)
         [i.show() for i in self.profile_list]
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
-        self.active_project.configure(
-            fg_color="orange"
-        )
+        if self.active_project:
+            self.active_project.configure(
+                fg_color="orange"
+            )
         for p in self.profile_list:
             if p.id == id:
                 self.active_project = p

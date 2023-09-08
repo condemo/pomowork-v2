@@ -11,14 +11,13 @@ class CardsFrame(ctk.CTkFrame):
 
         self.data_handler = data_handler
 
-        (
-            self.pending_salary,
-            self.salary_collected,
-            self.total_money
-        ) = self.data_handler.get_project_total_info()
-
-        self.create_widgets()
-        self.load_widgets()
+        try:
+            (self.pending_salary, self.salary_collected, self.total_money) = \
+                self.data_handler.get_project_total_info()
+            self.create_widgets()
+            self.load_widgets()
+        except TypeError:
+            pass
 
     def create_widgets(self) -> None:
         self.top_frame = ctk.CTkFrame(self)
@@ -63,7 +62,13 @@ class CardsFrame(ctk.CTkFrame):
         )
 
     def load_new_cards(self) -> None:
-        self.mid_frame.load_new_cards()
+        try:
+            self.mid_frame.load_new_cards()
+        except AttributeError:
+            (self.pending_salary, self.salary_collected, self.total_money) = \
+                self.data_handler.get_project_total_info()
+            self.create_widgets()
+            self.load_widgets()
 
     def update_card_data(self, current_card) -> None:
         self.mid_frame.update_data(current_card)

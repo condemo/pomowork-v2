@@ -83,7 +83,7 @@ class CacheHandler:
             else:
                 self.card_list: list = []
                 self.card_list.insert(0, self.set_card())
-        return self.card_list
+            return self.card_list
 
     def get_current_project(self) -> Project:
         return self.current_project

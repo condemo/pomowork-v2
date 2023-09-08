@@ -319,20 +319,26 @@ class InfoFrame(ctk.CTkFrame):
         self.bottom_frame.pack(fill="x")
 
     def load_last_card(self) -> None:
-        self.last_card = self.data_handler.get_current_card()
-        self.check_card_date()
-        self.price_h_label.configure(
-            text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18)
-        )
-        self.date_label.configure(
-            text=f"{self.last_card_date}", font=("Roboto", 30)
-        )
-        self.pomo_num_label.configure(
-            text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
-        )
-        self.total_money_label.configure(
-            text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60)
-        )
+        if self.last_card:
+            self.last_card = self.data_handler.get_current_card()
+            self.check_card_date()
+            self.price_h_label.configure(
+                text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18)
+            )
+            self.date_label.configure(
+                text=f"{self.last_card_date}", font=("Roboto", 30)
+            )
+            self.pomo_num_label.configure(
+                text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
+            )
+            self.total_money_label.configure(
+                text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60)
+            )
+        else:
+            self.last_card = self.data_handler.get_current_card()
+            self.check_card_date()
+            self.create_widgets()
+            self.load_widgets()
 
     def update_data(self, updated_card) -> None:
         self.last_card = updated_card

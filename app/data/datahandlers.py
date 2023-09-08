@@ -16,7 +16,8 @@ class ProjectDataHandler:
         return self.project_list
 
     def get_current_project_name(self) -> str:
-        return self.current_project.name
+        if self.current_project:
+            return self.current_project.name
 
     def get_project_cards(self) -> list[Card]:
         return self.card_list
@@ -36,11 +37,12 @@ class ProjectDataHandler:
             return self.current_card
 
     def get_project_total_info(self) -> tuple[float, float, float]:
-        return (
-            self.current_project.pending_salary,
-            self.current_project.salary_collected,
-            self.current_project.total_money
-        )
+        if self.current_project:
+            return (
+                self.current_project.pending_salary,
+                self.current_project.salary_collected,
+                self.current_project.total_money
+            )
 
     def update_card_status(self, id: int, status: bool) -> Card:
         for card in self.card_list:
