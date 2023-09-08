@@ -70,6 +70,10 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.profile_list = [
             ProjectProfileCard(self, id=i[0], name=i[1]) for i in self.projects_list
         ]
+        self.active_project = self.profile_list[0]
+        self.active_project.configure(
+            fg_color="blue"
+        )
 
     def load_widgets(self) -> None:
         [i.show() for i in self.profile_list]
@@ -82,6 +86,15 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
+        self.active_project.configure(
+            fg_color="orange"
+        )
+        for p in self.profile_list:
+            if p.id == id:
+                self.active_project = p
+                p.configure(
+                    fg_color="blue"
+                )
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
