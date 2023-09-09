@@ -64,6 +64,9 @@ class ProjectDataHandler:
 
         return self.current_project
 
+    def update_project(self, id: int, name: str, price: float) -> None:
+        pass
+
     def update_project_data(self) -> None:
         total: float = 0
         collected: float = 0
@@ -78,6 +81,6 @@ class ProjectDataHandler:
         self.current_project.total_money = total
         self.current_project.salary_collected = collected
         self.current_project.pending_salary = pending
-        self.current_project = self.cache_handler.update_project(self.current_project)
+        self.current_project = self.cache_handler.update_project_data(self.current_project)
         self.card_list = self.cache_handler.get_card_list()
         self.view.update_project_data()

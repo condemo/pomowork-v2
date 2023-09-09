@@ -110,7 +110,7 @@ class CacheHandler:
             config.save_config(config.user_conf)
             return project
 
-    def update_project(self, updated_project: Project) -> None:
+    def update_project_data(self, updated_project: Project) -> None:
         project = self.data_sender.update_project(updated_project)
         if project:
             data = self.read_data_file()
