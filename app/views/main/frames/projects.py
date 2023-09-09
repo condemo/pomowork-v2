@@ -60,7 +60,7 @@ class ProjectsFrame(ctk.CTkFrame):
 
     def update_project(self, id: int, name: str, price: float) -> None:
         updated_project = self.data_handler.update_project(id, name, price)
-        print(f"Updated --> {updated_project}")
+        self.mid_frame.update_project_info(updated_project)
         self.create_window.destroy()
 
     def show(self) -> None:
@@ -116,6 +116,11 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
                     fg_color="blue"
                 )
 
+    def update_project_info(self, project: tuple[int, str, float]) -> None:
+        for p in self.profile_list:
+            if p.id == project[0]:
+                p.update_data(project)
+
     def switch_projects_state(self, state: bool) -> None:
         for p in self.profile_list:
             p.switch_state(state)
@@ -161,6 +166,10 @@ class ProjectProfileCard(ctk.CTkFrame):
             self.name_label.bind("<Button-1>", self.clicked)
         else:
             self.name_label.unbind("<Button-1>")
+
+    def update_data(self, project: tuple[int, str, float]) -> None:
+        self.name = project[1]
+        self.name_label.configure(text=f"{self.name}")
 
     def show(self) -> None:
         self.pack(fill="x", pady=5)
