@@ -196,7 +196,9 @@ class NewProjectWindow(ctk.CTkToplevel):
     def validate_name(text: str, new_text: str) -> bool:
         if len(new_text) > 25:
             return False
-        return True
+        if text == " ":
+            return True
+        return text.isalnum()
 
     @staticmethod
     def validate_price(text: str, new_text: str) -> bool:
