@@ -161,6 +161,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 class NewProjectWindow(ctk.CTkToplevel):
     def __init__(self, master):
         super().__init__(master=master)
+        self.master = master
         self.geometry("400x150")
         self.title("Crea un Proyecto")
         self.columnconfigure((0, 1, 2), weight=1, uniform="a")
@@ -177,8 +178,8 @@ class NewProjectWindow(ctk.CTkToplevel):
             self, width=200, height=50
             )
         self.price_entry = ctk.CTkEntry(
-            self, width=50, height=50
-            )
+            self, width=50, height=50, validate="key",
+            validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
 
         self.create_btn = ctk.CTkButton(
             self, text="Crear", font=("Roboto", 24), command=self.create_project
@@ -189,6 +190,13 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.name_entry.grid(column=1, row=0, columnspan=2, padx=2, pady=2)
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
+
+    def validate_price(self, text: str, new_text: str) -> bool:
+        if len(new_text) > 6:
+            return False
+        if text == ".":
+            return True
+        return text.isdecimal()
 
     def create_project(self) -> None:
         self.master.create_project(self.name_entry.get(), self.price_entry.get())
