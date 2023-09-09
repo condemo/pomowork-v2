@@ -178,7 +178,7 @@ class NewProjectWindow(ctk.CTkToplevel):
             self, width=200, height=50
             )
         self.price_entry = ctk.CTkEntry(
-            self, width=50, height=50, validate="key",
+            self, width=60, height=50, validate="key",
             validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
 
         self.create_btn = ctk.CTkButton(
