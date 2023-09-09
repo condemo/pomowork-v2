@@ -175,8 +175,9 @@ class NewProjectWindow(ctk.CTkToplevel):
             )
 
         self.name_entry = ctk.CTkEntry(
-            self, width=200, height=50
-            )
+            self, width=200, height=50, validate="key",
+            validatecommand=(self.master.register(self.validate_name), "%S", "%P"))
+
         self.price_entry = ctk.CTkEntry(
             self, width=60, height=50, validate="key",
             validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
@@ -191,7 +192,14 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
 
-    def validate_price(self, text: str, new_text: str) -> bool:
+    @staticmethod
+    def validate_name(text: str, new_text: str) -> bool:
+        if len(new_text) > 25:
+            return False
+        return True
+
+    @staticmethod
+    def validate_price(text: str, new_text: str) -> bool:
         if len(new_text) > 6:
             return False
         if text == ".":
