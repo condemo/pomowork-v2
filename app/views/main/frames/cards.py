@@ -189,7 +189,7 @@ class PomoCard(ctk.CTkFrame):
             card_data = self.master.change_status(self.id, True)
 
         self.update_data(card_data)
-        self.master.data_handler.update_project()
+        self.master.data_handler.update_project_data()
 
     def show(self) -> None:
         self.pack(fill="x", pady=4)
