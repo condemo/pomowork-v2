@@ -159,32 +159,27 @@ class ProjectProfileCard(ctk.CTkFrame):
 
 
 class NewProjectWindow(ctk.CTkToplevel):
-    def __init__(self, master):
+    def __init__(self, master, config: bool = False):
         super().__init__(master=master)
         self.master = master
         self.geometry("400x150")
         self.title("Crea un Proyecto")
         self.columnconfigure((0, 1, 2), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
+        self.config_mode = config
 
         self.name_label = ctk.CTkLabel(
-            self, text="Nombre:", font=("Roboto", 22)
-            )
+            self, text="Nombre:", font=("Roboto", 22))
         self.price_label = ctk.CTkLabel(
-            self, text="€/h", font=("Roboto", 22), anchor="w"
-            )
-
+            self, text="€/h", font=("Roboto", 22), anchor="w")
         self.name_entry = ctk.CTkEntry(
             self, width=200, height=50, validate="key",
             validatecommand=(self.master.register(self.validate_name), "%S", "%P"))
-
         self.price_entry = ctk.CTkEntry(
             self, width=60, height=50, validate="key",
             validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
-
         self.create_btn = ctk.CTkButton(
-            self, text="Crear", font=("Roboto", 24), command=self.create_project
-            )
+            self, text="Crear", font=("Roboto", 24), command=self.create_project)
 
         self.name_label.grid(column=0, row=0, padx=2, pady=2)
         self.price_label.grid(column=2, row=1, padx=2, pady=2, sticky="w")
