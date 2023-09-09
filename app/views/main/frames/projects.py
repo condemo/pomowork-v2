@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from typing import Optional
 from data.datahandlers import ProjectDataHandler
 
 
@@ -41,9 +42,10 @@ class ProjectsFrame(ctk.CTkFrame):
     def switch_projects_state(self, state: bool) -> None:
         self.mid_frame.switch_projects_state(state)
 
-    def create_project_window(self) -> None:
+    def create_project_window(self, config: bool = False, id: Optional[int] = None,
+                              name: Optional[str] = None) -> None:
         if self.create_window is None or not self.create_window.winfo_exists():
-            self.create_window = NewProjectWindow(self)
+            self.create_window = NewProjectWindow(self, config=config, id=id, name=name)
         else:
             self.create_window.focus()
 
@@ -54,6 +56,9 @@ class ProjectsFrame(ctk.CTkFrame):
         })
         self.create_window.destroy()
         self.mid_frame.add_project(new_project.id, new_project.name)
+
+    def update_project(self, id: int, name: str) -> None:
+        print(f"Update {id} - {name}")
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
@@ -136,7 +141,10 @@ class ProjectProfileCard(ctk.CTkFrame):
     def create_widgets(self) -> None:
         self.name_label = ctk.CTkLabel(
             self, text=self.name, font=("Roboto", 18), bg_color="transparent")
-        self.config_btn = ctk.CTkButton(self, text="C", fg_color="brown")
+        self.config_btn = ctk.CTkButton(
+            self, text="C", fg_color="brown",
+            command=lambda: self.master.master.create_project_window(
+                config=True, id=self.id, name=self.name))
 
         self.switch_state(True)
 
@@ -159,7 +167,8 @@ class ProjectProfileCard(ctk.CTkFrame):
 
 
 class NewProjectWindow(ctk.CTkToplevel):
-    def __init__(self, master, config: bool = False):
+    def __init__(self, master, config: bool, id: Optional[int] = None,
+                 name: Optional[str] = None):
         super().__init__(master=master)
         self.master = master
         self.geometry("400x150")
@@ -178,14 +187,33 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_entry = ctk.CTkEntry(
             self, width=60, height=50, validate="key",
             validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
-        self.create_btn = ctk.CTkButton(
-            self, text="Crear", font=("Roboto", 24), command=self.create_project)
 
         self.name_label.grid(column=0, row=0, padx=2, pady=2)
         self.price_label.grid(column=2, row=1, padx=2, pady=2, sticky="w")
         self.name_entry.grid(column=1, row=0, columnspan=2, padx=2, pady=2)
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
+
+        self.id = id
+        self.name = name
+        if self.config_mode:
+            self.load_update_widgets()
+        else:
+            self.load_create_widgets()
+
+    def load_create_widgets(self) -> None:
+        self.create_btn = ctk.CTkButton(
+            self, text="Crear", font=("Roboto", 24), command=self.create_project)
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
+
+    def load_update_widgets(self) -> None:
+        self.update_btn = ctk.CTkButton(
+            self, text="Modificar", font=("Roboto", 24), command=self.update_project)
+        self.remove_btn = ctk.CTkButton(
+            self, text="B", font=("Roboto", 24), width=20, fg_color="red")
+        self.name_entry.configure(placeholder_text=self.name)
+
+        self.update_btn.grid(column=1, row=2, padx=2, pady=6)
+        self.remove_btn.place(relx=.99, rely=.99, anchor="se")
 
     @staticmethod
     def validate_name(text: str, new_text: str) -> bool:
@@ -205,3 +233,6 @@ class NewProjectWindow(ctk.CTkToplevel):
 
     def create_project(self) -> None:
         self.master.create_project(self.name_entry.get(), self.price_entry.get())
+
+    def update_project(self) -> None:
+        self.master.update_project(self.id, self.name_entry.get())
