@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from tkinter import StringVar
 from typing import Optional
 from data.datahandlers import ProjectDataHandler
 
@@ -57,8 +58,9 @@ class ProjectsFrame(ctk.CTkFrame):
         self.create_window.destroy()
         self.mid_frame.add_project(new_project.id, new_project.name)
 
-    def update_project(self, id: int, name: str) -> None:
-        print(f"Update {id} - {name}")
+    def update_project(self, id: int, name: str, price: float) -> None:
+        print(f"Update {id} - {name} - {price}")
+        self.create_window.destroy()
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
@@ -194,7 +196,7 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
 
         self.id = id
-        self.name = name
+        self.name = StringVar(self, name)
         if self.config_mode:
             self.load_update_widgets()
         else:
@@ -210,7 +212,7 @@ class NewProjectWindow(ctk.CTkToplevel):
             self, text="Modificar", font=("Roboto", 24), command=self.update_project)
         self.remove_btn = ctk.CTkButton(
             self, text="B", font=("Roboto", 24), width=20, fg_color="red")
-        self.name_entry.configure(placeholder_text=self.name)
+        self.name_entry.configure(textvariable=self.name)
 
         self.update_btn.grid(column=1, row=2, padx=2, pady=6)
         self.remove_btn.place(relx=.99, rely=.99, anchor="se")
@@ -235,4 +237,4 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.master.create_project(self.name_entry.get(), self.price_entry.get())
 
     def update_project(self) -> None:
-        self.master.update_project(self.id, self.name_entry.get())
+        self.master.update_project(self.id, self.name_entry.get(), self.price_entry.get())
