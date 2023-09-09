@@ -122,6 +122,21 @@ class CacheHandler:
                     self.current_project = project
                     return project
 
+    def update_project(self, id: int, name: str, price: float) -> tuple[int, str]:
+        data = self.read_data_file()
+
+        for p in data["projects"]:
+            if p["id"] == id:
+                project = Project(**p)
+                project.name = name
+                project.price_per_hour = price
+                updated_project = self.data_sender.update_project(project)
+                if updated_project:
+                    data["projects"].remove(p)
+                    data["projects"].append(updated_project.__dict__)
+                    self.save_data_file(data)
+                    return (updated_project.id, updated_project.name)
+
     def set_card(self) -> Card:
         new_card = self.data_sender.create_new_card({
             "project_id": self.current_project.id,

@@ -59,7 +59,8 @@ class ProjectsFrame(ctk.CTkFrame):
         self.mid_frame.add_project(new_project.id, new_project.name)
 
     def update_project(self, id: int, name: str, price: float) -> None:
-        print(f"Update {id} - {name} - {price}")
+        updated_project = self.data_handler.update_project(id, name, price)
+        print(f"Updated --> {updated_project}")
         self.create_window.destroy()
 
     def show(self) -> None:
