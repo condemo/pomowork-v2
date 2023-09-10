@@ -142,7 +142,6 @@ class PomoCard(ctk.CTkFrame):
         self.pomo_count_label = ctk.CTkLabel(self, text=f"Pomos: {self.pomo_count}")
         self.total_money_label = ctk.CTkLabel(
             self, text=f"{self.total_price:.2f}€", font=("Roboto", 14))
-        # TODO: Automatizar el texto en caso de que el campo collected sea true o false
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
             command=self.change_status, variable=self.check_var
