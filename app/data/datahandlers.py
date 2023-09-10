@@ -1,4 +1,3 @@
-from typing import Optional
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
@@ -51,14 +50,19 @@ class ProjectDataHandler:
                 card.collected = status
                 return self.cache_handler.update_card(card)
 
-    def update_card(self, count: int = 0, new_price_h: Optional[float] = None) -> None:
-        if new_price_h:
-            self.current_card.price_per_hour = float(new_price_h)
+    def update_card(self, count: int = 0) -> None:
         self.current_card.pomo_count += count
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
         self.current_card = self.cache_handler.update_card(self.current_card)
         self.update_project_data()
+        self.view.update_current_card(self.current_card)
+
+    def update_card_price_h(self, price: float) -> None:
+        self.current_card.price_per_hour = price
+        self.current_card.total_price = \
+            (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
+        self.current_card = self.cache_handler.update_card(self.current_card)
         self.view.update_current_card(self.current_card)
 
     def create_project(self, project_data: dict) -> Project:
@@ -70,7 +74,7 @@ class ProjectDataHandler:
     def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
         updated_p = self.cache_handler.update_project(id, name, price)
         if updated_p:
-            self.update_card(new_price_h=price)
+            self.update_card_price_h(price)
         if self.current_project.id == id:
             self.current_project.name = name
             self.view.update_main_title()
