@@ -255,4 +255,4 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.master.create_project(self.name_entry.get(), self.price_entry.get())
 
     def update_project(self) -> None:
-        self.master.update_project(self.id, self.name_entry.get(), self.price_entry.get())
+        self.master.update_project(self.id, self.name_entry.get(), float(self.price_entry.get()))
