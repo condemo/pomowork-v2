@@ -342,6 +342,8 @@ class InfoFrame(ctk.CTkFrame):
 
     def update_data(self, updated_card) -> None:
         self.last_card = updated_card
+        self.price_h_label.configure(
+            text=f"Price/h: {self.last_card.price_per_hour:.2f}€")
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(
