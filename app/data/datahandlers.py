@@ -1,3 +1,4 @@
+from typing import Optional
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
@@ -50,7 +51,9 @@ class ProjectDataHandler:
                 card.collected = status
                 return self.cache_handler.update_card(card)
 
-    def update_card(self, count: int = 0) -> None:
+    def update_card(self, count: int = 0, new_price_h: Optional[float] = None) -> None:
+        if new_price_h:
+            self.current_card.price_per_hour = float(new_price_h)
         self.current_card.pomo_count += count
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
@@ -65,7 +68,10 @@ class ProjectDataHandler:
         return self.current_project
 
     def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
-        return self.cache_handler.update_project(id, name, price)
+        updated_p = self.cache_handler.update_project(id, name, price)
+        if updated_p:
+            self.update_card(new_price_h=price)
+        return updated_p
 
     def update_project_data(self) -> None:
         total: float = 0

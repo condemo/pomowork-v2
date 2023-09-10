@@ -157,8 +157,6 @@ class PomoCard(ctk.CTkFrame):
             column=7, row=0, rowspan=3, sticky="e", padx=5)
 
     def update_data(self, card_data: Card) -> None:
-        # TODO: Implementar la actualizacion de la check_box y el price_per_hour en caso de
-        # que sea configurado un cambio y la tarjeta no tenga se haya sido actualizada aún
         self.id = card_data.id
         self.date = card_data.created_at
         self.project_id = card_data.project_id
@@ -171,6 +169,9 @@ class PomoCard(ctk.CTkFrame):
             self.status_text = "No Cobrado"
         self.total_price = card_data.total_price
 
+        self.price_h_label.configure(
+            text=f"{self.price_h:.2f}€/h"
+        )
         self.pomo_count_label.configure(
             text=f"Pomos: {self.pomo_count}"
         )
