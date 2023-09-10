@@ -35,6 +35,9 @@ class HomeView(ctk.CTkFrame):
         self.main_frame.update_data(current_card)
         self.cards_frame.update_card_data(current_card)
 
+    def update_main_title(self) -> None:
+        self.main_frame.update_title()
+
     def switch_projects_state(self, state: bool) -> None:
         self.projects_frame.switch_projects_state(state)
 

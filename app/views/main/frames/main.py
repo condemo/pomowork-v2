@@ -29,9 +29,12 @@ class MainFrame(ctk.CTkFrame):
     def update_data(self, updated_card) -> None:
         self.info_frame.update_data(updated_card)
 
+    def update_title(self) -> None:
+        self.pomo_frame.update_title()
+
     def load_active_project(self) -> None:
         self.info_frame.load_last_card()
-        self.pomo_frame.update_title()
+        self.update_title()
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both", padx=15)

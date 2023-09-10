@@ -71,6 +71,9 @@ class ProjectDataHandler:
         updated_p = self.cache_handler.update_project(id, name, price)
         if updated_p:
             self.update_card(new_price_h=price)
+        if self.current_project.id == id:
+            self.current_project.name = name
+            self.view.update_main_title()
         return updated_p
 
     def update_project_data(self) -> None:
