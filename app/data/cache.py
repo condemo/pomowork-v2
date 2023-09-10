@@ -41,7 +41,7 @@ class CacheHandler:
         data_dict["project_list"] = []
 
         for project in data_dict["projects"]:
-            project_list = [project["id"], project["name"]]
+            project_list = [project["id"], project["name"], project["price_per_hour"]]
             data_dict["project_list"].append(project_list)
 
         if os.path.isfile(CACHE_FILE):
@@ -64,7 +64,7 @@ class CacheHandler:
         with open(CACHE_FILE, "w") as file:
             json.dump(data, file, indent=2)
 
-    def get_project_list(self) -> list[tuple[int, str]]:
+    def get_project_list(self) -> list[tuple[int, str, float]]:
         data = self.read_data_file()
 
         project_list = [tuple(project) for project in data["project_list"]]
@@ -122,7 +122,7 @@ class CacheHandler:
                     self.current_project = project
                     return project
 
-    def update_project(self, id: int, name: str, price: float) -> tuple[int, str]:
+    def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
         data = self.read_data_file()
 
         for p in data["projects"]:
@@ -135,7 +135,8 @@ class CacheHandler:
                     data["projects"].remove(p)
                     data["projects"].append(updated_project.__dict__)
                     self.save_data_file(data)
-                    return (updated_project.id, updated_project.name)
+                    return (
+                        updated_project.id, updated_project.name, updated_project.price_per_hour)
 
     def set_card(self) -> Card:
         new_card = self.data_sender.create_new_card({

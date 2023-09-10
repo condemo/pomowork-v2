@@ -43,10 +43,12 @@ class ProjectsFrame(ctk.CTkFrame):
     def switch_projects_state(self, state: bool) -> None:
         self.mid_frame.switch_projects_state(state)
 
-    def create_project_window(self, config: bool = False, id: Optional[int] = None,
-                              name: Optional[str] = None) -> None:
+    def create_project_window(
+            self, config: bool = False, id: Optional[int] = None,
+            name: Optional[str] = None, price: Optional[float] = None) -> None:
         if self.create_window is None or not self.create_window.winfo_exists():
-            self.create_window = NewProjectWindow(self, config=config, id=id, name=name)
+            self.create_window = NewProjectWindow(
+                self, config=config, id=id, name=name, price=price)
         else:
             self.create_window.focus()
 
@@ -56,7 +58,7 @@ class ProjectsFrame(ctk.CTkFrame):
             "price_per_hour": price
         })
         self.create_window.destroy()
-        self.mid_frame.add_project(new_project.id, new_project.name)
+        self.mid_frame.add_project(new_project.id, new_project.name, new_project.price_per_hour)
 
     def update_project(self, id: int, name: str, price: float) -> None:
         updated_project = self.data_handler.update_project(id, name, price)
@@ -82,7 +84,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
     def create_widgets(self) -> None:
         self.profile_list = [
-            ProjectProfileCard(self, id=i[0], name=i[1]) for i in self.projects_list
+            ProjectProfileCard(self, id=i[0], name=i[1], price=i[2]) for i in self.projects_list
         ]
         self.active_project = self.profile_list[0]
         self.active_project.configure(
@@ -130,7 +132,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
 
 class ProjectProfileCard(ctk.CTkFrame):
-    def __init__(self, master, id: int, name: str):
+    def __init__(self, master, id: int, name: str, price: float):
         super().__init__(
             master=master, fg_color="orange", corner_radius=5,
             border_width=3, border_color="red", height=50, cursor="hand2")
@@ -142,6 +144,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 
         self.id = id
         self.name = name
+        self.price = price
 
         self.create_widgets()
         self.load_widgets()
@@ -152,7 +155,7 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.config_btn = ctk.CTkButton(
             self, text="C", fg_color="brown",
             command=lambda: self.master.master.create_project_window(
-                config=True, id=self.id, name=self.name))
+                config=True, id=self.id, name=self.name, price=self.price))
 
         self.switch_state(True)
 
@@ -169,6 +172,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 
     def update_data(self, project: tuple[int, str, float]) -> None:
         self.name = project[1]
+        self.price = project[2]
         self.name_label.configure(text=f"{self.name}")
 
     def show(self) -> None:
@@ -180,7 +184,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 
 class NewProjectWindow(ctk.CTkToplevel):
     def __init__(self, master, config: bool, id: Optional[int] = None,
-                 name: Optional[str] = None):
+                 name: Optional[str] = None, price: Optional[float] = None):
         super().__init__(master=master)
         self.master = master
         self.geometry("400x150")
@@ -207,6 +211,9 @@ class NewProjectWindow(ctk.CTkToplevel):
 
         self.id = id
         self.name = StringVar(self, name)
+        self.price = price
+        self.price_var = StringVar(self, str("%.2f" % self.price))
+
         if self.config_mode:
             self.load_update_widgets()
         else:
@@ -223,6 +230,7 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.remove_btn = ctk.CTkButton(
             self, text="B", font=("Roboto", 24), width=20, fg_color="red")
         self.name_entry.configure(textvariable=self.name)
+        self.price_entry.configure(textvariable=self.price_var)
 
         self.update_btn.grid(column=1, row=2, padx=2, pady=6)
         self.remove_btn.place(relx=.99, rely=.99, anchor="se")

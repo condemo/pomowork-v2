@@ -64,7 +64,7 @@ class ProjectDataHandler:
 
         return self.current_project
 
-    def update_project(self, id: int, name: str, price: float) -> tuple[int, str]:
+    def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
         return self.cache_handler.update_project(id, name, price)
 
     def update_project_data(self) -> None:
