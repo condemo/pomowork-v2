@@ -26,7 +26,7 @@ class ProjectDataHandler:
         self.view.switch_projects_state(state)
 
     def change_current_project(self, id: int) -> Project:
-        self.current_project = self.cache_handler.load_project(id)
+        self.current_project = self.cache_handler.load_project_by_id(id)
         if self.current_project:
             self.card_list = self.cache_handler.get_card_list()
             self.current_project_id = id

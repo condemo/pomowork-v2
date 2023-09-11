@@ -18,7 +18,7 @@ class CacheHandler:
         self.data_fetch()
         self.data_sender = DataSender()
         self.current_project_id = config.user_conf["core"]["last_open_project"]
-        self.current_project = self.load_project(self.current_project_id)
+        self.current_project = self.load_project_by_id(self.current_project_id)
 
     @staticmethod
     def data_fetch() -> None:
@@ -88,7 +88,7 @@ class CacheHandler:
     def get_current_project(self) -> Project:
         return self.current_project
 
-    def load_project(self, id: int) -> Project:
+    def load_project_by_id(self, id: int) -> Project:
         data = self.read_data_file()
 
         for project in data["projects"]:
