@@ -55,7 +55,7 @@ class ProjectDataHandler:
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
         self.current_card = self.cache_handler.update_card(self.current_card)
-        self.update_project_data()
+        self.update_current_project_data()
         self.view.update_current_card(self.current_card)
 
     def update_card_price_h(self, price: float) -> None:
@@ -80,7 +80,7 @@ class ProjectDataHandler:
             self.view.update_main_title()
         return updated_p
 
-    def update_project_data(self) -> None:
+    def update_current_project_data(self) -> None:
         total: float = 0
         collected: float = 0
         pending: float = 0
