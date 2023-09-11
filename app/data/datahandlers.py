@@ -10,7 +10,7 @@ class ProjectDataHandler:
         self.project_list = self.cache_handler.get_project_list()
         self.current_project: Project = self.cache_handler \
             .get_current_project()
-        self.card_list = self.cache_handler.get_card_list()
+        self.card_list = self.cache_handler.get_current_card_list()
 
     def get_project_list(self) -> list[tuple[int, str]]:
         return self.project_list
@@ -28,7 +28,7 @@ class ProjectDataHandler:
     def change_current_project(self, id: int) -> Project:
         self.current_project = self.cache_handler.load_project_by_id(id)
         if self.current_project:
-            self.card_list = self.cache_handler.get_card_list()
+            self.card_list = self.cache_handler.get_current_card_list()
             self.current_project_id = id
 
     def get_current_card(self) -> Card:
@@ -58,12 +58,15 @@ class ProjectDataHandler:
         self.update_current_project_data()
         self.view.update_current_card(self.current_card)
 
-    def update_card_price_h(self, price: float) -> None:
-        self.current_card.price_per_hour = price
-        self.current_card.total_price = \
-            (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
-        self.current_card = self.cache_handler.update_card(self.current_card)
-        self.view.update_current_card(self.current_card)
+    def update_card_price_h(self, card: Card, price: float) -> None:
+        card.price_per_hour = price
+        card.total_price = \
+            (card.pomo_count / 2) * card.price_per_hour
+        if card.id == self.current_card.id:
+            self.current_card = self.cache_handler.update_card(card)
+            self.view.update_current_card(self.current_card)
+        else:
+            self.cache_handler.update_card(card)
 
     def create_project(self, project_data: dict) -> Project:
         self.current_project = self.cache_handler.set_project(project_data)
@@ -72,11 +75,13 @@ class ProjectDataHandler:
         return self.current_project
 
     def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
+        card = self.cache_handler.get_last_card_by_id(id)
         updated_p = self.cache_handler.update_project(id, name, price)
         if updated_p:
-            self.update_card_price_h(price)
+            self.update_card_price_h(card, price)
         if self.current_project.id == id:
             self.current_project.name = name
+            self.card_list = self.cache_handler.get_card_list_by_id(id)
             self.view.update_main_title()
         return updated_p
 
@@ -95,5 +100,5 @@ class ProjectDataHandler:
         self.current_project.salary_collected = collected
         self.current_project.pending_salary = pending
         self.current_project = self.cache_handler.update_project_data(self.current_project)
-        self.card_list = self.cache_handler.get_card_list()
+        self.card_list = self.cache_handler.get_current_card_list()
         self.view.update_project_data()

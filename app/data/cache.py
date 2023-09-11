@@ -73,7 +73,7 @@ class CacheHandler:
 
         return project_list
 
-    def get_card_list(self) -> list[Card]:
+    def get_current_card_list(self) -> list[Card]:
         if self.current_project:
             if self.current_project.cards:
                 self.card_list = [Card(**i) for i in self.current_project.cards]
@@ -87,6 +87,28 @@ class CacheHandler:
 
     def get_current_project(self) -> Project:
         return self.current_project
+
+    def get_card_list_by_id(self, project_id: int) -> list[Card]:
+        data = self.read_data_file()
+        card_list: list = []
+
+        for project in data["projects"]:
+            if project["id"] == project_id:
+                card_dict_list = project["cards"]
+                for c in card_dict_list:
+                    card_list.append(c)
+                card_list.sort(key=lambda e: e["created_at"], reverse=True)
+                return card_list
+
+    def get_last_card_by_id(self, project_id: int) -> Card:
+        data = self.read_data_file()
+
+        for project in data["projects"]:
+            if project["id"] == project_id:
+                card_list: list = project["cards"]
+                card_list.sort(key=lambda e: e["created_at"], reverse=True)
+                card = Card(**card_list[0])
+                return card
 
     def load_project_by_id(self, id: int) -> Project:
         data = self.read_data_file()
