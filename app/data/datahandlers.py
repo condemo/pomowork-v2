@@ -1,3 +1,4 @@
+from typing import Optional
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
@@ -75,30 +76,49 @@ class ProjectDataHandler:
         return self.current_project
 
     def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
-        card = self.cache_handler.get_last_card_by_id(id)
         updated_p = self.cache_handler.update_project(id, name, price)
-        if updated_p:
-            self.update_card_price_h(card, price)
+        card = self.cache_handler.get_last_card_by_id(id)
+        self.update_card_price_h(card, price)
+        project = self.cache_handler.load_project_by_id(id)
+        self.update_current_project_data(project)
         if self.current_project.id == id:
             self.current_project.name = name
             self.card_list = self.cache_handler.get_card_list_by_id(id)
             self.view.update_main_title()
         return updated_p
 
-    def update_current_project_data(self) -> None:
+    def update_current_project_data(self, project: Optional[Project] = None) -> None:
         total: float = 0
         collected: float = 0
         pending: float = 0
-        for card in self.card_list:
-            total += card.total_price
-            if card.collected:
-                collected += card.total_price
-            else:
-                pending += card.total_price
+        if project:
+            card_list = self.cache_handler.get_card_list_by_id(project.id)
+            for c in card_list:
+                total += c.total_price
+                if c.collected:
+                    collected += c.total_price
+                else:
+                    pending += c.total_price
+            project.total_money = total
+            project.salary_collected = collected
+            project.pending_salary = pending
+            updated_p = self.cache_handler.update_project_data(project)
+            if updated_p.id == self.current_project.id:
+                self.current_project = updated_p
+                self.card_list = self.cache_handler.get_card_list_by_id(self.current_project.id)
+                print(self.card_list)
+                self.view.update_project_data()
+        else:
+            for card in self.card_list:
+                total += card.total_price
+                if card.collected:
+                    collected += card.total_price
+                else:
+                    pending += card.total_price
 
-        self.current_project.total_money = total
-        self.current_project.salary_collected = collected
-        self.current_project.pending_salary = pending
-        self.current_project = self.cache_handler.update_project_data(self.current_project)
-        self.card_list = self.cache_handler.get_current_card_list()
-        self.view.update_project_data()
+            self.current_project.total_money = total
+            self.current_project.salary_collected = collected
+            self.current_project.pending_salary = pending
+            self.current_project = self.cache_handler.update_project_data(self.current_project)
+            self.card_list = self.cache_handler.get_card_list_by_id(self.current_project.id)
+            self.view.update_project_data()

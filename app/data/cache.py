@@ -96,8 +96,9 @@ class CacheHandler:
             if project["id"] == project_id:
                 card_dict_list = project["cards"]
                 for c in card_dict_list:
-                    card_list.append(c)
-                card_list.sort(key=lambda e: e["created_at"], reverse=True)
+                    card = Card(**c)
+                    card_list.append(card)
+                card_list.sort(key=lambda e: e.created_at, reverse=True)
                 return card_list
 
     def get_last_card_by_id(self, project_id: int) -> Card:
@@ -139,9 +140,9 @@ class CacheHandler:
 
             for p in data["projects"]:
                 if p["id"] == project.id:
-                    p = project.__dict__
+                    data["projects"].remove(p)
+                    data["projects"].append(project.__dict__)
                     self.save_data_file(data)
-                    self.current_project = project
                     return project
 
     def update_project(self, id: int, name: str, price: float) -> tuple[int, str, float]:
