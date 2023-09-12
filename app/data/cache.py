@@ -133,6 +133,15 @@ class CacheHandler:
             config.save_config(config.user_conf)
             return project
 
+    def remove_project_by_id(self, id: int) -> bool:
+        if self.data_sender.remove_project_by_id(id):
+            data = self.read_data_file()
+            for project in data["projects"]:
+                if project["id"] == id:
+                    data["projects"].remove(project)
+                    self.save_data_file(data)
+                    return True
+
     def update_project_data(self, updated_project: Project) -> None:
         project = self.data_sender.update_project(updated_project)
         if project:

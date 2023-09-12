@@ -49,3 +49,9 @@ class DataSender:
             return updated_project
 
         print(f"{data.json()['detail']}")
+
+    def remove_project_by_id(self, id: int) -> bool:
+        data = requests.delete(f"{PROJECTS_BASE_URL}{id}", headers=self.user_credentials)
+
+        if data.status_code == 204:
+            return True

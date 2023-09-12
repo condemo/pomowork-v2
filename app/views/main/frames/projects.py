@@ -65,6 +65,11 @@ class ProjectsFrame(ctk.CTkFrame):
         self.mid_frame.update_project_info(updated_project)
         self.create_window.destroy()
 
+    def remove_project(self, id: int) -> None:
+        if self.data_handler.remove_project_by_id(id):
+            self.create_window.destroy()
+            self.mid_frame.remove_project(id)
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
 
@@ -104,6 +109,14 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         new_project = ProjectProfileCard(self, id=id, name=name)
         self.profile_list.insert(0, new_project)
         [i.show() for i in self.profile_list]
+
+    def remove_project(self, id: int) -> None:
+        for p in self.projects_list:
+            if p[0] == id:
+                self.projects_list.remove(p)
+        for project in self.profile_list:
+            if project.id == id:
+                project.pack_forget()
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
@@ -228,7 +241,8 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.update_btn = ctk.CTkButton(
             self, text="Modificar", font=("Roboto", 24), command=self.update_project)
         self.remove_btn = ctk.CTkButton(
-            self, text="B", font=("Roboto", 24), width=20, fg_color="red")
+            self, text="B", font=("Roboto", 24), width=20,
+            fg_color="red", command=self.remove_project)
         self.name_entry.configure(textvariable=self.name)
         self.price_entry.configure(textvariable=self.price_var)
 
@@ -253,7 +267,10 @@ class NewProjectWindow(ctk.CTkToplevel):
         return text.isdecimal()
 
     def create_project(self) -> None:
-        self.master.create_project(self.name_entry.get(), self.price_entry.get())
+        self.master.create_project(self.name_entry.get(), float(self.price_entry.get()))
 
     def update_project(self) -> None:
         self.master.update_project(self.id, self.name_entry.get(), float(self.price_entry.get()))
+
+    def remove_project(self) -> None:
+        self.master.remove_project(self.id)

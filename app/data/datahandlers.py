@@ -106,7 +106,6 @@ class ProjectDataHandler:
             if updated_p.id == self.current_project.id:
                 self.current_project = updated_p
                 self.card_list = self.cache_handler.get_card_list_by_id(self.current_project.id)
-                print(self.card_list)
                 self.view.update_project_data()
         else:
             for card in self.card_list:
@@ -122,3 +121,7 @@ class ProjectDataHandler:
             self.current_project = self.cache_handler.update_project_data(self.current_project)
             self.card_list = self.cache_handler.get_card_list_by_id(self.current_project.id)
             self.view.update_project_data()
+
+    def remove_project_by_id(self, id: int) -> None:
+        if self.cache_handler.remove_project_by_id(id):
+            return True
