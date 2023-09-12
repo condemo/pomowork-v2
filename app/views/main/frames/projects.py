@@ -235,6 +235,7 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.update_btn.grid(column=1, row=2, padx=2, pady=6)
         self.remove_btn.place(relx=.99, rely=.99, anchor="se")
 
+    # FIX: La validación del entry no funciona con StringVar y hay un bug con .insert
     @staticmethod
     def validate_name(text: str, new_text: str) -> bool:
         if len(new_text) > 25:
