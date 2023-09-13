@@ -75,6 +75,10 @@ class CardsFrame(ctk.CTkFrame):
 
     def update_card_data(self, current_card) -> None:
         self.mid_frame.update_data(current_card)
+        self.total_hours = self.data_handler.get_project_total_hours()
+        self.total_time_label.configure(
+            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total"
+        )
 
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both")
