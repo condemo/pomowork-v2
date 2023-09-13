@@ -14,6 +14,7 @@ class CardsFrame(ctk.CTkFrame):
         try:
             (self.pending_salary, self.salary_collected, self.total_money) = \
                 self.data_handler.get_project_total_info()
+            self.total_hours = self.data_handler.get_project_total_hours()
             self.create_widgets()
             self.load_widgets()
         except TypeError:
@@ -22,7 +23,9 @@ class CardsFrame(ctk.CTkFrame):
     def create_widgets(self) -> None:
         self.top_frame = ctk.CTkFrame(self)
         self.total_time_label = ctk.CTkLabel(
-            self.top_frame, text="12:30 horas en total", font=("Roboto", 20))
+            self.top_frame,
+            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total",
+            font=("Roboto", 20))
 
         self.mid_frame = CardListFrame(self, self.data_handler)
 

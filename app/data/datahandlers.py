@@ -45,6 +45,14 @@ class ProjectDataHandler:
                 self.current_project.total_money
             )
 
+    def get_project_total_hours(self) -> tuple[int, int]:
+        total_pomos: int = 0
+        for card in self.card_list:
+            total_pomos += card.pomo_count
+        total_minutes = total_pomos * 30
+        hours, minutes = divmod(total_minutes, 60)
+        return hours, minutes
+
     def update_card_status(self, id: int, status: bool) -> Card:
         for card in self.card_list:
             if card.id == id:
