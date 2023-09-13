@@ -91,6 +91,9 @@ class CardListFrame(ctk.CTkScrollableFrame):
 
     def load_widgets(self) -> None:
         [card.show() for card in self.card_widget_list]
+        self.card_widget_list[0].configure(
+            fg_color="blue"
+        )
 
     def load_new_cards(self) -> None:
         [card.pack_forget() for card in self.card_widget_list]
