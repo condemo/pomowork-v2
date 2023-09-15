@@ -117,6 +117,8 @@ class ClockFrame(ctk.CTkFrame):
         self.stopped: bool = True
         self.paused: bool = True
 
+        self.count = 0
+
         self.modes_list = ["Work", "Short Break", "Long Break"]
         self.current_mode_index = 0
         self.mode = self.modes_list[self.current_mode_index]
@@ -218,7 +220,12 @@ class ClockFrame(ctk.CTkFrame):
                     self.data_handler.update_current_project_data()
                     self.play_text.set("PL")
                     self.stopped = True
-                    self.forward_mode()
+                    self.count += 1
+                    if self.count == 4 or self.count == 8:
+                        self.back_mode()
+                    else:
+                        self.forward_mode()
+                    print(self.count)
                     InfoMessage(self.winfo_toplevel(), "success", "Pomodoro acabado")
                     if not self.winfo_toplevel().focus_displayof():
                         notification.notify(
@@ -242,6 +249,8 @@ class ClockFrame(ctk.CTkFrame):
                 case "Long Break":
                     self.play_text.set("PL")
                     self.stopped = True
+                    if self.count == 8:
+                        self.count = 0
                     self.forward_mode()
                     InfoMessage(self.winfo_toplevel(), "info", "Descanso acabado")
                     if not self.winfo_toplevel().focus_displayof():
