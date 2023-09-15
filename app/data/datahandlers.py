@@ -34,6 +34,14 @@ class ProjectDataHandler:
         config.save_config(config.user_conf)
         return self.pomo_day_count
 
+    @staticmethod
+    def get_timers() -> tuple[int, int, int]:
+        return (
+            config.user_conf["pomo"]["pomo_timer"],
+            config.user_conf["pomo"]["short_break"],
+            config.user_conf["pomo"]["long_break"],
+        )
+
     def switch_projects_state(self, state: bool) -> None:
         self.view.switch_projects_state(state)
 

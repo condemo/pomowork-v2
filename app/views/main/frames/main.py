@@ -118,6 +118,7 @@ class ClockFrame(ctk.CTkFrame):
         self.paused: bool = True
 
         self.count = self.data_handler.get_pomo_day_count()
+        self.pomo_timer, self.short_timer, self.long_timer = self.data_handler.get_timers()
 
         self.modes_list = ["Work", "Short Break", "Long Break"]
         self.current_mode_index = 0
@@ -184,11 +185,11 @@ class ClockFrame(ctk.CTkFrame):
     def change_timer_mode(self) -> None:
         match self.current_mode_index:
             case 0:
-                new_timer = 60 * .1
+                new_timer = 60 * self.pomo_timer
             case 1:
-                new_timer = 60 * .1
+                new_timer = 60 * self.short_timer
             case 2:
-                new_timer = 60 * .1
+                new_timer = 60 * self.long_timer
 
         self.set_timer(new_timer)
 
