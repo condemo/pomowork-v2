@@ -2,6 +2,7 @@ from typing import Optional
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
+import config
 
 
 class ProjectDataHandler:
@@ -12,6 +13,7 @@ class ProjectDataHandler:
         self.current_project: Project = self.cache_handler \
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
+        self.pomo_day_count = config.user_conf["pomo"]["pomo_day_count"]
 
     def get_project_list(self) -> list[tuple[int, str]]:
         return self.project_list
@@ -22,6 +24,15 @@ class ProjectDataHandler:
 
     def get_project_cards(self) -> list[Card]:
         return self.card_list
+
+    def get_pomo_day_count(self) -> int:
+        return self.pomo_day_count
+
+    def save_pomo_day_count(self, count: int) -> int:
+        self.pomo_day_count += count
+        config.user_conf["pomo"]["pomo_day_count"] = self.pomo_day_count
+        config.save_config(config.user_conf)
+        return self.pomo_day_count
 
     def switch_projects_state(self, state: bool) -> None:
         self.view.switch_projects_state(state)

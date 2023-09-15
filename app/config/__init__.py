@@ -28,7 +28,8 @@ def load_config() -> dict:
 
 def create_config() -> dict:
     initial_config = {
-        "core": {"last_open_project": 0}
+        "core": {"last_open_project": 0},
+        "pomo": {"pomo_day_count": 0}
     }
     with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
         tomlkit.dump(initial_config, file)

@@ -117,7 +117,7 @@ class ClockFrame(ctk.CTkFrame):
         self.stopped: bool = True
         self.paused: bool = True
 
-        self.count = 0
+        self.count = self.data_handler.get_pomo_day_count()
 
         self.modes_list = ["Work", "Short Break", "Long Break"]
         self.current_mode_index = 0
@@ -220,7 +220,7 @@ class ClockFrame(ctk.CTkFrame):
                     self.data_handler.update_current_project_data()
                     self.play_text.set("PL")
                     self.stopped = True
-                    self.count += 1
+                    self.count = self.data_handler.save_pomo_day_count(1)
                     if self.count == 4 or self.count == 8:
                         self.back_mode()
                     else:
