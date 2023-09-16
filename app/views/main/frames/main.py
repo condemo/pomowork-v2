@@ -295,6 +295,7 @@ class InfoFrame(ctk.CTkFrame):
 
         if self.last_card:
             self.check_card_date()
+            self.pomo_day_count = self.data_handler.get_pomo_day_count()
             self.create_widgets()
             self.load_widgets()
 
@@ -308,6 +309,16 @@ class InfoFrame(ctk.CTkFrame):
         self.price_h_label = ctk.CTkLabel(
             self, text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18))
         self.date_label = ctk.CTkLabel(self, text=f"{self.last_card_date}", font=("Roboto", 30))
+
+        self.pomo_day_main_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.pomo_day_left_frame = ctk.CTkFrame(self.pomo_day_main_frame, fg_color="transparent")
+        self.pomo_day_right_frame = ctk.CTkFrame(self.pomo_day_main_frame, fg_color="transparent")
+
+        self.radio_btn_list = [ctk.CTkRadioButton(
+            self.pomo_day_left_frame, text="", width=10,
+            state="normal", border_width_checked=10) for i in range(4)]
+        [self.radio_btn_list.append(ctk.CTkRadioButton(
+            self.pomo_day_right_frame, text="", width=10, state="readonly")) for i in range(4)]
 
         self.main_frame = ctk.CTkFrame(self)
         self.info_container_frame = ctk.CTkFrame(self.main_frame)
@@ -323,6 +334,11 @@ class InfoFrame(ctk.CTkFrame):
     def load_widgets(self) -> None:
         self.price_h_label.place(relx=.03, rely=.014, anchor="nw")
         self.date_label.pack()
+
+        self.pomo_day_main_frame.pack(pady=50)
+        self.pomo_day_left_frame.pack(side="left", padx=15)
+        self.pomo_day_right_frame.pack(side="left", padx=15)
+        [i.pack(side="left") for i in self.radio_btn_list]
 
         self.pomo_num_label.pack(pady=5)
         self.info_container_frame.pack(expand=True)
