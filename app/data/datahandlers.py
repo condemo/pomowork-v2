@@ -29,9 +29,10 @@ class ProjectDataHandler:
         return self.pomo_day_count
 
     def save_pomo_day_count(self, count: int) -> int:
-        self.pomo_day_count += count
+        self.pomo_day_count = count
         config.user_conf["pomo"]["pomo_day_count"] = self.pomo_day_count
         config.save_config(config.user_conf)
+        self.view.update_info_buttons(self.pomo_day_count)
         return self.pomo_day_count
 
     @staticmethod

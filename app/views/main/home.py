@@ -41,6 +41,9 @@ class HomeView(ctk.CTkFrame):
     def switch_projects_state(self, state: bool) -> None:
         self.projects_frame.switch_projects_state(state)
 
+    def update_info_buttons(self, count: int) -> None:
+        self.main_frame.update_info_buttons(count)
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 

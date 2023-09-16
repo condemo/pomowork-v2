@@ -32,6 +32,9 @@ class MainFrame(ctk.CTkFrame):
     def update_title(self) -> None:
         self.pomo_frame.update_title()
 
+    def update_info_buttons(self, count: int) -> None:
+        self.info_frame.update_info_buttons(count)
+
     def load_active_project(self) -> None:
         self.info_frame.load_last_card()
         self.update_title()
@@ -221,12 +224,16 @@ class ClockFrame(ctk.CTkFrame):
                     self.data_handler.update_current_project_data()
                     self.play_text.set("PL")
                     self.stopped = True
-                    self.count = self.data_handler.save_pomo_day_count(1)
+                    self.count += 1
+                    if self.count == 9:
+                        self.count = 0
+                        self.data_handler.save_pomo_day_count(self.count)
+                        self.count = 1
+                    self.data_handler.save_pomo_day_count(self.count)
                     if self.count == 4 or self.count == 8:
                         self.back_mode()
                     else:
                         self.forward_mode()
-                    print(self.count)
                     InfoMessage(self.winfo_toplevel(), "success", "Pomodoro acabado")
                     if not self.winfo_toplevel().focus_displayof():
                         notification.notify(
@@ -252,6 +259,8 @@ class ClockFrame(ctk.CTkFrame):
                     self.stopped = True
                     if self.count == 8:
                         self.count = 0
+                        self.data_handler.save_pomo_day_count(self.count)
+
                     self.forward_mode()
                     InfoMessage(self.winfo_toplevel(), "info", "Descanso acabado")
                     if not self.winfo_toplevel().focus_displayof():
@@ -339,6 +348,7 @@ class InfoFrame(ctk.CTkFrame):
         self.pomo_day_left_frame.pack(side="left", padx=15)
         self.pomo_day_right_frame.pack(side="left", padx=15)
         [i.pack(side="left") for i in self.radio_btn_list]
+        [self.radio_btn_list[i].select() for i in range(self.pomo_day_count)]
 
         self.pomo_num_label.pack(pady=5)
         self.info_container_frame.pack(expand=True)
@@ -377,6 +387,12 @@ class InfoFrame(ctk.CTkFrame):
             text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(
             text=f"Total Hoy: {self.last_card.total_price:.2f}€")
+
+    def update_info_buttons(self, count: int) -> None:
+        if count == 0:
+            [i.deselect() for i in self.radio_btn_list]
+        else:
+            self.radio_btn_list[count - 1].select()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
