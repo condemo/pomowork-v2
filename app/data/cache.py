@@ -23,7 +23,7 @@ class CacheHandler:
     @staticmethod
     def data_fetch() -> None:
         user_credentials = config.USER_HEADERS
-        user_credentials["Authorization"] = f"Bearer {get_token()}"
+        user_credentials["Authorization"] = f"Bearer {get_token('token')}"
 
         try:
             data_fetch = requests.get(

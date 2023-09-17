@@ -12,7 +12,7 @@ class JWTChecker:
             return "signup"
 
         else:
-            self.token = get_token()
+            self.token = get_token("token")
 
             USER_HEADERS["Authorization"] = f"Bearer {self.token}"
             try:

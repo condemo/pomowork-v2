@@ -7,7 +7,7 @@ from config import CARDS_BASE_URL, USER_HEADERS, PROJECTS_BASE_URL
 class DataSender:
     def __init__(self):
         self.user_credentials = USER_HEADERS
-        self.user_credentials["Authorization"] = f"Bearer {get_token()}"
+        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
 
     def create_new_card(self, card: dict) -> Card | None:
         data = requests.post(CARDS_BASE_URL, json=card, headers=self.user_credentials)
