@@ -6,3 +6,4 @@ venv/
 *.token
 data.json
 app/config/user_conf.toml
+app/data/.r_token
