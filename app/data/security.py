@@ -26,28 +26,28 @@ def read_key() -> str:
         return key
 
 
-def encrypt_token_file() -> None:
+def encrypt_token_file(token_file_name: str) -> None:
     key = read_key()
 
     f = Fernet(key)
 
-    with open(DATA_DIR + "/.token", "rb") as file:
+    with open(DATA_DIR + f"/.{token_file_name}", "rb") as file:
         original = file.read()
 
     encrypted = f.encrypt(original)
 
-    with open(DATA_DIR + "/.token", "wb") as file:
+    with open(DATA_DIR + f"/.{token_file_name}", "wb") as file:
         file.write(encrypted)
 
-    os.chmod(DATA_DIR + "/.token", 0o600)
+    os.chmod(DATA_DIR + f"/.{token_file_name}", 0o600)
 
 
-def decrypt_token_file():
+def decrypt_token_file(token_file_name: str):
     key = read_key()
 
     f = Fernet(key)
 
-    with open(DATA_DIR + "/.token", "rb") as file:
+    with open(DATA_DIR + f"/.{token_file_name}", "rb") as file:
         encrypted = file.read()
 
     decrypted = f.decrypt(encrypted)

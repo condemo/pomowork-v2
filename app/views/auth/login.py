@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 from utils.auth import login_handler
-from data.oauth2 import save_jwt
+from data.oauth2 import save_jwt, save_refresh_token
 
 
 class LoginView(ctk.CTkFrame):
@@ -104,5 +104,8 @@ class FormFrame(ctk.CTkFrame):
         if not login_try:
             self.reset_values()
         else:
-            save_jwt(login_try)
+            token = login_try["access_token"]
+            refresh_token = login_try["refresh_token"]
+            save_jwt(token)
+            save_refresh_token(refresh_token)
             self.go_main()
