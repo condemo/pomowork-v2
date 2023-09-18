@@ -18,6 +18,10 @@ USER_HEADERS = {
     "accept": "application/json",
     "Authorization": "",
 }
+REFRESH_HEADERS = {
+    "accept": "application/json",
+    "Authorization": "",
+}
 
 
 def load_config() -> dict:
