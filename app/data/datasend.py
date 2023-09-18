@@ -1,22 +1,28 @@
 import requests
 from lib.models import Card, Project
-from data.oauth2 import get_token
-from config import CARDS_BASE_URL, USER_HEADERS, PROJECTS_BASE_URL
+from data.oauth2 import get_token, save_jwt
+from config import (
+    CARDS_BASE_URL,
+    USER_HEADERS,
+    PROJECTS_BASE_URL,
+    REFRESH_URL,
+    REFRESH_HEADERS,
+)
 
 
 class DataSender:
     def __init__(self):
         self.user_credentials = USER_HEADERS
-        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
+        self.refresh_credentials = REFRESH_HEADERS
 
-        self.refresh_credentials = self.user_credentials
+        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
         self.refresh_credentials["Authorization"] = f"Bearer {get_token('r_token')}"
 
     def reload_user_crendentials(self) -> None:
         self.user_credentials = USER_HEADERS
-        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
+        self.refresh_credentials = REFRESH_HEADERS
 
-        self.refresh_credentials = self.user_credentials
+        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
         self.refresh_credentials["Authorization"] = f"Bearer {get_token('r_token')}"
 
     def create_new_card(self, card: dict) -> Card | None:
@@ -26,6 +32,12 @@ class DataSender:
             case 201:
                 new_card = Card(**data.json())
                 return new_card
+            case 410:
+                req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
+                if req.status_code == 200:
+                    save_jwt(req.json()["access_token"])
+                    self.reload_user_crendentials()
+                    return self.create_new_card(card)
             case 422:
                 print(f"Error de validacion: {data.json()['detail']}")
             case 500:
@@ -39,6 +51,13 @@ class DataSender:
         if data.status_code == 200:
             updated_card = Card(**data.json())
             return updated_card
+        if data.status_code == 410:
+            req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
+            if req.status_code == 200:
+                save_jwt(req.json()["access_token"])
+                self.reload_user_crendentials()
+                return self.update_card(card)
+            print(req.json())
 
         print(f"{data.json()['detail']}")
 
@@ -48,6 +67,13 @@ class DataSender:
         if data.status_code == 201:
             new_project = Project(**data.json())
             return new_project
+        if data.status_code == 410:
+            req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
+            if req.status_code == 200:
+                save_jwt(req.json()["access_token"])
+                self.reload_user_crendentials()
+                return self.create_project(project)
+            print(req.json())
 
     def update_project(self, project: Project) -> Project:
         project_dict = project.__dict__
@@ -57,6 +83,13 @@ class DataSender:
         if data.status_code == 200:
             updated_project = Project(**data.json())
             return updated_project
+        if data.status_code == 410:
+            req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
+            if req.status_code == 200:
+                save_jwt(req.json()["access_token"])
+                self.reload_user_crendentials()
+                return self.update_project(project)
+            print(req.json())
 
         print(f"{data.json()['detail']}")
 
@@ -65,3 +98,10 @@ class DataSender:
 
         if data.status_code == 204:
             return True
+        if data.status_code == 410:
+            req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
+            if req.status_code == 200:
+                save_jwt(req.json()["access_token"])
+                self.reload_user_crendentials()
+                return self.remove_project_by_id(id)
+            print(req.json())
