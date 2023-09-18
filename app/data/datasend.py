@@ -9,6 +9,16 @@ class DataSender:
         self.user_credentials = USER_HEADERS
         self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
 
+        self.refresh_credentials = self.user_credentials
+        self.refresh_credentials["Authorization"] = f"Bearer {get_token('r_token')}"
+
+    def reload_user_crendentials(self) -> None:
+        self.user_credentials = USER_HEADERS
+        self.user_credentials["Authorization"] = f"Bearer {get_token('token')}"
+
+        self.refresh_credentials = self.user_credentials
+        self.refresh_credentials["Authorization"] = f"Bearer {get_token('r_token')}"
+
     def create_new_card(self, card: dict) -> Card | None:
         data = requests.post(CARDS_BASE_URL, json=card, headers=self.user_credentials)
 
