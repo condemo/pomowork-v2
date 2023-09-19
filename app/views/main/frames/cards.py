@@ -124,8 +124,8 @@ class PomoCard(ctk.CTkFrame):
         super().__init__(master=master, fg_color="#B13F39", height=50)
         self.master = master
         self.grid_propagate(False)
-        self.columnconfigure(7, weight=2, uniform="a")
-        self.columnconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform="a")
+        self.columnconfigure(9, weight=2, uniform="a")
+        self.columnconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
 
         self.id = card_data.id
@@ -158,13 +158,11 @@ class PomoCard(ctk.CTkFrame):
         )
 
     def load_widgets(self) -> None:
-        self.date_label.grid(
-            column=3, columnspan=2, row=0, sticky="nswe", pady=1)
-        self.price_h_label.grid(column=1, row=1, rowspan=2, sticky="nswe")
-        self.pomo_count_label.grid(column=3, row=1, rowspan=2, columnspan=2, sticky="nswe")
-        self.total_money_label.grid(column=6, row=1, rowspan=2, sticky="nswe")
-        self.check_box.grid(
-            column=7, row=0, rowspan=3, sticky="e", padx=5)
+        self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
+        self.price_h_label.grid(column=1, columnspan=3, row=1, rowspan=4, sticky="nswe")
+        self.pomo_count_label.grid(column=4, row=1, rowspan=2, columnspan=3, sticky="nswe")
+        self.total_money_label.grid(column=7, columnspan=2, row=1, rowspan=2, sticky="nswe")
+        self.check_box.grid(column=8, row=0, columnspan=2, rowspan=4, sticky="e", padx=5)
 
     def update_data(self, card_data: Card) -> None:
         self.id = card_data.id
