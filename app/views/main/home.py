@@ -9,6 +9,7 @@ class HomeView(ctk.CTkFrame):
         self.pack_propagate(False)
 
         self.data_handler = ProjectDataHandler(self)
+        self.winfo_toplevel().protocol("WM_DELETE_WINDOW", self.reset_pomo_day_count)
         self.create_widgets()
         self.load_widgets()
 
@@ -43,6 +44,10 @@ class HomeView(ctk.CTkFrame):
 
     def update_info_buttons(self, count: int) -> None:
         self.main_frame.update_info_buttons(count)
+
+    def reset_pomo_day_count(self) -> None:
+        self.data_handler.save_pomo_day_count(0)
+        self.winfo_toplevel().destroy()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
