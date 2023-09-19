@@ -325,9 +325,10 @@ class InfoFrame(ctk.CTkFrame):
 
         self.radio_btn_list = [ctk.CTkRadioButton(
             self.pomo_day_left_frame, text="", width=10,
-            state="normal", border_width_checked=10) for i in range(4)]
+            state="readonly", border_width_checked=10) for i in range(4)]
         [self.radio_btn_list.append(ctk.CTkRadioButton(
-            self.pomo_day_right_frame, text="", width=10, state="readonly")) for i in range(4)]
+            self.pomo_day_right_frame, text="", width=10,
+            state="readonly", border_width_checked=10)) for i in range(4)]
 
         self.main_frame = ctk.CTkFrame(self)
         self.info_container_frame = ctk.CTkFrame(self.main_frame)
