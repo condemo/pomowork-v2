@@ -112,7 +112,6 @@ class ClockFrame(ctk.CTkFrame):
         self.data_handler = data_handler
 
         self.time = tk.StringVar(self)
-        self.set_timer()
 
         self.play_text = tk.StringVar(self)
         self.play_text.set("PL")
@@ -126,6 +125,7 @@ class ClockFrame(ctk.CTkFrame):
         self.modes_list = ["Work", "Short Break", "Long Break"]
         self.current_mode_index = 0
         self.mode = self.modes_list[self.current_mode_index]
+        self.set_timer(self.pomo_timer * 60)
 
         self.create_widgets()
         self.load_widgets()
