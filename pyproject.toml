@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "pomowork"
+authors = [{ name = "Gustavo de los Santos", email = "gustleo.dev@gmail.com" }]
+description = ""
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+  "certifi",
+  "cffi",
+  "charset-normalizer",
+  "cryptography",
+  "customtkinter",
+  "darkdetect",
+  "dbus-python",
+  "idna",
+  "plyer",
+  "pycparser",
+  "requests",
+  "tomlkit",
+  "urllib3",
+  'importlib-metadata; python_version<"3.8"',
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = { attr = "app.pomowork._VERSION" }
