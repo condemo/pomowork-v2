@@ -16,7 +16,6 @@ if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     DATA_DIR = data_folder
 else:
     CURRENT_DIRECTORY = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
-    print(CURRENT_DIRECTORY)
     CONFIG_FOLDER = CURRENT_DIRECTORY + "/config"
     DATA_DIR = CURRENT_DIRECTORY + "/data"
 
