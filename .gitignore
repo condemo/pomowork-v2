@@ -12,3 +12,6 @@ dist/
 *.egg
 *.egg-info/
 build/
+Pomowork.spec
+pomowork.dist
+pomowork.build
