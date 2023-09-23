@@ -20,7 +20,6 @@ else:
     DATA_DIR = CURRENT_DIRECTORY + "/data"
 
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
-print(USER_CONF_FILE)
 
 # SERVER DATA
 SERVICE_URL = "http://127.0.0.1:8000/"
