@@ -3,18 +3,22 @@ import sys
 import tomlkit
 
 CONFIG_FOLDER = os.path.abspath(os.path.dirname(__file__))
+DIST_FOLDER = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
+DATA_FOLDER = os.path.join(DIST_FOLDER, "data")
 
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    dist_folder = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
-    data_folder = os.path.join(dist_folder, "data")
-    print(data_folder)
+    print(DATA_FOLDER)
     if not os.path.isdir(CONFIG_FOLDER):
         os.mkdir(CONFIG_FOLDER)
-    if not os.path.isdir(data_folder):
-        os.mkdir(data_folder)
+    if not os.path.isdir(DATA_FOLDER):
+        os.mkdir(DATA_FOLDER)
         pass
-    DATA_DIR = data_folder
+    DATA_DIR = DATA_FOLDER
 else:
+    if not os.path.isdir(CONFIG_FOLDER):
+        os.mkdir(CONFIG_FOLDER)
+    if not os.path.isdir(DATA_FOLDER):
+        os.mkdir(DATA_FOLDER)
     CURRENT_DIRECTORY = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
     CONFIG_FOLDER = CURRENT_DIRECTORY + "/config"
     DATA_DIR = CURRENT_DIRECTORY + "/data"
