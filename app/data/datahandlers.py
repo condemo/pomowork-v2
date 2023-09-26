@@ -10,6 +10,8 @@ class ProjectDataHandler:
         self.view = view
         self.cache_handler = CacheHandler()
         self.project_list = self.cache_handler.get_project_list()
+        if not config.user_conf["core"]["last_open_project"] and self.project_list:
+            self.save_new_last_open_project(self.project_list[0][0])
         self.current_project: Project = self.cache_handler \
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
@@ -27,6 +29,12 @@ class ProjectDataHandler:
 
     def get_pomo_day_count(self) -> int:
         return self.pomo_day_count
+
+    @staticmethod
+    def save_new_last_open_project(id: int) -> None:
+        print(id)
+        config.user_conf["core"]["last_open_project"] = id
+        config.save_config(config.user_conf)
 
     def save_pomo_day_count(self, count: int) -> int:
         self.pomo_day_count = count
@@ -64,14 +72,19 @@ class ProjectDataHandler:
                 self.current_project.salary_collected,
                 self.current_project.total_money
             )
+        else:
+            return (0, 0, 0)
 
     def get_project_total_hours(self) -> tuple[int, int]:
         total_pomos: int = 0
-        for card in self.card_list:
-            total_pomos += card.pomo_count
-        total_minutes = total_pomos * 30
-        hours, minutes = divmod(total_minutes, 60)
-        return hours, minutes
+        if self.card_list:
+            for card in self.card_list:
+                total_pomos += card.pomo_count
+            total_minutes = total_pomos * 30
+            hours, minutes = divmod(total_minutes, 60)
+            return hours, minutes
+        else:
+            return 0, 0
 
     def update_card_status(self, id: int, status: bool) -> Card:
         for card in self.card_list:

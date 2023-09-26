@@ -17,8 +17,12 @@ class CacheHandler:
     def __init__(self):
         self.data_fetch()
         self.data_sender = DataSender()
-        self.current_project_id = config.user_conf["core"]["last_open_project"]
-        self.current_project = self.load_project_by_id(self.current_project_id)
+        if config.user_conf["core"]["last_open_project"]:
+            self.current_project_id = config.user_conf["core"]["last_open_project"]
+            self.current_project = self.load_project_by_id(self.current_project_id)
+        else:
+            self.current_project_id = None
+            self.current_project = None
 
     @staticmethod
     def data_fetch() -> None:
