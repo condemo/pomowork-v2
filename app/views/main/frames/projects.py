@@ -99,14 +99,14 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
     def load_widgets(self) -> None:
         [i.show() for i in self.profile_list]
 
-    def add_project(self, id: int, name: str) -> None:
+    def add_project(self, id: int, name: str, price: float) -> None:
         if self.projects_list:
             [i.pack_forget() for i in self.profile_list]
         else:
             self.profile_list: list = []
             self.projects_list: list = []
         self.projects_list.insert(0, (id, name))
-        new_project = ProjectProfileCard(self, id=id, name=name)
+        new_project = ProjectProfileCard(self, id=id, name=name, price=price)
         self.profile_list.insert(0, new_project)
         [i.show() for i in self.profile_list]
 
@@ -223,9 +223,13 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
 
         self.id = id
-        self.name = StringVar(self, name)
         self.price = price
-        self.price_var = StringVar(self, str("%.2f" % self.price))
+        if self.id:
+            self.name = StringVar(self, name)
+            self.price_var = StringVar(self, str("%.2f" % self.price))
+        else:
+            self.name = StringVar(self, "")
+            self.price_var = StringVar(self, "")
 
         if self.config_mode:
             self.load_update_widgets()
