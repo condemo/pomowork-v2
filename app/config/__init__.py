@@ -33,7 +33,7 @@ def load_config() -> dict:
 
 def create_config() -> dict:
     initial_config = {
-        "core": {"last_open_project": 0},
+        "core": {"last_open_project": False},
         "pomo": {
             "pomo_day_count": 0,
             "pomo_timer": .1,
