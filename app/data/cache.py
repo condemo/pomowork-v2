@@ -68,6 +68,11 @@ class CacheHandler:
         with open(CACHE_FILE, "w") as file:
             json.dump(data, file, indent=2)
 
+    def update_last_open_project(self, id: int) -> None:
+        config.user_conf["core"]["last_open_project"] = id
+        self.current_project_id = id
+        self.current_project = self.load_project_by_id(id)
+
     def get_project_list(self) -> list[tuple[int, str, float]]:
         data = self.read_data_file()
 

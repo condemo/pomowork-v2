@@ -12,6 +12,7 @@ class ProjectDataHandler:
         self.project_list = self.cache_handler.get_project_list()
         if not config.user_conf["core"]["last_open_project"] and self.project_list:
             self.save_new_last_open_project(self.project_list[0][0])
+            self.cache_handler.update_last_open_project(self.project_list[0][0])
         self.current_project: Project = self.cache_handler \
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
@@ -32,7 +33,6 @@ class ProjectDataHandler:
 
     @staticmethod
     def save_new_last_open_project(id: int) -> None:
-        print(id)
         config.user_conf["core"]["last_open_project"] = id
         config.save_config(config.user_conf)
 
