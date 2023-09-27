@@ -36,9 +36,9 @@ def create_config() -> dict:
         "core": {"last_open_project": False},
         "pomo": {
             "pomo_day_count": 0,
-            "pomo_timer": .1,
-            "short_break": .1,
-            "long_break": .1
+            "pomo_timer": 30,
+            "short_break": 5,
+            "long_break": 15
             }
     }
     with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
