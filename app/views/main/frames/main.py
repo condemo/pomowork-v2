@@ -320,19 +320,6 @@ class InfoFrame(ctk.CTkFrame):
                 self, text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18))
             self.date_label = ctk.CTkLabel(self, text=f"{self.last_card_date}", font=("Roboto", 30))
 
-            self.pomo_day_main_frame = ctk.CTkFrame(self, fg_color="transparent")
-            self.pomo_day_left_frame = ctk.CTkFrame(
-                self.pomo_day_main_frame, fg_color="transparent")
-            self.pomo_day_right_frame = ctk.CTkFrame(
-                self.pomo_day_main_frame, fg_color="transparent")
-
-            self.radio_btn_list = [ctk.CTkRadioButton(
-                self.pomo_day_left_frame, text="", width=10,
-                state="readonly", border_width_checked=10) for i in range(4)]
-            [self.radio_btn_list.append(ctk.CTkRadioButton(
-                self.pomo_day_right_frame, text="", width=10,
-                state="readonly", border_width_checked=10)) for i in range(4)]
-
             self.main_frame = ctk.CTkFrame(self)
             self.info_container_frame = ctk.CTkFrame(self.main_frame)
             self.pomo_num_label = ctk.CTkLabel(
@@ -343,6 +330,19 @@ class InfoFrame(ctk.CTkFrame):
             self.total_money_label = ctk.CTkLabel(
                 self.bottom_frame,
                 text=f"Total Hoy: {self.last_card.total_price:.2f}€", font=("Roboto", 60))
+
+        self.pomo_day_main_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.pomo_day_left_frame = ctk.CTkFrame(
+            self.pomo_day_main_frame, fg_color="transparent")
+        self.pomo_day_right_frame = ctk.CTkFrame(
+            self.pomo_day_main_frame, fg_color="transparent")
+
+        self.radio_btn_list = [ctk.CTkRadioButton(
+            self.pomo_day_left_frame, text="", width=10,
+            state="readonly", border_width_checked=10) for i in range(4)]
+        [self.radio_btn_list.append(ctk.CTkRadioButton(
+            self.pomo_day_right_frame, text="", width=10,
+            state="readonly", border_width_checked=10)) for i in range(4)]
 
     def load_widgets(self) -> None:
         if self.last_card:
