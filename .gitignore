@@ -7,3 +7,11 @@ venv/
 data.json
 app/config/user_conf.toml
 app/data/.r_token
+dist/
+*.so
+*.egg
+*.egg-info/
+build/
+Pomowork.spec
+pomowork.dist
+pomowork.build

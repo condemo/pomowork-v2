@@ -1,10 +1,28 @@
 import os
+import sys
 import tomlkit
 
+CONFIG_FOLDER = os.path.abspath(os.path.dirname(__file__))
+DIST_FOLDER = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
+DATA_FOLDER = os.path.join(DIST_FOLDER, "data")
 
-CURRENT_DIRECTORY = os.getcwd() + "/app"
-DATA_DIR = CURRENT_DIRECTORY + "/data"
-CONFIG_FOLDER = CURRENT_DIRECTORY + "/config"
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    print(DATA_FOLDER)
+    if not os.path.isdir(CONFIG_FOLDER):
+        os.mkdir(CONFIG_FOLDER)
+    if not os.path.isdir(DATA_FOLDER):
+        os.mkdir(DATA_FOLDER)
+        pass
+    DATA_DIR = DATA_FOLDER
+else:
+    if not os.path.isdir(CONFIG_FOLDER):
+        os.mkdir(CONFIG_FOLDER)
+    if not os.path.isdir(DATA_FOLDER):
+        os.mkdir(DATA_FOLDER)
+    CURRENT_DIRECTORY = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
+    CONFIG_FOLDER = CURRENT_DIRECTORY + "/config"
+    DATA_DIR = CURRENT_DIRECTORY + "/data"
+
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
 
 # SERVER DATA
