@@ -11,6 +11,7 @@ class PomoWork(ctk.CTk):
         super().__init__()
         self.geometry("1400x800")
         self.title("PomoWork")
+        ctk.set_appearance_mode("dark")
 
         self.credentials_view = JWTChecker()
         self.view_controller = ViewController()
