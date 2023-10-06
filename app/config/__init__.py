@@ -1,30 +1,23 @@
 import os
-import sys
 import tomlkit
 
-CONFIG_FOLDER = os.path.abspath(os.path.dirname(__file__))
-DIST_FOLDER = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
-DATA_FOLDER = os.path.join(DIST_FOLDER, "data")
-
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    print(DATA_FOLDER)
-    if not os.path.isdir(CONFIG_FOLDER):
-        os.mkdir(CONFIG_FOLDER)
-    if not os.path.isdir(DATA_FOLDER):
-        os.mkdir(DATA_FOLDER)
-        pass
-    DATA_DIR = DATA_FOLDER
+SYS_CONFIG_DIR = os.path.expanduser("~/.config/")
+CONFIG_FOLDER = os.path.join(SYS_CONFIG_DIR, "pomowork")
+if os.path.isdir(CONFIG_FOLDER):
+    print(CONFIG_FOLDER, " Existe")
 else:
-    if not os.path.isdir(CONFIG_FOLDER):
-        os.mkdir(CONFIG_FOLDER)
-    if not os.path.isdir(DATA_FOLDER):
-        os.mkdir(DATA_FOLDER)
-    CURRENT_DIRECTORY = os.path.abspath(os.path.join(CONFIG_FOLDER, os.pardir))
-    CONFIG_FOLDER = CURRENT_DIRECTORY + "/config"
-    DATA_DIR = CURRENT_DIRECTORY + "/data"
+    os.mkdir(CONFIG_FOLDER)
+    print(CONFIG_FOLDER)
+
+SYS_DATA_FOLDER = os.path.expanduser("~/.local/share/")
+DATA_DIR = os.path.join(SYS_DATA_FOLDER, "pomowork")
+if os.path.isdir(DATA_DIR):
+    print(DATA_DIR, " Existe")
+else:
+    os.mkdir(DATA_DIR)
+    print(DATA_DIR)
 
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
-
 # SERVER DATA
 SERVICE_URL = "https://pomo-service.fly.dev/"
 PROJECTS_BASE_URL = SERVICE_URL + "projects/"
