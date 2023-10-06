@@ -39,5 +39,4 @@ def signup_handler(username: str, password: str, repeated_password: str, email: 
             return False
 
         case 201:
-            print(response.json())
             return True
