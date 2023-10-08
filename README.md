@@ -18,22 +18,22 @@ A simple pomodoros and collections manager software.
 <br>
 
 ## Table of contents
-***
+
 - [About](#about-pomowork)
 - [Known issues](#known-issues)
 - [License](#license)
 
 ## About Pomowork (work in progress)
-***
+
 Pomowork is a software that allows you to manage projects, using pomodoros, assign them a price per hour (optional) and not worry about the rest. Pomowork will automatically create a card each day where the number of pomodoros and the money generated that day will be saved, allowing you to confirm if the hours have been charged.
 
 ## Known issues
-***
+
 - You can start a timer without having created any project
 - Input validation when modifying the name or price does not work
 - The program crashes if the email already exists when creating a user
 - Weird stuff when pressing enter in the login error popup
 
 ## License
-***
+
 The source code for the site is licensed under the GPL-3.0 license, which you can find in the [LICENSE](LICENSE) file.
