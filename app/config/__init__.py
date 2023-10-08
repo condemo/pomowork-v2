@@ -3,19 +3,13 @@ import tomlkit
 
 SYS_CONFIG_DIR = os.path.expanduser("~/.config/")
 CONFIG_FOLDER = os.path.join(SYS_CONFIG_DIR, "pomowork")
-if os.path.isdir(CONFIG_FOLDER):
-    print(CONFIG_FOLDER, " Existe")
-else:
+if not os.path.isdir(CONFIG_FOLDER):
     os.mkdir(CONFIG_FOLDER)
-    print(CONFIG_FOLDER)
 
 SYS_DATA_FOLDER = os.path.expanduser("~/.local/share/")
 DATA_DIR = os.path.join(SYS_DATA_FOLDER, "pomowork")
-if os.path.isdir(DATA_DIR):
-    print(DATA_DIR, " Existe")
-else:
+if not os.path.isdir(DATA_DIR):
     os.mkdir(DATA_DIR)
-    print(DATA_DIR)
 
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
 # SERVER DATA
