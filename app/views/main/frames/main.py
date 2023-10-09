@@ -6,6 +6,7 @@ import tkinter as tk
 from plyer import notification
 from data.datahandlers import ProjectDataHandler
 from utils.infomessage import InfoMessage
+from views.main.config import ConfigWindow
 
 
 class MainFrame(ctk.CTkFrame):
@@ -13,6 +14,7 @@ class MainFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
+
         self.data_handler = data_handler
 
         self.create_widgets()
@@ -54,6 +56,7 @@ class PomoFrame(ctk.CTkFrame):
                           weight=1, uniform="a")
 
         self.data_handler = data_handler
+        self.config_window = None
 
         self.create_widgets()
         self.load_widgets()
@@ -65,7 +68,9 @@ class PomoFrame(ctk.CTkFrame):
             font=("Roboto", 28)
         )
         self.config_btn = ctk.CTkButton(
-            self.top_frame, text="C", width=30, height=30, corner_radius=30)
+            self.top_frame, text="C", width=30, height=30, corner_radius=30,
+            command=self.create_config_window
+        )
 
         self.main_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.back_btn = ctk.CTkButton(
@@ -89,6 +94,12 @@ class PomoFrame(ctk.CTkFrame):
         self.clock_frame.show()
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
+
+    def create_config_window(self) -> None:
+        if self.config_window is None or not self.config_window.winfo_exists():
+            self.config_window = ConfigWindow(self, self.data_handler)
+        else:
+            self.config_window.focus()
 
     def back_mode(self) -> None:
         self.clock_frame.back_mode()
