@@ -18,6 +18,9 @@ class PomoWork(ctk.CTk):
 
         self.view_controller.change_view(self.credentials_view.check_credentials(), self)
 
+    def go_login_view(self) -> None:
+        self.view_controller.change_view("login", self)
+
 
 if __name__ == "__main__":
     app = PomoWork()

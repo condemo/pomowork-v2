@@ -25,3 +25,8 @@ def get_token(token_type: str):
     token = decrypt_token_file(token_type)
 
     return base64.b64decode(token).decode("utf-8")
+
+
+def remove_session() -> None:
+    save_jwt("token")
+    save_refresh_token("r_token")
