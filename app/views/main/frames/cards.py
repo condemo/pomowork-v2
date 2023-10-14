@@ -156,6 +156,8 @@ class PomoCard(ctk.CTkFrame):
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
             command=self.change_status, variable=self.check_var
         )
+        if self.check_var.get():
+            self.configure(fg_color="green")
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -173,8 +175,10 @@ class PomoCard(ctk.CTkFrame):
         self.status = card_data.collected
         if self.status:
             self.status_text = "Cobrado"
+            self.configure(fg_color="green")
         else:
             self.status_text = "No Cobrado"
+            self.configure(fg_color="#B13F39")
         self.total_price = card_data.total_price
 
         self.price_h_label.configure(
