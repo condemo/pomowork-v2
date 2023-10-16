@@ -154,10 +154,12 @@ class PomoCard(ctk.CTkFrame):
             self, text=f"{self.total_price:.2f}€", font=("Roboto", 14))
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
-            command=self.change_status, variable=self.check_var
+            command=self.change_status, variable=self.check_var, fg_color="#B13F39",
+            hover_color="green"
         )
         if self.check_var.get():
             self.configure(fg_color="green")
+            self.check_box.configure(fg_color="green", hover_color="#B13F39")
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -197,8 +199,10 @@ class PomoCard(ctk.CTkFrame):
     def change_status(self) -> None:
         if self.check_box.get() == 0:
             card_data = self.master.change_status(self.id, False)
+            self.check_box.configure(fg_color="#B13F39", hover_color="green")
         else:
             card_data = self.master.change_status(self.id, True)
+            self.check_box.configure(fg_color="green", hover_color="#B13F39")
 
         self.update_data(card_data)
         self.master.data_handler.update_current_project_data()
