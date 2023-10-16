@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from data.datahandlers import ProjectDataHandler
+from data.datahandlers import DataController
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
 
 
@@ -8,7 +8,7 @@ class HomeView(ctk.CTkFrame):
         super().__init__(master=master)
         self.pack_propagate(False)
 
-        self.data_handler = ProjectDataHandler(self)
+        self.data_handler = DataController(self)
         self.winfo_toplevel().protocol("WM_DELETE_WINDOW", self.reset_pomo_day_count)
         self.create_widgets()
         self.load_widgets()

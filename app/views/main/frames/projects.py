@@ -1,11 +1,11 @@
 import customtkinter as ctk
 from tkinter import StringVar
 from typing import Optional
-from data.datahandlers import ProjectDataHandler
+from data.datahandlers import DataController
 
 
 class ProjectsFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master, width=20)
         self.master = master
         self.pack_propagate(False)
@@ -75,7 +75,7 @@ class ProjectsFrame(ctk.CTkFrame):
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master, width=20)
         self.master = master
 

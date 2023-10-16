@@ -1,11 +1,11 @@
 import customtkinter as ctk
 from tkinter.messagebox import askyesno
-from data.datahandlers import ProjectDataHandler
+from data.datahandlers import DataController
 from data.oauth2 import remove_session
 
 
 class ConfigWindow(ctk.CTkToplevel):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
         self.geometry("1000x600+200+200")

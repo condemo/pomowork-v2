@@ -5,7 +5,7 @@ from data.cache import CacheHandler
 import config
 
 
-class ProjectDataHandler:
+class DataController:
     def __init__(self, view: View):
         self.view = view
         self.cache_handler = CacheHandler()

@@ -1,11 +1,11 @@
 import customtkinter as ctk
 from tkinter import IntVar
 from lib.models import Card
-from data.datahandlers import ProjectDataHandler
+from data.datahandlers import DataController
 
 
 class CardsFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.pack_propagate(False)
 
@@ -85,7 +85,7 @@ class CardsFrame(ctk.CTkFrame):
 
 
 class CardListFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.data_handler = data_handler
         self.card_list = self.data_handler.get_project_cards()

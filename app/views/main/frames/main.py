@@ -4,13 +4,13 @@ import threading
 import customtkinter as ctk
 import tkinter as tk
 from plyer import notification
-from data.datahandlers import ProjectDataHandler
+from data.datahandlers import DataController
 from utils.infomessage import InfoMessage
 from views.main.config import ConfigWindow
 
 
 class MainFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
@@ -46,7 +46,7 @@ class MainFrame(ctk.CTkFrame):
 
 
 class PomoFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
         self.pack_propagate(False)
@@ -117,7 +117,7 @@ class PomoFrame(ctk.CTkFrame):
 
 
 class ClockFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
         self.data_handler = data_handler
@@ -307,7 +307,7 @@ class ClockFrame(ctk.CTkFrame):
 
 
 class InfoFrame(ctk.CTkFrame):
-    def __init__(self, master, data_handler: ProjectDataHandler):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.pack_propagate(False)
         self.data_handler = data_handler
