@@ -90,13 +90,13 @@ class DataController:
         for card in self.card_list:
             if card.id == id:
                 card.collected = status
-                return self.cache_handler.update_card(card)
+                return self.cache_handler.update_card(card.__dict__)
 
     def update_card(self, count: int = 0) -> None:
         self.current_card.pomo_count += count
         self.current_card.total_price = \
             (self.current_card.pomo_count / 2) * self.current_card.price_per_hour
-        self.current_card = self.cache_handler.update_card(self.current_card)
+        self.current_card = self.cache_handler.update_card(self.current_card.__dict__)
         self.update_current_project_data()
         self.view.update_current_card(self.current_card)
 
@@ -105,10 +105,10 @@ class DataController:
         card.total_price = \
             (card.pomo_count / 2) * card.price_per_hour
         if card.id == self.current_card.id:
-            self.current_card = self.cache_handler.update_card(card)
+            self.current_card = self.cache_handler.update_card(card.__dict__)
             self.view.update_current_card(self.current_card)
         else:
-            self.cache_handler.update_card(card)
+            self.cache_handler.update_card(card.__dict__)
 
     def create_project(self, project_data: dict) -> Project:
         self.current_project = self.cache_handler.set_project(project_data)

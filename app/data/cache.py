@@ -11,18 +11,44 @@ from data.oauth2 import get_token
 
 
 CACHE_FILE = config.DATA_DIR + "/data.json"
+ITEM_FILE = config.DATA_DIR + "/item.json"
 
 
 class CacheHandler:
     def __init__(self, view):
-        self.data_fetch()
         self.data_sender = DataSender(view)
+        self.check_pending_com()
+        self.data_fetch()
         if config.user_conf["core"]["last_open_project"]:
             self.current_project_id = config.user_conf["core"]["last_open_project"]
             self.current_project = self.load_project_by_id(self.current_project_id)
         else:
             self.current_project_id = None
             self.current_project = None
+
+    def check_pending_com(self):
+        if os.path.isfile(ITEM_FILE):
+            print("ItemFile Exists")
+            with open(ITEM_FILE, "r") as file:
+                item = json.load(file)
+            match item["type"]:
+                case "project":
+                    match item["mode"]:
+                        case "post":
+                            self.data_sender.create_project(item["info"])
+                        case "put":
+                            self.data_sender.update_project(item["info"])
+                        case "delete":
+                            self.data_sender.remove_project_by_id(item["info"]["id"])
+                case "card":
+                    match item["mode"]:
+                        case "post":
+                            self.data_sender.create_new_card(item["info"])
+                        case "put":
+                            print("Actualizando Tarjeta")
+                            self.data_sender.update_card(item["info"])
+            os.remove(ITEM_FILE)
+            print("Item file removed")
 
     @staticmethod
     def data_fetch() -> None:
@@ -152,7 +178,7 @@ class CacheHandler:
                     return True
 
     def update_project_data(self, updated_project: Project) -> None:
-        project = self.data_sender.update_project(updated_project)
+        project = self.data_sender.update_project(updated_project.__dict__)
         if project:
             data = self.read_data_file()
 
@@ -171,7 +197,7 @@ class CacheHandler:
                 project = Project(**p)
                 project.name = name
                 project.price_per_hour = price
-                updated_project = self.data_sender.update_project(project)
+                updated_project = self.data_sender.update_project(project.__dict__)
                 if updated_project:
                     data["projects"].remove(p)
                     data["projects"].append(updated_project.__dict__)
@@ -195,9 +221,10 @@ class CacheHandler:
                     self.save_data_file(data)
                     return new_card
 
-    def update_card(self, updated_card: Card) -> Card:
-        card = self.data_sender.update_card(updated_card)
-        if card:
+    def update_card(self, updated_card: dict) -> Card:
+        card_dict = self.data_sender.update_card(updated_card)
+        if card_dict:
+            card = Card(**card_dict)
             data = self.read_data_file()
             for project in data["projects"]:
                 if project["id"] == card.project_id:

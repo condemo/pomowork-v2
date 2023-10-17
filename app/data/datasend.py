@@ -48,14 +48,12 @@ class DataSender:
             case 500:
                 print("Error desconocido en el servidor")
 
-    def update_card(self, card: Card) -> Card | None:
-        card_dict = card.__dict__
-        CARD_UPDATE_URL = f"{CARDS_BASE_URL}{card_dict['project_id']}/{card_dict['id']}"
-        data = requests.put(CARD_UPDATE_URL, json=card_dict, headers=self.user_credentials)
+    def update_card(self, card: dict) -> Card | None:
+        CARD_UPDATE_URL = f"{CARDS_BASE_URL}{card['project_id']}/{card['id']}"
+        data = requests.put(CARD_UPDATE_URL, json=card, headers=self.user_credentials)
 
         if data.status_code == 200:
-            updated_card = Card(**data.json())
-            return updated_card
+            return data.json()
         if data.status_code == 410:
             req = requests.post(REFRESH_URL, headers=self.refresh_credentials)
             if req.status_code == 200:
@@ -63,7 +61,7 @@ class DataSender:
                 self.reload_user_crendentials()
                 return self.update_card(card)
             else:
-                save_pending_com("card", "put", card_dict)
+                save_pending_com("card", "put", card)
                 self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
@@ -86,10 +84,10 @@ class DataSender:
                 self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
-    def update_project(self, project: Project) -> Project:
-        project_dict = project.__dict__
-        del project_dict["cards"]
-        data = requests.put(PROJECTS_BASE_URL, json=project_dict, headers=self.user_credentials)
+    def update_project(self, project: dict) -> Project:
+        if "cards" in project:
+            del project["cards"]
+        data = requests.put(PROJECTS_BASE_URL, json=project, headers=self.user_credentials)
 
         if data.status_code == 200:
             updated_project = Project(**data.json())
@@ -101,7 +99,7 @@ class DataSender:
                 self.reload_user_crendentials()
                 return self.update_project(project)
             else:
-                save_pending_com("project", "put", project_dict)
+                save_pending_com("project", "put", project)
                 self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
