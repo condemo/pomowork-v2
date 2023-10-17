@@ -13,7 +13,8 @@ if not os.path.isdir(DATA_DIR):
 
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
 # SERVER DATA
-SERVICE_URL = "https://pomo-service.fly.dev/"
+# SERVICE_URL = "https://pomo-service.fly.dev/"  # Prod
+SERVICE_URL = "http://127.0.0.1:8000/"
 PROJECTS_BASE_URL = SERVICE_URL + "projects/"
 CARDS_BASE_URL = SERVICE_URL + "cards/"
 LOGIN_URL = SERVICE_URL + "login/"
