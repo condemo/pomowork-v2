@@ -8,7 +8,7 @@ import config
 class DataController:
     def __init__(self, view: View):
         self.view = view
-        self.cache_handler = CacheHandler()
+        self.cache_handler = CacheHandler(view)
         self.project_list = self.cache_handler.get_project_list()
         if not config.user_conf["core"]["last_open_project"] and self.project_list:
             self.save_new_last_open_project(self.project_list[0][0])

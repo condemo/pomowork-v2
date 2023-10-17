@@ -1,6 +1,7 @@
 import requests
 from lib.models import Card, Project
 from data.oauth2 import get_token, save_jwt
+from utils import save_pending_com
 from config import (
     CARDS_BASE_URL,
     USER_HEADERS,
@@ -11,7 +12,8 @@ from config import (
 
 
 class DataSender:
-    def __init__(self):
+    def __init__(self, view):
+        self.view = view
         self.user_credentials = USER_HEADERS
         self.refresh_credentials = REFRESH_HEADERS
 
@@ -38,6 +40,9 @@ class DataSender:
                     save_jwt(req.json()["access_token"])
                     self.reload_user_crendentials()
                     return self.create_new_card(card)
+                else:
+                    save_pending_com("card", "post", card.__dict__)
+                    self.view.winfo_toplevel().go_login_view()
             case 422:
                 print(f"Error de validacion: {data.json()['detail']}")
             case 500:
@@ -57,6 +62,9 @@ class DataSender:
                 save_jwt(req.json()["access_token"])
                 self.reload_user_crendentials()
                 return self.update_card(card)
+            else:
+                save_pending_com("card", "put", card_dict)
+                self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
         print(f"{data.json()['detail']}")
@@ -73,6 +81,9 @@ class DataSender:
                 save_jwt(req.json()["access_token"])
                 self.reload_user_crendentials()
                 return self.create_project(project)
+            else:
+                save_pending_com("project", "post", project.__dict__)
+                self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
     def update_project(self, project: Project) -> Project:
@@ -89,6 +100,9 @@ class DataSender:
                 save_jwt(req.json()["access_token"])
                 self.reload_user_crendentials()
                 return self.update_project(project)
+            else:
+                save_pending_com("project", "put", project_dict)
+                self.view.winfo_toplevel().go_login_view()
             print(req.json())
 
         print(f"{data.json()['detail']}")
@@ -104,4 +118,7 @@ class DataSender:
                 save_jwt(req.json()["access_token"])
                 self.reload_user_crendentials()
                 return self.remove_project_by_id(id)
+            else:
+                save_pending_com("project", "delete", {"id": id})
+                self.view.winfo_toplevel().go_login_view()
             print(req.json())
