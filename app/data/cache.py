@@ -28,25 +28,25 @@ class CacheHandler:
 
     def check_pending_com(self):
         if os.path.isfile(ITEM_FILE):
-            print("ItemFile Exists")
             with open(ITEM_FILE, "r") as file:
                 item = json.load(file)
-            match item["type"]:
-                case "project":
-                    match item["mode"]:
-                        case "post":
-                            self.data_sender.create_project(item["info"])
-                        case "put":
-                            self.data_sender.update_project(item["info"])
-                        case "delete":
-                            self.data_sender.remove_project_by_id(item["info"]["id"])
-                case "card":
-                    match item["mode"]:
-                        case "post":
-                            self.data_sender.create_new_card(item["info"])
-                        case "put":
-                            print("Actualizando Tarjeta")
-                            self.data_sender.update_card(item["info"])
+            for i in item["item_list"]:
+                match i["type"]:
+                    case "project":
+                        match i["mode"]:
+                            case "post":
+                                self.data_sender.create_project(i["info"])
+                            case "put":
+                                self.data_sender.update_project(i["info"])
+                            case "delete":
+                                self.data_sender.remove_project_by_id(i["info"]["id"])
+                    case "card":
+                        match i["mode"]:
+                            case "post":
+                                self.data_sender.create_new_card(i["info"])
+                            case "put":
+                                print("Actualizando Tarjeta")
+                                self.data_sender.update_card(i["info"])
             os.remove(ITEM_FILE)
             print("Item file removed")
 
