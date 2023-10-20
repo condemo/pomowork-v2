@@ -28,6 +28,7 @@ class CacheHandler:
 
     def check_pending_com(self):
         if os.path.isfile(ITEM_FILE):
+            self.data_sender.reload_user_crendentials()
             with open(ITEM_FILE, "r") as file:
                 item = json.load(file)
             for i in item["item_list"]:
@@ -45,10 +46,8 @@ class CacheHandler:
                             case "post":
                                 self.data_sender.create_new_card(i["info"])
                             case "put":
-                                print("Actualizando Tarjeta")
                                 self.data_sender.update_card(i["info"])
             os.remove(ITEM_FILE)
-            print("Item file removed")
 
     @staticmethod
     def data_fetch() -> None:
