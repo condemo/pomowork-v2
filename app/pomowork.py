@@ -3,7 +3,7 @@ import customtkinter as ctk
 from views.utils import ViewController
 from utils.auth import JWTChecker
 
-_VERSION = "0.0.1"
+_VERSION = "0.2.0"
 
 
 class PomoWork(ctk.CTk):
