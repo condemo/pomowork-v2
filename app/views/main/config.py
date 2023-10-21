@@ -84,6 +84,15 @@ class GeneralConfigFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.master = master
 
+        self.create_widgets()
+        self.load_widgets()
+
+    def create_widgets(self) -> None:
+        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+
+    def load_widgets(self) -> None:
+        self.title.pack()
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -96,6 +105,15 @@ class TimersConfigFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.master = master
 
+        self.create_widgets()
+        self.load_widgets()
+
+    def create_widgets(self) -> None:
+        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+
+    def load_widgets(self) -> None:
+        self.title.pack()
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -107,6 +125,15 @@ class AboutFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master=master)
         self.master = master
+
+        self.create_widgets()
+        self.load_widgets()
+
+    def create_widgets(self) -> None:
+        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+
+    def load_widgets(self) -> None:
+        self.title.pack()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
