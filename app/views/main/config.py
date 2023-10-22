@@ -36,7 +36,7 @@ class ConfigWindow(ctk.CTkToplevel):
             font=("Roboto", 18, "bold"), corner_radius=10,
             command=self.logout)
 
-        self.section_frame = ctk.CTkFrame(self, fg_color="yellow")
+        self.section_frame = ctk.CTkFrame(self)
         self.active_section = GeneralConfigFrame(self.section_frame)
         self.active_btn = self.general_btn
 
