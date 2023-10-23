@@ -109,15 +109,18 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.work_value_label = StringVar(self, value="25 mins")
         self.work_value_int = IntVar(self, value=25)
 
-        self.short_value_label = StringVar(self, value="15 mins")
-        self.short_value_int = IntVar(self, value=15)
+        self.short_value_label = StringVar(self, value="5 mins")
+        self.short_value_int = IntVar(self, value=5)
+
+        self.long_value_label = StringVar(self, value="15 mins")
+        self.long_value_int = IntVar(self, value=15)
 
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
         self.section = ctk.CTkFrame(self, border_width=2, border_color="red")
-        self.center_frame = ctk.CTkFrame(self.section)
+        self.center_frame = ctk.CTkFrame(self.section, fg_color="transparent")
 
         self.pomotimer_container = ctk.CTkFrame(self.center_frame)
         self.pomotimer_label = ctk.CTkLabel(
@@ -137,6 +140,15 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.short_timer_value = ctk.CTkLabel(
             self.short_timer_container, textvariable=self.short_value_label, font=("Roboto", 20))
 
+        self.long_timer_container = ctk.CTkFrame(self.center_frame)
+        self.long_timer_label = ctk.CTkLabel(
+            self.long_timer_container, text="Long Break:", font=("Roboto", 20))
+        self.long_timer_slider = ctk.CTkSlider(
+            self.long_timer_container, from_=10, to=30, number_of_steps=4,
+            variable=self.long_value_int, command=self.update_long)
+        self.long_timer_value = ctk.CTkLabel(
+            self.long_timer_container, textvariable=self.long_value_label, font=("Roboto", 20))
+
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
         self.center_frame.pack(expand=True)
@@ -151,6 +163,11 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.short_timer_slider.pack(side="left", padx=20)
         self.short_timer_value.pack(side="left")
 
+        self.long_timer_container.pack()
+        self.long_timer_label.pack(side="left", pady=10)
+        self.long_timer_slider.pack(side="left", padx=20)
+        self.long_timer_value.pack(side="left")
+
     def update_work(self, val) -> None:
         self.work_value_label.set(f"{str(int(val))} mins")
 
@@ -158,7 +175,7 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.short_value_label.set(f"{str(int(val))} mins")
 
     def update_long(self, val) -> None:
-        pass
+        self.long_value_label.set(f"{str(int(val))} mins")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
