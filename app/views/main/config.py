@@ -109,6 +109,9 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.work_value_label = StringVar(self, value="25 mins")
         self.work_value_int = IntVar(self, value=25)
 
+        self.short_value_label = StringVar(self, value="15 mins")
+        self.short_value_int = IntVar(self, value=15)
+
         self.create_widgets()
         self.load_widgets()
 
@@ -125,6 +128,15 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.pomotimer_value = ctk.CTkLabel(
             self.pomotimer_container, textvariable=self.work_value_label, font=("Roboto", 20))
 
+        self.short_timer_container = ctk.CTkFrame(self.center_frame)
+        self.short_timer_label = ctk.CTkLabel(
+            self.short_timer_container, text="Short Break:", font=("Roboto", 20))
+        self.short_timer_slider = ctk.CTkSlider(
+            self.short_timer_container, from_=1, to=20, number_of_steps=19,
+            variable=self.short_value_int, command=self.update_short)
+        self.short_timer_value = ctk.CTkLabel(
+            self.short_timer_container, textvariable=self.short_value_label, font=("Roboto", 20))
+
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
         self.center_frame.pack(expand=True)
@@ -134,8 +146,19 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.pomotimer_slider.pack(side="left", padx=20)
         self.pomotimer_value.pack(side="left")
 
+        self.short_timer_container.pack()
+        self.short_timer_label.pack(side="left", pady=10)
+        self.short_timer_slider.pack(side="left", padx=20)
+        self.short_timer_value.pack(side="left")
+
     def update_work(self, val) -> None:
         self.work_value_label.set(f"{str(int(val))} mins")
+
+    def update_short(self, val) -> None:
+        self.short_value_label.set(f"{str(int(val))} mins")
+
+    def update_long(self, val) -> None:
+        pass
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
