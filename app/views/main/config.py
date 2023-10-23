@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from tkinter import StringVar, IntVar
 from tkinter.messagebox import askyesno
 from data.datahandlers import DataController
 from data.oauth2 import remove_session
@@ -105,14 +106,36 @@ class TimersConfigFrame(ctk.CTkFrame):
         super().__init__(master=master)
         self.master = master
 
+        self.work_value_label = StringVar(self, value="25 mins")
+        self.work_value_int = IntVar(self, value=25)
+
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+        self.section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.center_frame = ctk.CTkFrame(self.section)
+
+        self.pomotimer_container = ctk.CTkFrame(self.center_frame)
+        self.pomotimer_label = ctk.CTkLabel(
+            self.pomotimer_container, text="Work Timer:", font=("Roboto", 20))
+        self.pomotimer_slider = ctk.CTkSlider(
+            self.pomotimer_container, from_=5, to=60, number_of_steps=11,
+            variable=self.work_value_int, command=self.update_work)
+        self.pomotimer_value = ctk.CTkLabel(
+            self.pomotimer_container, textvariable=self.work_value_label, font=("Roboto", 20))
 
     def load_widgets(self) -> None:
-        self.title.pack()
+        self.section.pack(pady=10, padx=20, fill="x", ipady=10)
+        self.center_frame.pack(expand=True)
+
+        self.pomotimer_container.pack()
+        self.pomotimer_label.pack(side="left", pady=10)
+        self.pomotimer_slider.pack(side="left", padx=20)
+        self.pomotimer_value.pack(side="left")
+
+    def update_work(self, val) -> None:
+        self.work_value_label.set(f"{str(int(val))} mins")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
