@@ -38,7 +38,7 @@ class ConfigWindow(ctk.CTkToplevel):
             command=self.logout)
 
         self.section_frame = ctk.CTkFrame(self)
-        self.active_section = GeneralConfigFrame(self.section_frame)
+        self.active_section = GeneralConfigFrame(self.section_frame, self.data_handler)
         self.active_btn = self.general_btn
 
     def load_widgets(self) -> None:
@@ -57,17 +57,17 @@ class ConfigWindow(ctk.CTkToplevel):
         self.active_btn.configure(fg_color="grey")
         match section_index:
             case 0:
-                self.active_section = GeneralConfigFrame(self.section_frame)
+                self.active_section = GeneralConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.general_btn
                 self.active_btn.configure(fg_color="#2B2B2B")
             case 1:
-                self.active_section = TimersConfigFrame(self.section_frame)
+                self.active_section = TimersConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.timer_btn
                 self.active_btn.configure(fg_color="#2B2B2B")
             case 2:
-                self.active_section = AboutFrame(self.section_frame)
+                self.active_section = AboutFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.about_btn
                 self.active_btn.configure(fg_color="#2B2B2B")
@@ -81,9 +81,10 @@ class ConfigWindow(ctk.CTkToplevel):
 
 
 class GeneralConfigFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
+        self.data_handler = data_handler
 
         self.create_widgets()
         self.load_widgets()
@@ -102,9 +103,10 @@ class GeneralConfigFrame(ctk.CTkFrame):
 
 
 class TimersConfigFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
+        self.data_handler = data_handler
 
         self.work_value_label = StringVar(self, value="25 mins")
         self.work_value_int = IntVar(self, value=25)
@@ -149,7 +151,8 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.long_timer_value = ctk.CTkLabel(
             self.long_timer_container, textvariable=self.long_value_label, font=("Roboto", 20))
 
-        self.save_btn = ctk.CTkButton(self.center_frame, text="Aplicar")
+        self.save_btn = ctk.CTkButton(
+            self.center_frame, text="Aplicar", command=self.save_timers)
 
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
@@ -181,6 +184,13 @@ class TimersConfigFrame(ctk.CTkFrame):
     def update_long(self, val) -> None:
         self.long_value_label.set(f"{str(int(val))} mins")
 
+    def save_timers(self) -> None:
+        self.data_handler.save_timers_config(
+            int(self.pomotimer_slider.get()),
+            int(self.short_timer_slider.get()),
+            int(self.long_timer_slider.get())
+        )
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 
@@ -189,9 +199,10 @@ class TimersConfigFrame(ctk.CTkFrame):
 
 
 class AboutFrame(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
+        self.data_handler = DataController
 
         self.create_widgets()
         self.load_widgets()
