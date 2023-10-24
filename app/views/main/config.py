@@ -108,14 +108,16 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.master = master
         self.data_handler = data_handler
 
-        self.work_value_label = StringVar(self, value="25 mins")
-        self.work_value_int = IntVar(self, value=25)
+        work, short, long = self.data_handler.get_timers()
 
-        self.short_value_label = StringVar(self, value="5 mins")
-        self.short_value_int = IntVar(self, value=5)
+        self.work_value_label = StringVar(self, value=f"{work} mins")
+        self.work_value_int = IntVar(self, value=f"{work}")
 
-        self.long_value_label = StringVar(self, value="15 mins")
-        self.long_value_int = IntVar(self, value=15)
+        self.short_value_label = StringVar(self, value=f"{short} mins")
+        self.short_value_int = IntVar(self, value=f"{short}")
+
+        self.long_value_label = StringVar(self, value=f"{long} mins")
+        self.long_value_int = IntVar(self, value=f"{long}")
 
         self.create_widgets()
         self.load_widgets()
