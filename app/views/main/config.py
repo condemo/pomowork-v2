@@ -149,6 +149,8 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.long_timer_value = ctk.CTkLabel(
             self.long_timer_container, textvariable=self.long_value_label, font=("Roboto", 20))
 
+        self.save_btn = ctk.CTkButton(self.center_frame, text="Aplicar")
+
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
         self.center_frame.pack(expand=True)
@@ -167,6 +169,8 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.long_timer_label.pack(side="left", pady=10)
         self.long_timer_slider.pack(side="left", padx=20)
         self.long_timer_value.pack(side="left")
+
+        self.save_btn.pack(pady=20)
 
     def update_work(self, val) -> None:
         self.work_value_label.set(f"{str(int(val))} mins")
