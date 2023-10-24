@@ -43,12 +43,12 @@ class DataController:
         self.view.update_info_buttons(self.pomo_day_count)
         return self.pomo_day_count
 
-    @staticmethod
-    def save_timers_config(work: int, short: int, long: int) -> None:
+    def save_timers_config(self, work: int, short: int, long: int) -> None:
         config.user_conf["pomo"]["pomo_timer"] = work
         config.user_conf["pomo"]["short_break"] = short
         config.user_conf["pomo"]["long_break"] = long
         config.save_config(config.user_conf)
+        self.view.reload_timers((work, short, long))
 
     @staticmethod
     def get_timers() -> tuple[int, int, int]:
