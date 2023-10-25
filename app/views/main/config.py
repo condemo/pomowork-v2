@@ -93,8 +93,8 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.section = ctk.CTkFrame(self, border_width=2, border_color="red")
-        self.center_frame = ctk.CTkFrame(self.section, fg_color="transparent")
+        self.project_section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.center_frame = ctk.CTkFrame(self.project_section, fg_color="transparent")
 
         self.projects_container = ctk.CTkFrame(self.center_frame)
         self.last_open_project_label = ctk.CTkLabel(
@@ -103,13 +103,23 @@ class GeneralConfigFrame(ctk.CTkFrame):
             self.projects_container, width=180, values=self.projects_names,
             justify="center", font=("Roboto", 16), command=self.update_start_project)
 
+        self.appearance_section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.appearance_title = ctk.CTkLabel(
+            self.appearance_section, text="Appearance", font=("Roboto", 24))
+        self.coming_soon_label = ctk.CTkLabel(
+            self.appearance_section, text="(Coming Soon)")
+
     def load_widgets(self) -> None:
-        self.section.pack(pady=10, padx=20, fill="x", ipady=10)
+        self.project_section.pack(pady=10, padx=20, fill="x", ipady=10)
         self.center_frame.pack(expand=True)
 
         self.projects_container.pack()
         self.last_open_project_label.pack(side="left", pady=10)
         self.projects_box.pack(side="left", padx=20)
+
+        self.appearance_section.pack(pady=10, padx=20, fill="x", ipady=10)
+        self.appearance_title.pack(pady=10)
+        self.coming_soon_label.pack()
 
     def update_start_project(self, choice) -> None:
         print(choice)
