@@ -213,7 +213,7 @@ class ClockFrame(ctk.CTkFrame):
 
         self.set_timer(new_timer)
 
-    def set_timer(self, timer: float = 60 * .1) -> None:
+    def set_timer(self, timer: float) -> None:
         self.timer = timer
         self.minutes, self.seconds = divmod(self.timer, 60)
 
@@ -292,7 +292,7 @@ class ClockFrame(ctk.CTkFrame):
         if self.stop_btn.cget("state") == "normal":
             self.stopped = True
             self.play_text.set("PL")
-            self.set_timer()
+            self.change_timer_mode()
             self.data_handler.switch_projects_state(True)
             self.stop_btn.configure(state="disable")
 
