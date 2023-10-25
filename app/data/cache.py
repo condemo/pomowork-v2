@@ -19,8 +19,8 @@ class CacheHandler:
         self.data_sender = DataSender(view)
         self.check_pending_com()
         self.data_fetch()
-        if config.user_conf["core"]["last_open_project"]:
-            self.current_project_id = config.user_conf["core"]["last_open_project"]
+        if config.user_conf["core"]["startup_project"]:
+            self.current_project_id = config.user_conf["core"]["startup_project"]
             self.current_project = self.load_project_by_id(self.current_project_id)
         else:
             self.current_project_id = None
@@ -94,7 +94,7 @@ class CacheHandler:
             json.dump(data, file, indent=2)
 
     def update_last_open_project(self, id: int) -> None:
-        config.user_conf["core"]["last_open_project"] = id
+        config.user_conf["core"]["startup_project"] = id
         self.current_project_id = id
         self.current_project = self.load_project_by_id(id)
 
@@ -163,7 +163,7 @@ class CacheHandler:
 
             data["projects"].append(project.__dict__)
             self.save_data_file(data)
-            config.user_conf["core"]["last_open_project"] = project.id
+            config.user_conf["core"]["startup_project"] = project.id
             config.save_config(config.user_conf)
             return project
 
