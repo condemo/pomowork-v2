@@ -206,6 +206,7 @@ class CacheHandler:
 
     def set_card(self) -> Card:
         new_card = self.data_sender.create_new_card({
+            "created_at": str(date.today()),
             "project_id": self.current_project.id,
             "price_per_hour": self.current_project.price_per_hour,
             "total_price": 0,
