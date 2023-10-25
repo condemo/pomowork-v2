@@ -87,7 +87,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.data_handler = data_handler
 
         self.project_list = self.data_handler.get_project_list()
-        print(self.project_list)
+        self.projects_names = [i[1] for i in self.project_list]
 
         self.create_widgets()
         self.load_widgets()
@@ -98,7 +98,10 @@ class GeneralConfigFrame(ctk.CTkFrame):
 
         self.projects_container = ctk.CTkFrame(self.center_frame)
         self.last_open_project_label = ctk.CTkLabel(
-            self.projects_container, text="Initial Project:")
+            self.projects_container, text="Project at start:", font=("Roboto", 20))
+        self.projects_box = ctk.CTkComboBox(
+            self.projects_container, width=180, values=self.projects_names,
+            justify="center", font=("Roboto", 16), command=self.update_start_project)
 
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
@@ -106,6 +109,13 @@ class GeneralConfigFrame(ctk.CTkFrame):
 
         self.projects_container.pack()
         self.last_open_project_label.pack(side="left", pady=10)
+        self.projects_box.pack(side="left", padx=20)
+
+    def update_start_project(self, choice) -> None:
+        print(choice)
+        for project in self.project_list:
+            if project[1] == choice:
+                self.data_handler.save_new_last_open_project(project[0])
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
