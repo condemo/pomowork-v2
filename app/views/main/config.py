@@ -86,14 +86,26 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.master = master
         self.data_handler = data_handler
 
+        self.project_list = self.data_handler.get_project_list()
+        print(self.project_list)
+
         self.create_widgets()
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+        self.section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.center_frame = ctk.CTkFrame(self.section, fg_color="transparent")
+
+        self.projects_container = ctk.CTkFrame(self.center_frame)
+        self.last_open_project_label = ctk.CTkLabel(
+            self.projects_container, text="Initial Project:")
 
     def load_widgets(self) -> None:
-        self.title.pack()
+        self.section.pack(pady=10, padx=20, fill="x", ipady=10)
+        self.center_frame.pack(expand=True)
+
+        self.projects_container.pack()
+        self.last_open_project_label.pack(side="left", pady=10)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
