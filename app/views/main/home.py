@@ -49,6 +49,9 @@ class HomeView(ctk.CTkFrame):
         self.data_handler.save_pomo_day_count(0)
         self.winfo_toplevel().destroy()
 
+    def reload_timers(self, timers: tuple[int]) -> None:
+        self.main_frame.reload_timers(timers)
+
     def show(self) -> None:
         self.pack(expand=True, fill="both")
 

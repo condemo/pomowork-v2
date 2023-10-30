@@ -41,6 +41,9 @@ class MainFrame(ctk.CTkFrame):
         self.info_frame.load_last_card()
         self.update_title()
 
+    def reload_timers(self, timers: tuple[int]) -> None:
+        self.pomo_frame.reload_timers(timers)
+
     def show(self) -> None:
         self.pack(side="left", expand=True, fill="both", padx=15)
 
@@ -111,6 +114,9 @@ class PomoFrame(ctk.CTkFrame):
         self.title_label.configure(
             text=f"{self.data_handler.get_current_project_name()}"
         )
+
+    def reload_timers(self, timers: tuple[int]) -> None:
+        self.clock_frame.reload_timers(timers)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", pady=7)
@@ -207,7 +213,7 @@ class ClockFrame(ctk.CTkFrame):
 
         self.set_timer(new_timer)
 
-    def set_timer(self, timer: float = 60 * .1) -> None:
+    def set_timer(self, timer: float) -> None:
         self.timer = timer
         self.minutes, self.seconds = divmod(self.timer, 60)
 
@@ -286,7 +292,7 @@ class ClockFrame(ctk.CTkFrame):
         if self.stop_btn.cget("state") == "normal":
             self.stopped = True
             self.play_text.set("PL")
-            self.set_timer()
+            self.change_timer_mode()
             self.data_handler.switch_projects_state(True)
             self.stop_btn.configure(state="disable")
 
@@ -301,6 +307,10 @@ class ClockFrame(ctk.CTkFrame):
             self.paused = False
             self.data_handler.switch_projects_state(False)
             self.start_timer_thread()
+
+    def reload_timers(self, timers: tuple[int]) -> None:
+        self.pomo_timer, self.short_timer, self.long_timer = timers
+        self.change_timer_mode()
 
     def show(self) -> None:
         self.pack(side="left", fill="both", expand=True)

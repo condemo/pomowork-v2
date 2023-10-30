@@ -10,7 +10,7 @@ class DataController:
         self.view = view
         self.cache_handler = CacheHandler(view)
         self.project_list = self.cache_handler.get_project_list()
-        if not config.user_conf["core"]["last_open_project"] and self.project_list:
+        if not config.user_conf["core"]["startup_project"] and self.project_list:
             self.save_new_last_open_project(self.project_list[0][0])
             self.cache_handler.update_last_open_project(self.project_list[0][0])
         self.current_project: Project = self.cache_handler \
@@ -18,7 +18,7 @@ class DataController:
         self.card_list = self.cache_handler.get_current_card_list()
         self.pomo_day_count = config.user_conf["pomo"]["pomo_day_count"]
 
-    def get_project_list(self) -> list[tuple[int, str]]:
+    def get_project_list(self) -> list[tuple[int, str, float]]:
         return self.project_list
 
     def get_current_project_name(self) -> str:
@@ -33,7 +33,7 @@ class DataController:
 
     @staticmethod
     def save_new_last_open_project(id: int) -> None:
-        config.user_conf["core"]["last_open_project"] = id
+        config.user_conf["core"]["startup_project"] = id
         config.save_config(config.user_conf)
 
     def save_pomo_day_count(self, count: int) -> int:
@@ -42,6 +42,13 @@ class DataController:
         config.save_config(config.user_conf)
         self.view.update_info_buttons(self.pomo_day_count)
         return self.pomo_day_count
+
+    def save_timers_config(self, work: int, short: int, long: int) -> None:
+        config.user_conf["pomo"]["pomo_timer"] = work
+        config.user_conf["pomo"]["short_break"] = short
+        config.user_conf["pomo"]["long_break"] = long
+        config.save_config(config.user_conf)
+        self.view.reload_timers((work, short, long))
 
     @staticmethod
     def get_timers() -> tuple[int, int, int]:
