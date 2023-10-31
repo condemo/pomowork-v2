@@ -75,9 +75,6 @@ class FormFrame(ctk.CTkFrame):
         self.email_entry = ctk.CTkEntry(
             self, placeholder_text="Email: example@example.com", height=40)
 
-        self.username_entry.bind("<KeyRelease-Return>", self.send_data)
-        self.password_entry.bind("<KeyRelease-Return>", self.send_data)
-        self.password_repeat_entry.bind("<KeyRelease-Return>", self.send_data)
         self.email_entry.bind("<KeyRelease-Return>", self.send_data)
 
         self.signup_btn = ctk.CTkButton(
