@@ -76,7 +76,6 @@ class FormFrame(ctk.CTkFrame):
         self.password_entry = ctk.CTkEntry(
             self, placeholder_text="Password", height=40, show="*")
 
-        self.username_entry.bind("<KeyRelease-Return>", self.send_data)
         self.password_entry.bind("<KeyRelease-Return>", self.send_data)
 
         self.login_btn = ctk.CTkButton(
