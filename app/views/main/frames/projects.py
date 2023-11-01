@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from tkinter import StringVar
 from typing import Optional
 from data.datahandlers import DataController
 
@@ -229,13 +228,13 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_entry.grid(column=1, row=1, padx=2, pady=2, sticky="e")
 
         self.id = id
-        self.price = price
+
         if self.id:
-            self.name = StringVar(self, name)
-            self.price_var = StringVar(self, str("%.2f" % self.price))
+            self.name = name
+            self.price = str(price)
         else:
-            self.name = StringVar(self, "")
-            self.price_var = StringVar(self, "")
+            self.name = ""
+            self.price = ""
 
         if self.config_mode:
             self.load_update_widgets()
@@ -253,13 +252,13 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.remove_btn = ctk.CTkButton(
             self, text="B", font=("Roboto", 24), width=20,
             fg_color="red", command=self.remove_project)
-        self.name_entry.configure(textvariable=self.name)
-        self.price_entry.configure(textvariable=self.price_var)
+        self.name_entry.insert(0, self.name)
+        # FIX: No funciona este insert por algún motivo
+        self.price_entry.insert(0, self.price)
 
         self.update_btn.grid(column=1, row=2, padx=2, pady=6)
         self.remove_btn.place(relx=.99, rely=.99, anchor="se")
 
-    # FIX: La validación del entry no funciona con StringVar y hay un bug con .insert
     @staticmethod
     def validate_name(text: str, new_text: str) -> bool:
         if len(new_text) > 25:
@@ -280,7 +279,11 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.master.create_project(self.name_entry.get(), float(self.price_entry.get()))
 
     def update_project(self) -> None:
-        self.master.update_project(self.id, self.name_entry.get(), float(self.price_entry.get()))
+        if self.price_entry.get() == "":
+            price = self.price
+        else:
+            price = self.price_entry.get()
+        self.master.update_project(self.id, self.name_entry.get(), float(price))
 
     def remove_project(self) -> None:
         self.master.remove_project(self.id)
