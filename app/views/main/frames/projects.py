@@ -82,6 +82,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.data_handler = data_handler
         self.projects_list = self.data_handler.get_project_list()
         if self.projects_list:
+            self.startup_project = self.data_handler.get_startup_project()
             self.create_widgets()
             self.load_widgets()
         else:
@@ -91,7 +92,12 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.profile_list = [
             ProjectProfileCard(self, id=i[0], name=i[1], price=i[2]) for i in self.projects_list
         ]
-        self.active_project = self.profile_list[0]
+        if self.startup_project:
+            for p in self.profile_list:
+                if p.id == self.startup_project:
+                    self.active_project = p
+        else:
+            self.active_project = self.profile_list[0]
         self.active_project.configure(
             fg_color="blue"
         )

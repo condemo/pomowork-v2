@@ -32,6 +32,10 @@ class DataController:
         return self.pomo_day_count
 
     @staticmethod
+    def get_startup_project() -> int:
+        return config.user_conf["core"]["startup_project"]
+
+    @staticmethod
     def save_new_last_open_project(id: int) -> None:
         config.user_conf["core"]["startup_project"] = id
         config.save_config(config.user_conf)
