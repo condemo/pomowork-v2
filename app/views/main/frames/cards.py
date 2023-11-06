@@ -98,9 +98,7 @@ class CardListFrame(ctk.CTkScrollableFrame):
 
     def load_widgets(self) -> None:
         [card.show() for card in self.card_widget_list]
-        self.card_widget_list[0].configure(
-            fg_color="blue"
-        )
+        self.card_widget_list[0].set_current()
 
     def load_new_cards(self) -> None:
         [card.pack_forget() for card in self.card_widget_list]
@@ -127,6 +125,8 @@ class PomoCard(ctk.CTkFrame):
         self.columnconfigure(9, weight=2, uniform="a")
         self.columnconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
+
+        self.current = False
 
         self.id = card_data.id
         self.date = card_data.created_at
@@ -158,8 +158,9 @@ class PomoCard(ctk.CTkFrame):
             hover_color="green"
         )
         if self.check_var.get():
-            self.configure(fg_color="green")
-            self.check_box.configure(fg_color="green", hover_color="#B13F39")
+            if not self.current:
+                self.configure(fg_color="green")
+                self.check_box.configure(fg_color="green", hover_color="#B13F39")
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -167,6 +168,10 @@ class PomoCard(ctk.CTkFrame):
         self.pomo_count_label.grid(column=4, row=1, rowspan=2, columnspan=3, sticky="nswe")
         self.total_money_label.grid(column=7, columnspan=2, row=1, rowspan=2, sticky="nswe")
         self.check_box.grid(column=8, row=0, columnspan=2, rowspan=4, sticky="e", padx=5)
+
+    def set_current(self) -> None:
+        self.current = True
+        self.configure(fg_color="blue")
 
     def update_data(self, card_data: Card) -> None:
         self.id = card_data.id
@@ -177,10 +182,12 @@ class PomoCard(ctk.CTkFrame):
         self.status = card_data.collected
         if self.status:
             self.status_text = "Cobrado"
-            self.configure(fg_color="green")
+            if not self.current:
+                self.configure(fg_color="green")
         else:
             self.status_text = "No Cobrado"
-            self.configure(fg_color="#B13F39")
+            if not self.current:
+                self.configure(fg_color="#B13F39")
         self.total_price = card_data.total_price
 
         self.price_h_label.configure(
