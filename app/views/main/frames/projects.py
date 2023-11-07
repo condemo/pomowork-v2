@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from tkinter.messagebox import askokcancel
 from typing import Optional
 from data.datahandlers import DataController
 
@@ -286,4 +287,5 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.master.update_project(self.id, self.name_entry.get(), float(price))
 
     def remove_project(self) -> None:
-        self.master.remove_project(self.id)
+        if askokcancel("Delete Project", "You are about to delete a project, are you sure?"):
+            self.master.remove_project(self.id)
