@@ -96,11 +96,15 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
             for p in self.profile_list:
                 if p.id == self.startup_project:
                     self.active_project = p
+                else:
+                    self.active_project = None
         else:
             self.active_project = self.profile_list[0]
-        self.active_project.configure(
-            fg_color="blue"
-        )
+
+        if self.active_project:
+            self.active_project.configure(
+                fg_color="blue"
+            )
 
     def load_widgets(self) -> None:
         [i.show() for i in self.profile_list]
