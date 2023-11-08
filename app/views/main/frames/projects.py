@@ -281,7 +281,11 @@ class NewProjectWindow(ctk.CTkToplevel):
         return text.isdecimal()
 
     def create_project(self) -> None:
-        self.master.create_project(self.name_entry.get(), float(self.price_entry.get()))
+        if self.price_entry.get() == "":
+            price = 0
+        else:
+            price = self.price_entry.get()
+        self.master.create_project(self.name_entry.get(), float(price))
 
     def update_project(self) -> None:
         if self.price_entry.get() == "":
