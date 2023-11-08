@@ -173,8 +173,12 @@ class CacheHandler:
             for project in data["projects"]:
                 if project["id"] == id:
                     data["projects"].remove(project)
-                    self.save_data_file(data)
-                    return True
+            for p in data["project_list"]:
+                if p[0] == id:
+                    data["project_list"].remove(p)
+
+            self.save_data_file(data)
+            return True
 
     def update_project_data(self, updated_project: Project) -> None:
         project = self.data_sender.update_project(updated_project.__dict__)
