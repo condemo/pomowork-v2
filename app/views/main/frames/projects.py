@@ -97,15 +97,12 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
                 for p in self.profile_list:
                     if p.id == self.startup_project:
                         self.active_project = p
-                        print("asignado active proyect")
             else:
                 self.active_project = None
         elif self.profile_list:
-            print(" no asignado active proyect")
             self.active_project = self.profile_list[0]
         else:
             self.active_project = None
-            print("asignado desde profile list")
 
         if self.active_project:
             self.active_project.configure(

@@ -122,7 +122,6 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.coming_soon_label.pack()
 
     def update_start_project(self, choice) -> None:
-        print(choice)
         for project in self.project_list:
             if project[1] == choice:
                 self.data_handler.save_new_last_open_project(project[0])
