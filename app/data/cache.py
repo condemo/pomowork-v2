@@ -162,6 +162,9 @@ class CacheHandler:
             data = self.read_data_file()
 
             data["projects"].append(project.__dict__)
+            data["project_list"].append([
+                project.id, project.name, project.price_per_hour
+            ])
             self.save_data_file(data)
             config.user_conf["core"]["startup_project"] = project.id
             config.save_config(config.user_conf)
