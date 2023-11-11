@@ -34,6 +34,11 @@ def load_config() -> dict:
     with open(USER_CONF_FILE, "rt", encoding="utf-8") as file:
         user_conf = tomlkit.load(file)
 
+    if "config" in user_conf:
+        pass
+    else:
+        user_conf.update({"config": {"initial_mode": "last"}})
+
     return user_conf
 
 
@@ -45,7 +50,10 @@ def create_config() -> dict:
             "pomo_timer": 30,
             "short_break": 5,
             "long_break": 15
-            }
+            },
+        "config": {
+            "initial_mode": "last"
+        }
     }
     with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
         tomlkit.dump(initial_config, file)
@@ -59,6 +67,6 @@ def save_config(user_conf: dict) -> None:
 
 
 if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
-    user_conf = load_config()
+    user_conf: dict = load_config()
 else:
-    user_conf = create_config()
+    user_conf: dict = create_config()

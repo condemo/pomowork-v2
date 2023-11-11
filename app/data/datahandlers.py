@@ -36,8 +36,20 @@ class DataController:
         return config.user_conf["core"]["startup_project"]
 
     @staticmethod
+    def get_init_mode() -> str:
+        return config.user_conf["config"]["initial_mode"]
+
+    @staticmethod
     def save_new_last_open_project(id: int) -> None:
         config.user_conf["core"]["startup_project"] = id
+        config.save_config(config.user_conf)
+
+    @staticmethod
+    def update_config_settings(key: str, val: str) -> None:
+        if key == "initial_mode" and val == "last":
+            config.user_conf["core"]["startup_project"] = False
+
+        config.user_conf["config"][key] = val
         config.save_config(config.user_conf)
 
     def save_pomo_day_count(self, count: int) -> int:

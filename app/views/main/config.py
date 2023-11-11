@@ -89,19 +89,35 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.project_list = self.data_handler.get_project_list()
         self.projects_names = [i[1] for i in self.project_list]
 
+        self.init_mode_selected = self.data_handler.get_init_mode()
+        self.init_mode_var = ctk.IntVar(self, value=0)
+
         self.create_widgets()
         self.load_widgets()
+        self.check_selection()
 
     def create_widgets(self) -> None:
         self.project_section = ctk.CTkFrame(self, border_width=2, border_color="red")
         self.center_frame = ctk.CTkFrame(self.project_section, fg_color="transparent")
 
         self.projects_container = ctk.CTkFrame(self.center_frame)
+
+        self.startup_mode_label = ctk.CTkLabel(
+            self.projects_container, text="Select inital load mode:", font=("Roboto", 20))
+        self.startup_radio_container = ctk.CTkFrame(
+            self.projects_container, fg_color="transparent")
+        self.select_last_mode = ctk.CTkRadioButton(
+            self.startup_radio_container, text="Last created project",
+            variable=self.init_mode_var, value=1, command=self.update_init)
+        self.select_project_mode = ctk.CTkRadioButton(
+            self.startup_radio_container, text="Selected project",
+            variable=self.init_mode_var, value=2, command=self.update_init)
+
         self.last_open_project_label = ctk.CTkLabel(
-            self.projects_container, text="Project at start:", font=("Roboto", 20))
+            self.projects_container, text="Select a project:", font=("Roboto", 16))
         self.projects_box = ctk.CTkComboBox(
             self.projects_container, width=180, values=self.projects_names,
-            justify="center", font=("Roboto", 16), command=self.update_start_project)
+            justify="center", font=("Roboto", 14), command=self.update_start_project)
 
         self.appearance_section = ctk.CTkFrame(self, border_width=2, border_color="red")
         self.appearance_title = ctk.CTkLabel(
@@ -114,6 +130,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.center_frame.pack(expand=True)
 
         self.projects_container.pack()
+
+        self.startup_mode_label.pack()
+        self.startup_radio_container.pack(pady=10)
+        self.select_last_mode.pack(side="left", padx=10)
+        self.select_project_mode.pack(side="left", padx=10)
+
         self.last_open_project_label.pack(side="left", pady=10)
         self.projects_box.pack(side="left", padx=20)
 
@@ -125,6 +147,26 @@ class GeneralConfigFrame(ctk.CTkFrame):
         for project in self.project_list:
             if project[1] == choice:
                 self.data_handler.save_new_last_open_project(project[0])
+
+    def check_selection(self) -> None:
+        match self.init_mode_selected:
+            case "last":
+                self.init_mode_var.set(1)
+                self.projects_box.configure(state="disabled")
+                self.last_open_project_label.configure(text_color="grey")
+            case "selection":
+                self.init_mode_var.set(2)
+
+    def update_init(self) -> None:
+        match self.init_mode_var.get():
+            case 1:
+                self.projects_box.configure(state="disabled")
+                self.last_open_project_label.configure(text_color="grey")
+                self.data_handler.update_config_settings("initial_mode", "last")
+            case 2:
+                self.projects_box.configure(state="normal")
+                self.last_open_project_label.configure(text_color="white")
+                self.data_handler.update_config_settings("initial_mode", "selection")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
