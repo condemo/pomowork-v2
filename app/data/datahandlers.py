@@ -188,4 +188,7 @@ class DataController:
 
     def remove_project_by_id(self, id: int) -> None:
         if self.cache_handler.remove_project_by_id(id):
+            for p in self.project_list:
+                if p[0] == id:
+                    self.project_list.remove(p)
             return True

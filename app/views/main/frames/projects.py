@@ -118,7 +118,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         else:
             self.profile_list: list = []
             self.projects_list: list = []
-        self.projects_list.insert(0, (id, name))
+        self.projects_list.insert(0, (id, name, price))
         new_project = ProjectProfileCard(self, id=id, name=name, price=price)
         self.profile_list.insert(0, new_project)
         [i.show() for i in self.profile_list]
@@ -129,6 +129,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
                 self.projects_list.remove(p)
         for project in self.profile_list:
             if project.id == id:
+                self.profile_list.remove(project)
                 project.pack_forget()
 
     def change_active_project(self, id: int) -> None:
