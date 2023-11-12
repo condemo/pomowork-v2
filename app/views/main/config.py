@@ -92,6 +92,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.init_mode_selected = self.data_handler.get_init_mode()
         self.init_mode_var = ctk.IntVar(self, value=0)
 
+        self.load_selected_project()
         self.create_widgets()
         self.load_widgets()
         self.check_selection()
@@ -143,6 +144,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.appearance_title.pack(pady=10)
         self.coming_soon_label.pack()
 
+    def load_selected_project(self) -> None:
+        self.startup_project_id = self.data_handler.get_startup_project()
+        for p in self.project_list:
+            if p[0] == self.startup_project_id:
+                self.startup_project_name = p[1]
+
     def update_start_project(self, choice) -> None:
         for project in self.project_list:
             if project[1] == choice:
@@ -156,6 +163,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 self.last_open_project_label.configure(text_color="grey")
             case "selection":
                 self.init_mode_var.set(2)
+                self.projects_box.set(self.startup_project_name)
 
     def update_init(self) -> None:
         match self.init_mode_var.get():
