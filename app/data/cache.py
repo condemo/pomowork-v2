@@ -166,6 +166,9 @@ class CacheHandler:
                 project.id, project.name, project.price_per_hour
             ])
             self.save_data_file(data)
+            if config.user_conf["config"]["initial_mode"] == "last":
+                config.user_conf["core"]["startup_project"] = project.id
+                config.save_config(config.user_conf)
             return project
 
     def remove_project_by_id(self, id: int) -> bool:
