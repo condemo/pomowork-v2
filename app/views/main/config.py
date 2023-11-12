@@ -118,7 +118,8 @@ class GeneralConfigFrame(ctk.CTkFrame):
             self.projects_container, text="Select a project:", font=("Roboto", 16))
         self.projects_box = ctk.CTkComboBox(
             self.projects_container, width=180, values=self.projects_names,
-            justify="center", font=("Roboto", 14), command=self.update_start_project)
+            justify="center", font=("Roboto", 14), command=self.update_start_project,
+            state="readonly")
 
         self.appearance_section = ctk.CTkFrame(self, border_width=2, border_color="red")
         self.appearance_title = ctk.CTkLabel(
