@@ -6,7 +6,7 @@ import tkinter as tk
 from plyer import notification
 from data.datahandlers import DataController
 from utils.infomessage import InfoMessage
-from views.main.config import ConfigWindow
+from views.main.configframe import ConfigWindow
 
 
 class MainFrame(ctk.CTkFrame):
