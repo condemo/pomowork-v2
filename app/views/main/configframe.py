@@ -1,8 +1,11 @@
 import customtkinter as ctk
 from tkinter import StringVar, IntVar
 from tkinter.messagebox import askyesno
+from PIL import Image
+import webbrowser
 from data.datahandlers import DataController
 from data.oauth2 import remove_session
+from config import ASSETS_DIR, _VERSION
 
 
 class ConfigWindow(ctk.CTkToplevel):
@@ -292,10 +295,35 @@ class AboutFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.title = ctk.CTkLabel(self, text="Coming Soon", font=("Roboto", 25))
+        img = Image.open(ASSETS_DIR / "pomowork_icon.png")
+
+        github_img = Image.open(ASSETS_DIR / "github-mark-white.png")
+
+        self.tabview = ctk.CTkTabview(self)
+        self.about_tab = self.tabview.add("About")
+        self.credits_tab = self.tabview.add("Credits")
+        self.licence_tab = self.tabview.add("Licence")
+
+        self.logo_img = ctk.CTkImage(dark_image=img, size=(150, 150))
+        self.logo_label = ctk.CTkLabel(self.about_tab, image=self.logo_img, text="")
+
+        self.app_name_label = ctk.CTkLabel(
+            self.about_tab, text="Pomowork", font=("Roboto", 30))
+        self.version_label = ctk.CTkLabel(self.about_tab, text=_VERSION, font=("Roboto", 17))
+
+        self.github_img = ctk.CTkImage(dark_image=github_img, size=(30, 30))
+        self.github_btn = ctk.CTkButton(
+            self.about_tab, image=self.github_img, text="Github", font=("Roboto", 14),
+            fg_color="transparent", compound="top", width=50, cursor="hand2",
+            command=lambda: webbrowser.open_new("https://github.com/condemo/pomowork-v2"))
 
     def load_widgets(self) -> None:
-        self.title.pack()
+        self.tabview.pack()
+        self.logo_label.pack()
+
+        self.app_name_label.pack()
+        self.version_label.pack()
+        self.github_btn.pack(pady=5)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
