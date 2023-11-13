@@ -12,8 +12,9 @@ class ConfigWindow(ctk.CTkToplevel):
     def __init__(self, master, data_handler: DataController):
         super().__init__(master=master)
         self.master = master
-        self.geometry("1000x600+200+200")
+        self.geometry("900x500+200+200")
         self.title("Configuración")
+        self.resizable(False, False)
 
         self.data_handler = data_handler
 
@@ -287,19 +288,28 @@ class TimersConfigFrame(ctk.CTkFrame):
 
 class AboutFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color="transparent")
         self.master = master
         self.data_handler = DataController
 
+        self.load_background()
         self.create_widgets()
         self.load_widgets()
 
+    def load_background(self) -> None:
+        bg_img = ctk.CTkImage(Image.open(ASSETS_DIR / "about-background.jpeg"),
+                              size=(900, 900))
+
+        self.bg_img_label = ctk.CTkLabel(self, text="", image=bg_img)
+        self.bg_img_label.place(x=0, y=0, anchor="nw", relwidth=1, relheight=1)
+
     def create_widgets(self) -> None:
         img = Image.open(ASSETS_DIR / "pomowork_icon.png")
+        github_img = Image.open(ASSETS_DIR / "github-mark.png")
 
-        github_img = Image.open(ASSETS_DIR / "github-mark-white.png")
-
-        self.tabview = ctk.CTkTabview(self)
+        self.tabview = ctk.CTkTabview(self, fg_color="white", bg_color="white",
+            corner_radius=10, segmented_button_fg_color="black", text_color="white",
+            segmented_button_selected_color="#A82325")
         self.about_tab = self.tabview.add("About")
         self.credits_tab = self.tabview.add("Credits")
         self.licence_tab = self.tabview.add("Licence")
@@ -308,25 +318,30 @@ class AboutFrame(ctk.CTkFrame):
         self.logo_label = ctk.CTkLabel(self.about_tab, image=self.logo_img, text="")
 
         self.app_name_label = ctk.CTkLabel(
-            self.about_tab, text="Pomowork", font=("Roboto", 30))
-        self.version_label = ctk.CTkLabel(self.about_tab, text=_VERSION, font=("Roboto", 17))
+            self.about_tab, text="Pomowork", font=("Roboto", 30, "bold"), text_color="black")
+        self.version_label = ctk.CTkLabel(self.about_tab, text=_VERSION, font=("Roboto", 15),
+            text_color="grey")
+        self.description_label = ctk.CTkLabel(self.about_tab, font=("Roboto", 18, "bold"),
+            text_color="grey", text="Manage your time and payments")
 
         self.github_img = ctk.CTkImage(dark_image=github_img, size=(30, 30))
         self.github_btn = ctk.CTkButton(
-            self.about_tab, image=self.github_img, text="Github", font=("Roboto", 14),
-            fg_color="transparent", compound="top", width=50, cursor="hand2",
+            self.about_tab, image=self.github_img, text="Github",
+            font=("Roboto", 14), text_color="black", fg_color="transparent",
+            compound="top", width=50, cursor="hand2", hover=False,
             command=lambda: webbrowser.open_new("https://github.com/condemo/pomowork-v2"))
 
     def load_widgets(self) -> None:
-        self.tabview.pack()
+        self.tabview.pack(pady=5)
         self.logo_label.pack()
 
         self.app_name_label.pack()
         self.version_label.pack()
+        self.description_label.pack()
         self.github_btn.pack(pady=5)
 
     def show(self) -> None:
-        self.pack(expand=True, fill="both")
+        self.pack(expand=True, fill="both", ipadx=5, ipady=5)
 
     def remove(self) -> None:
         self.pack_forget()
