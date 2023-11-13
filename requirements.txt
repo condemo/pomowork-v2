@@ -1,3 +1,4 @@
+build==1.0.3
 certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
@@ -6,8 +7,13 @@ customtkinter==5.2.0
 darkdetect==0.8.0
 dbus-python==1.3.2
 idna==3.4
+packaging==23.1
+Pillow==10.1.0
 plyer==2.1.0
+pomowork @ file:///home/gustavo/codigo/proyectos/pomowork/front/dist/pomowork-0.0.0.tar.gz#sha256=704eded57cbdb3c6c8c6a2de247c467bef75df5fc804cc58f2b178612bd2b39c
 pycparser==2.21
+pyproject_hooks==1.0.0
 requests==2.31.0
+tomli==2.0.1
 tomlkit==0.12.1
 urllib3==2.0.4
