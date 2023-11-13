@@ -1,4 +1,5 @@
 import os
+import pathlib
 import tomlkit
 
 SYS_CONFIG_DIR = os.path.expanduser("~/.config/")
@@ -10,6 +11,9 @@ SYS_DATA_FOLDER = os.path.expanduser("~/.local/share/")
 DATA_DIR = os.path.join(SYS_DATA_FOLDER, "pomowork")
 if not os.path.isdir(DATA_DIR):
     os.mkdir(DATA_DIR)
+
+APP_DIR = pathlib.Path(__file__).parent.parent
+ASSETS_DIR = APP_DIR / "assets/"
 
 USER_CONF_FILE = CONFIG_FOLDER + "/user_conf.toml"
 # SERVER DATA
