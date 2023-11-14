@@ -334,9 +334,10 @@ class AboutFrame(ctk.CTkFrame):
 
         # CREDITS TAB
         self.credits_frame = ctk.CTkFrame(
-            self.credits_tab, corner_radius=10)
+            self.credits_tab, fg_color="transparent")
         self.credits_info_label = ctk.CTkLabel(
-            self.credits_frame, text="Gustavo de los Santos\n<gustleo.dev@gmail.com>")
+            self.credits_frame, text="Gustavo de los Santos\n<gustleo.dev@gmail.com>",
+            text_color="black")
 
         # LICENCE TAB
 
