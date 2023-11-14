@@ -331,6 +331,9 @@ class AboutFrame(ctk.CTkFrame):
             compound="top", width=50, cursor="hand2", hover=False,
             command=lambda: webbrowser.open_new("https://github.com/condemo/pomowork-v2"))
 
+        self.copyright_label = ctk.CTkLabel(
+            self.about_tab, text="\u00A9 Copyright 2023", font=("Roboto", 12, "bold"))
+
     def load_widgets(self) -> None:
         self.tabview.pack(pady=5)
         self.logo_label.pack()
@@ -339,6 +342,7 @@ class AboutFrame(ctk.CTkFrame):
         self.version_label.pack()
         self.description_label.pack()
         self.github_btn.pack(pady=5)
+        self.copyright_label.pack()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", ipadx=5, ipady=5)
