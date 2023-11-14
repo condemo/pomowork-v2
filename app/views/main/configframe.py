@@ -314,25 +314,31 @@ class AboutFrame(ctk.CTkFrame):
         self.credits_tab = self.tabview.add("Credits")
         self.licence_tab = self.tabview.add("Licence")
 
+        # ABOUT TAB
         self.logo_img = ctk.CTkImage(dark_image=img, size=(150, 150))
         self.logo_label = ctk.CTkLabel(self.about_tab, image=self.logo_img, text="")
-
         self.app_name_label = ctk.CTkLabel(
             self.about_tab, text="Pomowork", font=("Roboto", 30, "bold"), text_color="black")
         self.version_label = ctk.CTkLabel(self.about_tab, text=_VERSION, font=("Roboto", 15),
             text_color="grey")
         self.description_label = ctk.CTkLabel(self.about_tab, font=("Roboto", 18, "bold"),
             text_color="grey", text="Manage your time and payments")
-
         self.github_img = ctk.CTkImage(dark_image=github_img, size=(30, 30))
         self.github_btn = ctk.CTkButton(
             self.about_tab, image=self.github_img, text="Github",
             font=("Roboto", 14), text_color="black", fg_color="transparent",
             compound="top", width=50, cursor="hand2", hover=False,
             command=lambda: webbrowser.open_new("https://github.com/condemo/pomowork-v2"))
-
         self.copyright_label = ctk.CTkLabel(
             self.about_tab, text="\u00A9 Copyright 2023", font=("Roboto", 12, "bold"))
+
+        # CREDITS TAB
+        self.credits_frame = ctk.CTkFrame(
+            self.credits_tab, corner_radius=10)
+        self.credits_info_label = ctk.CTkLabel(
+            self.credits_frame, text="Gustavo de los Santos\n<gustleo.dev@gmail.com>")
+
+        # LICENCE TAB
 
     def load_widgets(self) -> None:
         self.tabview.pack(pady=5)
@@ -343,6 +349,9 @@ class AboutFrame(ctk.CTkFrame):
         self.description_label.pack()
         self.github_btn.pack(pady=5)
         self.copyright_label.pack()
+
+        self.credits_frame.pack(ipadx=10, ipady=10)
+        self.credits_info_label.pack(expand=True)
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", ipadx=5, ipady=5)
