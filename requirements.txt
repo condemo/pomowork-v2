@@ -10,7 +10,6 @@ idna==3.4
 packaging==23.1
 Pillow==10.1.0
 plyer==2.1.0
-pomowork @ file:///home/gustavo/codigo/proyectos/pomowork/front/dist/pomowork-0.0.0.tar.gz#sha256=704eded57cbdb3c6c8c6a2de247c467bef75df5fc804cc58f2b178612bd2b39c
 pycparser==2.21
 pyproject_hooks==1.0.0
 requests==2.31.0
