@@ -76,3 +76,13 @@ if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
     user_conf: dict = load_config()
 else:
     user_conf: dict = create_config()
+
+
+LICENSE_RESUME = """
+GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+"""

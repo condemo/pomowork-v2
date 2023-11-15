@@ -5,7 +5,7 @@ from PIL import Image
 import webbrowser
 from data.datahandlers import DataController
 from data.oauth2 import remove_session
-from config import ASSETS_DIR, _VERSION
+from config import ASSETS_DIR, _VERSION, LICENSE_RESUME
 
 
 class ConfigWindow(ctk.CTkToplevel):
@@ -312,7 +312,7 @@ class AboutFrame(ctk.CTkFrame):
             segmented_button_selected_color="#A82325")
         self.about_tab = self.tabview.add("About")
         self.credits_tab = self.tabview.add("Credits")
-        self.licence_tab = self.tabview.add("Licence")
+        self.license_tab = self.tabview.add("License")
 
         # ABOUT TAB
         self.logo_img = ctk.CTkImage(dark_image=img, size=(150, 150))
@@ -339,7 +339,13 @@ class AboutFrame(ctk.CTkFrame):
             self.credits_frame, text="Gustavo de los Santos\n<gustleo.dev@gmail.com>",
             text_color="black")
 
-        # LICENCE TAB
+        # LICENSE TAB
+        self.license_frame = ctk.CTkFrame(self.license_tab)
+        self.license_label = ctk.CTkLabel(self.license_frame, text=LICENSE_RESUME)
+        self.license_link_label = ctk.CTkLabel(
+            self.license_tab, text="Full License", cursor="hand2", text_color="blue")
+        self.license_link_label.bind("<Button-1>", lambda: webbrowser.open_new(
+            "https://www.gnu.org/licenses/gpl-3.0.html"))
 
     def load_widgets(self) -> None:
         self.tabview.pack(pady=5)
@@ -353,6 +359,10 @@ class AboutFrame(ctk.CTkFrame):
 
         self.credits_frame.pack(ipadx=10, ipady=10)
         self.credits_info_label.pack(expand=True)
+
+        self.license_frame.pack()
+        self.license_label.pack(padx=5)
+        self.license_link_label.pack()
 
     def show(self) -> None:
         self.pack(expand=True, fill="both", ipadx=5, ipady=5)
