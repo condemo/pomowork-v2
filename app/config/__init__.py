@@ -2,7 +2,7 @@ import os
 import pathlib
 import tomlkit
 
-_VERSION = "0.3.2-alpha"
+_VERSION = "0.4.0-alpha"
 
 SYS_CONFIG_DIR = os.path.expanduser("~/.config/")
 CONFIG_FOLDER = os.path.join(SYS_CONFIG_DIR, "pomowork")
