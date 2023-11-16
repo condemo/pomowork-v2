@@ -1,11 +1,12 @@
 import customtkinter as ctk
 from data.datahandlers import DataController
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
+from config.theme import Colors
 
 
 class HomeView(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND_COLOR)
         self.pack_propagate(False)
 
         self.data_handler = DataController(self)

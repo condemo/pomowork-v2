@@ -11,7 +11,7 @@ from views.main.configframe import ConfigWindow
 
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color="transparent")
         self.master = master
         self.pack_propagate(False)
 

@@ -2,11 +2,12 @@ import customtkinter as ctk
 from tkinter import IntVar
 from lib.models import Card
 from data.datahandlers import DataController
+from config.theme import Colors
 
 
 class CardsFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color="transparent")
         self.pack_propagate(False)
 
         self.data_handler = data_handler
@@ -21,7 +22,7 @@ class CardsFrame(ctk.CTkFrame):
             pass
 
     def create_widgets(self) -> None:
-        self.top_frame = ctk.CTkFrame(self)
+        self.top_frame = ctk.CTkFrame(self, fg_color=Colors.BACKGROUND_SECOND_COLOR)
         self.total_time_label = ctk.CTkLabel(
             self.top_frame,
             text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total",
@@ -29,7 +30,7 @@ class CardsFrame(ctk.CTkFrame):
 
         self.mid_frame = CardListFrame(self, self.data_handler)
 
-        self.bottom_frame = ctk.CTkFrame(self)
+        self.bottom_frame = ctk.CTkFrame(self, fg_color=Colors.BACKGROUND_SECOND_COLOR)
         self.money_collected_label = ctk.CTkLabel(
             self.bottom_frame, text=f"Cobrado: {self.salary_collected:.2f}€", font=("Roboto", 20))
         self.unpaid_money_label = ctk.CTkLabel(
@@ -46,7 +47,7 @@ class CardsFrame(ctk.CTkFrame):
         self.money_collected_label.pack(side="left", expand=True)
         self.unpaid_money_label.pack(side="left", expand=True)
         self.total_money_label.pack(side="left", expand=True)
-        self.bottom_frame.pack(fill="x")
+        self.bottom_frame.pack(fill="x", pady=4)
 
     def update_project_data(self) -> None:
         (
@@ -81,12 +82,12 @@ class CardsFrame(ctk.CTkFrame):
         )
 
     def show(self) -> None:
-        self.pack(side="left", expand=True, fill="both")
+        self.pack(side="left", expand=True, fill="both", padx=(0, 2))
 
 
 class CardListFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND_SECOND_COLOR)
         self.data_handler = data_handler
         self.card_list = self.data_handler.get_project_cards()
 

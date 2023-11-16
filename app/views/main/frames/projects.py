@@ -2,11 +2,12 @@ import customtkinter as ctk
 from tkinter.messagebox import askokcancel
 from typing import Optional
 from data.datahandlers import DataController
+from config.theme import Colors
 
 
 class ProjectsFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, width=20)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND_COLOR, width=20)
         self.master = master
         self.pack_propagate(False)
 
@@ -17,25 +18,26 @@ class ProjectsFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.top_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.burger_btn = ctk.CTkButton(
-            self.top_frame, text="III", width=30, height=30, corner_radius=60)
+        self.top_frame = ctk.CTkFrame(self, fg_color=Colors.BACKGROUND_SECOND_COLOR)
+        self.project_section_label = ctk.CTkLabel(
+            self.top_frame, text="Projects", font=("Roboto", 20))
 
         self.mid_frame = ProjectsCardFrame(self, self.data_handler)
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(
-            self.bottom_frame, text="ADD", command=self.create_project_window
+            self.bottom_frame, text="ADD", command=self.create_project_window,
+            fg_color=Colors.SECONDARY_COLOR, bg_color="transparent"
         )
 
     def load_widgets(self) -> None:
-        self.burger_btn.pack(side="right")
-        self.top_frame.pack(fill="x", pady=10, padx=5)
+        self.project_section_label.pack()
+        self.top_frame.pack(fill="x", pady=4)
 
         self.mid_frame.show()
 
         self.add_btn.pack(fill="x")
-        self.bottom_frame.pack(fill="x", pady=10, padx=5)
+        self.bottom_frame.pack(fill="x", pady=4)
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
@@ -71,12 +73,12 @@ class ProjectsFrame(ctk.CTkFrame):
             self.mid_frame.remove_project(id)
 
     def show(self) -> None:
-        self.pack(side="left", expand=True, fill="both")
+        self.pack(side="left", expand=True, fill="both", padx=(4, 0))
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, width=20)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND_SECOND_COLOR, width=20)
         self.master = master
 
         self.data_handler = data_handler
@@ -212,7 +214,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 class NewProjectWindow(ctk.CTkToplevel):
     def __init__(self, master, config: bool, id: Optional[int] = None,
                  name: Optional[str] = None, price: Optional[float] = None):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color="#1F61DB")
         self.master = master
         self.geometry("400x150")
         self.title("Crea un Proyecto")
