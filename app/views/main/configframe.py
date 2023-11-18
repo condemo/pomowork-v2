@@ -115,10 +115,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
             self.projects_container, fg_color="transparent")
         self.select_last_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Last created project",
-            variable=self.init_mode_var, value=1, command=self.update_init)
+            variable=self.init_mode_var, value=1, fg_color=Colors.PRIMARY_COLOR,
+            command=self.update_init)
         self.select_project_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Selected project",
-            variable=self.init_mode_var, value=2, command=self.update_init)
+            variable=self.init_mode_var, value=2, fg_color=Colors.PRIMARY_COLOR,
+            command=self.update_init)
 
         self.last_open_project_label = ctk.CTkLabel(
             self.projects_container, text="Select a project:", font=("Roboto", 16))
