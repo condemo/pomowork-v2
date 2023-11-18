@@ -22,7 +22,7 @@ class CardsFrame(ctk.CTkFrame):
             pass
 
     def create_widgets(self) -> None:
-        self.top_frame = ctk.CTkFrame(self, fg_color=Colors.BACKGROUND_SECOND_COLOR)
+        self.top_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.total_time_label = ctk.CTkLabel(
             self.top_frame,
             text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total",
@@ -30,11 +30,11 @@ class CardsFrame(ctk.CTkFrame):
 
         self.mid_frame = CardListFrame(self, self.data_handler)
 
-        self.bottom_frame = ctk.CTkFrame(self, fg_color=Colors.BACKGROUND_SECOND_COLOR)
+        self.bottom_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.money_collected_label = ctk.CTkLabel(
-            self.bottom_frame, text=f"Cobrado: {self.salary_collected:.2f}€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Charged: {self.salary_collected:.2f}€", font=("Roboto", 20))
         self.unpaid_money_label = ctk.CTkLabel(
-            self.bottom_frame, text=f"Falta: {self.pending_salary:.2f}€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Not Charged: {self.pending_salary:.2f}€", font=("Roboto", 20))
         self.total_money_label = ctk.CTkLabel(
             self.bottom_frame, text=f"Total: {self.total_money:.2f}€", font=("Roboto", 20))
 
@@ -56,10 +56,10 @@ class CardsFrame(ctk.CTkFrame):
             self.total_money
         ) = self.data_handler.get_project_total_info()
         self.money_collected_label.configure(
-            text=f"Cobrado: {self.salary_collected:.2f}€"
+            text=f"Charged: {self.salary_collected:.2f}€"
         )
         self.unpaid_money_label.configure(
-            text=f"Falta: {self.pending_salary:.2f}€"
+            text=f"Not Charged: {self.pending_salary:.2f}€"
         )
         self.total_money_label.configure(
             text=f"Total: {self.total_money:.2f}€"
@@ -78,7 +78,7 @@ class CardsFrame(ctk.CTkFrame):
         self.mid_frame.update_data(current_card)
         self.total_hours = self.data_handler.get_project_total_hours()
         self.total_time_label.configure(
-            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total"
+            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} hours in total"
         )
 
     def show(self) -> None:
@@ -87,7 +87,7 @@ class CardsFrame(ctk.CTkFrame):
 
 class CardListFrame(ctk.CTkScrollableFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, fg_color=Colors.BACKGROUND_SECOND_COLOR)
+        super().__init__(master=master, fg_color=Colors.TRANSPARENT)
         self.data_handler = data_handler
         self.card_list = self.data_handler.get_project_cards()
 
@@ -120,7 +120,7 @@ class CardListFrame(ctk.CTkScrollableFrame):
 
 class PomoCard(ctk.CTkFrame):
     def __init__(self, master, card_data: Card):
-        super().__init__(master=master, fg_color="#B13F39", height=50)
+        super().__init__(master=master, fg_color=Colors.WARNING_COLOR, height=50)
         self.master = master
         self.grid_propagate(False)
         self.columnconfigure(9, weight=2, uniform="a")
@@ -136,10 +136,10 @@ class PomoCard(ctk.CTkFrame):
         self.price_h = card_data.price_per_hour
         self.status = card_data.collected
         if self.status:
-            self.status_text = "Cobrado"
+            self.status_text = "Charged"
             self.check_var = IntVar(self, 1)
         else:
-            self.status_text = "No Cobrado"
+            self.status_text = "Not Charged"
             self.check_var = IntVar(self, 0)
         self.total_price = card_data.total_price
 
@@ -155,13 +155,14 @@ class PomoCard(ctk.CTkFrame):
             self, text=f"{self.total_price:.2f}€", font=("Roboto", 14))
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
-            command=self.change_status, variable=self.check_var, fg_color="#B13F39",
-            hover_color="green"
+            command=self.change_status, variable=self.check_var, fg_color=Colors.WARNING_COLOR,
+            hover_color=Colors.CARDS_BG_COLOR
         )
         if self.check_var.get():
             if not self.current:
-                self.configure(fg_color="green")
-                self.check_box.configure(fg_color="green", hover_color="#B13F39")
+                self.configure(fg_color=Colors.CARDS_BG_COLOR)
+                self.check_box.configure(
+                    fg_color=Colors.CARDS_BG_COLOR, hover_color=Colors.WARNING_COLOR)
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -172,7 +173,7 @@ class PomoCard(ctk.CTkFrame):
 
     def set_current(self) -> None:
         self.current = True
-        self.configure(fg_color="blue")
+        self.configure(fg_color=Colors.PRIMARY_COLOR)
 
     def update_data(self, card_data: Card) -> None:
         self.id = card_data.id
@@ -182,13 +183,13 @@ class PomoCard(ctk.CTkFrame):
         self.price_h = card_data.price_per_hour
         self.status = card_data.collected
         if self.status:
-            self.status_text = "Cobrado"
+            self.status_text = "Charged"
             if not self.current:
-                self.configure(fg_color="green")
+                self.configure(fg_color=Colors.CARDS_BG_COLOR)
         else:
-            self.status_text = "No Cobrado"
+            self.status_text = "Not Charged"
             if not self.current:
-                self.configure(fg_color="#B13F39")
+                self.configure(fg_color=Colors.WARNING_COLOR)
         self.total_price = card_data.total_price
 
         self.price_h_label.configure(
@@ -207,10 +208,12 @@ class PomoCard(ctk.CTkFrame):
     def change_status(self) -> None:
         if self.check_box.get() == 0:
             card_data = self.master.change_status(self.id, False)
-            self.check_box.configure(fg_color="#B13F39", hover_color="green")
+            self.check_box.configure(
+                fg_color=Colors.WARNING_COLOR, hover_color=Colors.CARDS_BG_COLOR)
         else:
             card_data = self.master.change_status(self.id, True)
-            self.check_box.configure(fg_color="green", hover_color="#B13F39")
+            self.check_box.configure(
+                fg_color=Colors.CARDS_BG_COLOR, hover_color=Colors.WARNING_COLOR)
 
         self.update_data(card_data)
         self.master.data_handler.update_current_project_data()
