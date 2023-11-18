@@ -6,11 +6,12 @@ import webbrowser
 from data.datahandlers import DataController
 from data.oauth2 import remove_session
 from config import ASSETS_DIR, _VERSION, LICENSE_RESUME
+from config.theme import Colors
 
 
 class ConfigWindow(ctk.CTkToplevel):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.BG_SECOND_COLOR)
         self.master = master
         self.geometry("900x500+200+200")
         self.title("Configuración")
@@ -22,18 +23,18 @@ class ConfigWindow(ctk.CTkToplevel):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.menu_frame = ctk.CTkFrame(self, border_width=1)
+        self.menu_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.general_btn = ctk.CTkButton(
             self.menu_frame, text="General", font=("Roboto", 20),
-            width=250, height=100, fg_color="#2B2B2B",
+            width=250, height=100, fg_color=Colors.BG_SECOND_COLOR,
             command=lambda: self.switch_section(0))
         self.timer_btn = ctk.CTkButton(
             self.menu_frame, text="Timers", font=("Roboto", 20),
-            width=250, height=100, fg_color="grey",
+            width=250, height=100, fg_color=Colors.GREY,
             command=lambda: self.switch_section(1))
         self.about_btn = ctk.CTkButton(
             self.menu_frame, text="About", font=("Roboto", 20),
-            width=250, height=100, fg_color="grey",
+            width=250, height=100, fg_color=Colors.GREY,
             command=lambda: self.switch_section(2))
 
         self.logout_btn = ctk.CTkButton(
@@ -41,12 +42,12 @@ class ConfigWindow(ctk.CTkToplevel):
             font=("Roboto", 18, "bold"), corner_radius=10,
             command=self.logout)
 
-        self.section_frame = ctk.CTkFrame(self)
+        self.section_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.active_section = GeneralConfigFrame(self.section_frame, self.data_handler)
         self.active_btn = self.general_btn
 
     def load_widgets(self) -> None:
-        self.menu_frame.pack(side="left", fill="y")
+        self.menu_frame.pack(side="left", fill="y", padx=(2, 0))
         self.general_btn.pack(side="top", pady=2, padx=2)
         self.timer_btn.pack(side="top", pady=2, padx=2)
         self.about_btn.pack(side="top", pady=2, padx=2)
@@ -58,23 +59,23 @@ class ConfigWindow(ctk.CTkToplevel):
 
     def switch_section(self, section_index: int) -> None:
         self.active_section.remove()
-        self.active_btn.configure(fg_color="grey")
+        self.active_btn.configure(fg_color=Colors.GREY)
         match section_index:
             case 0:
                 self.active_section = GeneralConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.general_btn
-                self.active_btn.configure(fg_color="#2B2B2B")
+                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
             case 1:
                 self.active_section = TimersConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.timer_btn
-                self.active_btn.configure(fg_color="#2B2B2B")
+                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
             case 2:
                 self.active_section = AboutFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.about_btn
-                self.active_btn.configure(fg_color="#2B2B2B")
+                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
 
     def logout(self) -> None:
         logout_confirm = askyesno("Logout", "You are about to log out, are you sure?", parent=self)
@@ -86,7 +87,7 @@ class ConfigWindow(ctk.CTkToplevel):
 
 class GeneralConfigFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.TRANSPARENT)
         self.master = master
         self.data_handler = data_handler
 
@@ -102,7 +103,8 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.check_selection()
 
     def create_widgets(self) -> None:
-        self.project_section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.project_section = ctk.CTkFrame(
+            self, border_width=2, border_color=Colors.PRIMARY_COLOR)
         self.center_frame = ctk.CTkFrame(self.project_section, fg_color="transparent")
 
         self.projects_container = ctk.CTkFrame(self.center_frame)
@@ -125,7 +127,8 @@ class GeneralConfigFrame(ctk.CTkFrame):
             justify="center", font=("Roboto", 14), command=self.update_start_project,
             state="readonly")
 
-        self.appearance_section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.appearance_section = ctk.CTkFrame(
+            self, border_width=2, border_color=Colors.PRIMARY_COLOR)
         self.appearance_title = ctk.CTkLabel(
             self.appearance_section, text="Appearance", font=("Roboto", 24))
         self.coming_soon_label = ctk.CTkLabel(
@@ -190,7 +193,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
 
 class TimersConfigFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.TRANSPARENT)
         self.master = master
         self.data_handler = data_handler
 
@@ -209,7 +212,7 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.section = ctk.CTkFrame(self, border_width=2, border_color="red")
+        self.section = ctk.CTkFrame(self, border_width=2, border_color=Colors.PRIMARY_COLOR)
         self.center_frame = ctk.CTkFrame(self.section, fg_color="transparent")
 
         self.pomotimer_container = ctk.CTkFrame(self.center_frame)
@@ -240,7 +243,8 @@ class TimersConfigFrame(ctk.CTkFrame):
             self.long_timer_container, textvariable=self.long_value_label, font=("Roboto", 20))
 
         self.save_btn = ctk.CTkButton(
-            self.center_frame, text="Aplicar", command=self.save_timers)
+            self.center_frame, text="Apply", fg_color=Colors.PRIMARY_COLOR,
+            command=self.save_timers)
 
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)
@@ -309,7 +313,7 @@ class AboutFrame(ctk.CTkFrame):
 
         self.tabview = ctk.CTkTabview(self, fg_color="white", bg_color="white",
             corner_radius=10, segmented_button_fg_color="black", text_color="white",
-            segmented_button_selected_color="#A82325")
+            segmented_button_selected_color=Colors.PRIMARY_COLOR)
         self.about_tab = self.tabview.add("About")
         self.credits_tab = self.tabview.add("Credits")
         self.license_tab = self.tabview.add("License")
