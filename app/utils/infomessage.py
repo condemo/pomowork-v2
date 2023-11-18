@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import threading
 from typing import Literal
+from config.theme import Colors
 
 
 class InfoMessage(ctk.CTkFrame):
@@ -8,14 +9,14 @@ class InfoMessage(ctk.CTkFrame):
                  mode: Literal["error", "info", "success"], text: str):
         match mode:
             case "error":
-                border_color = "red"
+                border_color = Colors.ERROR
             case "info":
-                border_color = "blue"
+                border_color = Colors.PRIMARY_COLOR
             case "success":
-                border_color = "green"
+                border_color = Colors.SECONDARY_COLOR
 
         super().__init__(
-            master=master,
+            master=master, fg_color=Colors.BG_SECOND,
             border_width=5, border_color=border_color, corner_radius=15
         )
 
