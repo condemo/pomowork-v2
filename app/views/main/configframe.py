@@ -11,7 +11,7 @@ from config.theme import Colors
 
 class ConfigWindow(ctk.CTkToplevel):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, fg_color=Colors.BG_SECOND_COLOR)
+        super().__init__(master=master, fg_color=Colors.BG_SECOND)
         self.master = master
         self.geometry("900x500+200+200")
         self.title("Configuración")
@@ -26,7 +26,7 @@ class ConfigWindow(ctk.CTkToplevel):
         self.menu_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.general_btn = ctk.CTkButton(
             self.menu_frame, text="General", font=("Roboto", 20),
-            width=250, height=100, fg_color=Colors.BG_SECOND_COLOR,
+            width=250, height=100, fg_color=Colors.BG_SECOND,
             command=lambda: self.switch_section(0))
         self.timer_btn = ctk.CTkButton(
             self.menu_frame, text="Timers", font=("Roboto", 20),
@@ -65,17 +65,17 @@ class ConfigWindow(ctk.CTkToplevel):
                 self.active_section = GeneralConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.general_btn
-                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
+                self.active_btn.configure(fg_color=Colors.BG_SECOND)
             case 1:
                 self.active_section = TimersConfigFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.timer_btn
-                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
+                self.active_btn.configure(fg_color=Colors.BG_SECOND)
             case 2:
                 self.active_section = AboutFrame(self.section_frame, self.data_handler)
                 self.active_section.show()
                 self.active_btn = self.about_btn
-                self.active_btn.configure(fg_color=Colors.BG_SECOND_COLOR)
+                self.active_btn.configure(fg_color=Colors.BG_SECOND)
 
     def logout(self) -> None:
         logout_confirm = askyesno("Logout", "You are about to log out, are you sure?", parent=self)

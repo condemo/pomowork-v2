@@ -7,7 +7,7 @@ from config.theme import Colors
 
 class ProjectsFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, fg_color=Colors.BACKGROUND_COLOR, width=20)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND, width=20)
         self.master = master
         self.pack_propagate(False)
 
@@ -138,7 +138,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.master.change_active_project(id)
         if self.active_project:
             self.active_project.configure(
-                fg_color=Colors.ERROR_COLOR
+                fg_color=Colors.BG_PROJECTS
             )
         for p in self.profile_list:
             if p.id == id:
@@ -163,7 +163,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 class ProjectProfileCard(ctk.CTkFrame):
     def __init__(self, master, id: int, name: str, price: float):
         super().__init__(
-            master=master, fg_color=Colors.ERROR_COLOR, corner_radius=5,
+            master=master, fg_color=Colors.BG_PROJECTS, corner_radius=5,
             height=50, cursor="hand2")
         self.grid_propagate(False)
         self.master = master
@@ -214,7 +214,7 @@ class ProjectProfileCard(ctk.CTkFrame):
 class NewProjectWindow(ctk.CTkToplevel):
     def __init__(self, master, config: bool, id: Optional[int] = None,
                  name: Optional[str] = None, price: Optional[float] = None):
-        super().__init__(master=master, fg_color=Colors.BACKGROUND_COLOR)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND)
         self.master = master
         self.geometry("400x150")
         self.title("Crea un Proyecto")
@@ -227,10 +227,10 @@ class NewProjectWindow(ctk.CTkToplevel):
         self.price_label = ctk.CTkLabel(
             self, text="€/h", font=("Roboto", 22), anchor="w")
         self.name_entry = ctk.CTkEntry(
-            self, width=200, height=50, validate="key", fg_color=Colors.BG_SECOND_COLOR,
+            self, width=200, height=50, validate="key", fg_color=Colors.BG_SECOND,
             validatecommand=(self.master.register(self.validate_name), "%S", "%P"))
         self.price_entry = ctk.CTkEntry(
-            self, width=60, height=50, validate="key", fg_color=Colors.BG_SECOND_COLOR,
+            self, width=60, height=50, validate="key", fg_color=Colors.BG_SECOND,
             validatecommand=(self.master.register(self.validate_price), "%S", "%P"))
 
         self.name_label.grid(column=0, row=0, padx=2, pady=2)
@@ -264,7 +264,7 @@ class NewProjectWindow(ctk.CTkToplevel):
             fg_color=Colors.SECONDARY_COLOR, command=self.update_project)
         self.remove_btn = ctk.CTkButton(
             self, text="B", font=("Roboto", 24), width=20,
-            fg_color=Colors.WARNING_COLOR, command=self.remove_project)
+            fg_color=Colors.ERROR, command=self.remove_project)
         self.name_entry.insert(0, self.name)
         # FIX: No funciona este insert por algún motivo
         self.price_entry.insert(0, self.price)

@@ -6,7 +6,7 @@ from config.theme import Colors
 
 class HomeView(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master=master, fg_color=Colors.BACKGROUND_COLOR)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND)
         self.pack_propagate(False)
 
         self.data_handler = DataController(self)

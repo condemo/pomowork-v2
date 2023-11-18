@@ -120,7 +120,7 @@ class CardListFrame(ctk.CTkScrollableFrame):
 
 class PomoCard(ctk.CTkFrame):
     def __init__(self, master, card_data: Card):
-        super().__init__(master=master, fg_color=Colors.WARNING_COLOR, height=50)
+        super().__init__(master=master, fg_color=Colors.ERROR, height=50)
         self.master = master
         self.grid_propagate(False)
         self.columnconfigure(9, weight=2, uniform="a")
@@ -155,14 +155,14 @@ class PomoCard(ctk.CTkFrame):
             self, text=f"{self.total_price:.2f}€", font=("Roboto", 14))
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
-            command=self.change_status, variable=self.check_var, fg_color=Colors.WARNING_COLOR,
-            hover_color=Colors.CARDS_BG_COLOR
+            command=self.change_status, variable=self.check_var, fg_color=Colors.ERROR,
+            hover_color=Colors.BG_CARDS
         )
         if self.check_var.get():
             if not self.current:
-                self.configure(fg_color=Colors.CARDS_BG_COLOR)
+                self.configure(fg_color=Colors.BG_CARDS)
                 self.check_box.configure(
-                    fg_color=Colors.CARDS_BG_COLOR, hover_color=Colors.WARNING_COLOR)
+                    fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR)
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -185,11 +185,11 @@ class PomoCard(ctk.CTkFrame):
         if self.status:
             self.status_text = "Charged"
             if not self.current:
-                self.configure(fg_color=Colors.CARDS_BG_COLOR)
+                self.configure(fg_color=Colors.BG_CARDS)
         else:
             self.status_text = "Not Charged"
             if not self.current:
-                self.configure(fg_color=Colors.WARNING_COLOR)
+                self.configure(fg_color=Colors.ERROR)
         self.total_price = card_data.total_price
 
         self.price_h_label.configure(
@@ -209,11 +209,11 @@ class PomoCard(ctk.CTkFrame):
         if self.check_box.get() == 0:
             card_data = self.master.change_status(self.id, False)
             self.check_box.configure(
-                fg_color=Colors.WARNING_COLOR, hover_color=Colors.CARDS_BG_COLOR)
+                fg_color=Colors.ERROR, hover_color=Colors.BG_CARDS)
         else:
             card_data = self.master.change_status(self.id, True)
             self.check_box.configure(
-                fg_color=Colors.CARDS_BG_COLOR, hover_color=Colors.WARNING_COLOR)
+                fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR)
 
         self.update_data(card_data)
         self.master.data_handler.update_current_project_data()

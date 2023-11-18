@@ -126,7 +126,7 @@ class PomoFrame(ctk.CTkFrame):
 class ClockFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
         super().__init__(
-            master=master, fg_color=Colors.BG_SECOND_COLOR, corner_radius=20,
+            master=master, fg_color=Colors.BG_SECOND, corner_radius=20,
             border_width=2, border_color=Colors.PRIMARY_COLOR)
         self.master = master
         self.data_handler = data_handler
@@ -164,7 +164,7 @@ class ClockFrame(ctk.CTkFrame):
             fg_color=Colors.SECONDARY_COLOR, command=self.play)
         self.stop_btn = ctk.CTkButton(
             self.control_frame, text="ST", font=("Roboto", 50),
-            fg_color=Colors.WARNING_COLOR, command=self.stop)
+            fg_color=Colors.ERROR, command=self.stop)
 
     def load_widgets(self) -> None:
         self.mode_label.pack()
