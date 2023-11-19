@@ -190,6 +190,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 if self.projects_box.get() == "":
                     self.projects_box.set(self.projects_names[0])
                 self.data_handler.update_config_settings("initial_mode", "selection")
+                InfoMessage(self, "success", "Config Updated")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
