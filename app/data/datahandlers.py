@@ -103,7 +103,7 @@ class DataController:
         if self.card_list:
             for card in self.card_list:
                 total_pomos += card.pomo_count
-            total_minutes = total_pomos * 30
+            total_minutes = total_pomos * int(config.user_conf["pomo"]["pomo_timer"])
             hours, minutes = divmod(total_minutes, 60)
             return hours, minutes
         else:
