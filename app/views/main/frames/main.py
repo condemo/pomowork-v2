@@ -322,7 +322,9 @@ class ClockFrame(ctk.CTkFrame):
 
 class InfoFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, fg_color="transparent")
+        super().__init__(
+            master=master, fg_color=Colors.BG_SECOND, corner_radius=20,
+            border_width=2, border_color=Colors.PRIMARY_COLOR)
         self.pack_propagate(False)
         self.data_handler = data_handler
         self.last_card = self.data_handler.get_current_card()
@@ -341,19 +343,24 @@ class InfoFrame(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         if self.last_card:
+            self.top_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
             self.price_h_label = ctk.CTkLabel(
-                self, text=f"Price/h: {self.last_card.price_per_hour:.2f}€", font=("Roboto", 18))
-            self.date_label = ctk.CTkLabel(self, text=f"{self.last_card_date}", font=("Roboto", 30))
+                self.top_frame, text=f"Price/h: {self.last_card.price_per_hour:.2f}€",
+                font=("Roboto", 18))
+            self.date_label = ctk.CTkLabel(
+                self.top_frame, text=f"{self.last_card_date}", font=("Roboto", 30))
 
             self.main_frame = ctk.CTkFrame(self, fg_color="transparent")
-            self.info_container_frame = ctk.CTkFrame(self.main_frame)
+            self.info_container_frame = ctk.CTkFrame(self.main_frame, fg_color=Colors.TRANSPARENT)
             self.pomo_num_label = ctk.CTkLabel(
                 self.info_container_frame,
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
 
-            self.bottom_frame = ctk.CTkFrame(self)
+            self.bottom_frame = ctk.CTkFrame(
+                self, fg_color=Colors.TRANSPARENT, corner_radius=15, bg_color=Colors.PRIMARY_COLOR)
             self.total_money_label = ctk.CTkLabel(
-                self.bottom_frame,
+                self.bottom_frame, fg_color=Colors.PRIMARY_COLOR, corner_radius=15,
+                bg_color=Colors.PRIMARY_COLOR,
                 text=f"Total Today: {self.last_card.total_price:.2f}€", font=("Roboto", 30))
 
         self.pomo_day_main_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -363,16 +370,17 @@ class InfoFrame(ctk.CTkFrame):
             self.pomo_day_main_frame, fg_color="transparent")
 
         self.radio_btn_list = [ctk.CTkRadioButton(
-            self.pomo_day_left_frame, text="", width=10,
+            self.pomo_day_left_frame, text="", width=10, fg_color=Colors.PRIMARY_COLOR,
             state="readonly", border_width_checked=10) for i in range(4)]
         [self.radio_btn_list.append(ctk.CTkRadioButton(
-            self.pomo_day_right_frame, text="", width=10,
+            self.pomo_day_right_frame, text="", width=10, fg_color=Colors.PRIMARY_COLOR,
             state="readonly", border_width_checked=10)) for i in range(4)]
 
     def load_widgets(self) -> None:
         if self.last_card:
-            self.price_h_label.place(relx=.03, rely=.014, anchor="nw")
-            self.date_label.pack()
+            self.top_frame.pack(pady=4)
+            self.price_h_label.pack(side="left", padx=20)
+            self.date_label.pack(side="left", padx=20)
 
             self.pomo_day_main_frame.pack(pady=50)
             self.pomo_day_left_frame.pack(side="left", padx=15)
@@ -382,10 +390,10 @@ class InfoFrame(ctk.CTkFrame):
 
             self.pomo_num_label.pack(pady=5)
             self.info_container_frame.pack(expand=True)
-            self.main_frame.pack(expand=True, fill="both")
+            self.main_frame.pack(expand=True, fill="both", padx=3)
 
             self.total_money_label.pack(fill="x")
-            self.bottom_frame.pack(fill="x")
+            self.bottom_frame.pack(fill="x", padx=1)
 
     def load_last_card(self) -> None:
         if self.last_card:
