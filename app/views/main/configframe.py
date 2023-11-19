@@ -5,6 +5,7 @@ from PIL import Image
 import webbrowser
 from data.datahandlers import DataController
 from data.oauth2 import remove_session
+from utils.infomessage import InfoMessage
 from config import ASSETS_DIR, _VERSION, LICENSE_RESUME
 from config.theme import Colors
 
@@ -164,6 +165,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
         for project in self.project_list:
             if project[1] == choice:
                 self.data_handler.save_new_last_open_project(project[0])
+        InfoMessage(self, "success", "Config Updated")
 
     def check_selection(self) -> None:
         match self.init_mode_selected:
@@ -181,9 +183,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 self.projects_box.configure(state="disabled")
                 self.last_open_project_label.configure(text_color="grey")
                 self.data_handler.update_config_settings("initial_mode", "last")
+                InfoMessage(self, "success", "Config Updated")
             case 2:
                 self.projects_box.configure(state="normal")
                 self.last_open_project_label.configure(text_color="white")
+                if self.projects_box.get() == "":
+                    self.projects_box.set(self.projects_names[0])
                 self.data_handler.update_config_settings("initial_mode", "selection")
 
     def show(self) -> None:
@@ -284,6 +289,7 @@ class TimersConfigFrame(ctk.CTkFrame):
             int(self.short_timer_slider.get()),
             int(self.long_timer_slider.get())
         )
+        InfoMessage(self, "success", "Config Updated")
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
