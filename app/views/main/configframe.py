@@ -38,7 +38,7 @@ class ConfigWindow(ctk.CTkToplevel):
             command=lambda: self.switch_section(2))
 
         self.logout_btn = ctk.CTkButton(
-            self.menu_frame, text="Logout", fg_color="red",
+            self.menu_frame, text="Logout", fg_color=Colors.ERROR,
             font=("Roboto", 18, "bold"), corner_radius=10,
             command=self.logout)
 
