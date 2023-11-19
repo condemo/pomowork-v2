@@ -31,12 +31,14 @@ class CardsFrame(ctk.CTkFrame):
         self.mid_frame = CardListFrame(self, self.data_handler)
 
         self.bottom_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
-        self.money_collected_label = ctk.CTkLabel(
-            self.bottom_frame, text=f"Charged: {self.salary_collected:.2f}€", font=("Roboto", 20))
         self.unpaid_money_label = ctk.CTkLabel(
-            self.bottom_frame, text=f"Not Charged: {self.pending_salary:.2f}€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Not Charged: {self.pending_salary:.2f}€",
+            font=("Roboto", 18))
+        self.money_collected_label = ctk.CTkLabel(
+            self.bottom_frame, text=f"Charged: {self.salary_collected:.2f}€",
+            font=("Roboto", 18))
         self.total_money_label = ctk.CTkLabel(
-            self.bottom_frame, text=f"Total: {self.total_money:.2f}€", font=("Roboto", 20))
+            self.bottom_frame, text=f"Total: {self.total_money:.2f}€", font=("Roboto", 18))
 
     def load_widgets(self) -> None:
         self.total_time_label.pack()
@@ -44,8 +46,8 @@ class CardsFrame(ctk.CTkFrame):
 
         self.mid_frame.show()
 
-        self.money_collected_label.pack(side="left", expand=True)
         self.unpaid_money_label.pack(side="left", expand=True)
+        self.money_collected_label.pack(side="left", expand=True)
         self.total_money_label.pack(side="left", expand=True)
         self.bottom_frame.pack(fill="x", pady=4)
 
