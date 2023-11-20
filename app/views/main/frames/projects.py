@@ -27,7 +27,7 @@ class ProjectsFrame(ctk.CTkFrame):
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(
             self.bottom_frame, text="ADD", command=self.create_project_window,
-            fg_color=Colors.SECONDARY_COLOR, bg_color="transparent"
+            fg_color=Colors.SECONDARY, bg_color="transparent"
         )
 
     def load_widgets(self) -> None:
@@ -108,7 +108,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
         if self.active_project:
             self.active_project.configure(
-                fg_color=Colors.PRIMARY_COLOR
+                fg_color=Colors.PRIMARY
             )
 
     def load_widgets(self) -> None:
@@ -144,7 +144,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
             if p.id == id:
                 self.active_project = p
                 p.configure(
-                    fg_color=Colors.PRIMARY_COLOR
+                    fg_color=Colors.PRIMARY
                 )
 
     def update_project_info(self, project: tuple[int, str, float]) -> None:
@@ -255,13 +255,13 @@ class NewProjectWindow(ctk.CTkToplevel):
     def load_create_widgets(self) -> None:
         self.create_btn = ctk.CTkButton(
             self, text="Crear", font=("Roboto", 24),
-            fg_color=Colors.SECONDARY_COLOR, command=self.create_project)
+            fg_color=Colors.SECONDARY, command=self.create_project)
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
 
     def load_update_widgets(self) -> None:
         self.update_btn = ctk.CTkButton(
             self, text="Modificar", font=("Roboto", 24),
-            fg_color=Colors.SECONDARY_COLOR, command=self.update_project)
+            fg_color=Colors.SECONDARY, command=self.update_project)
         self.remove_btn = ctk.CTkButton(
             self, text="B", font=("Roboto", 24), width=20,
             fg_color=Colors.ERROR, command=self.remove_project)

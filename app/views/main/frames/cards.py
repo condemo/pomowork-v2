@@ -175,7 +175,7 @@ class PomoCard(ctk.CTkFrame):
 
     def set_current(self) -> None:
         self.current = True
-        self.configure(fg_color=Colors.PRIMARY_COLOR)
+        self.configure(fg_color=Colors.PRIMARY)
 
     def update_data(self, card_data: Card) -> None:
         self.id = card_data.id

@@ -105,7 +105,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         self.project_section = ctk.CTkFrame(
-            self, border_width=2, border_color=Colors.PRIMARY_COLOR)
+            self, border_width=2, border_color=Colors.PRIMARY)
         self.center_frame = ctk.CTkFrame(self.project_section, fg_color="transparent")
 
         self.projects_container = ctk.CTkFrame(self.center_frame)
@@ -116,12 +116,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
             self.projects_container, fg_color="transparent")
         self.select_last_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Last created project",
-            variable=self.init_mode_var, value=1, fg_color=Colors.PRIMARY_COLOR,
-            hover_color=Colors.PRIMARY_COLOR, command=self.update_init)
+            variable=self.init_mode_var, value=1, fg_color=Colors.PRIMARY,
+            hover_color=Colors.PRIMARY, command=self.update_init)
         self.select_project_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Selected project",
-            variable=self.init_mode_var, value=2, fg_color=Colors.PRIMARY_COLOR,
-            hover_color=Colors.PRIMARY_COLOR, command=self.update_init)
+            variable=self.init_mode_var, value=2, fg_color=Colors.PRIMARY,
+            hover_color=Colors.PRIMARY, command=self.update_init)
 
         self.last_open_project_label = ctk.CTkLabel(
             self.projects_container, text="Select a project:", font=("Roboto", 16))
@@ -131,7 +131,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
             state="readonly")
 
         self.appearance_section = ctk.CTkFrame(
-            self, border_width=2, border_color=Colors.PRIMARY_COLOR)
+            self, border_width=2, border_color=Colors.PRIMARY)
         self.appearance_title = ctk.CTkLabel(
             self.appearance_section, text="Appearance", font=("Roboto", 24))
         self.coming_soon_label = ctk.CTkLabel(
@@ -220,7 +220,7 @@ class TimersConfigFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
-        self.section = ctk.CTkFrame(self, border_width=2, border_color=Colors.PRIMARY_COLOR)
+        self.section = ctk.CTkFrame(self, border_width=2, border_color=Colors.PRIMARY)
         self.center_frame = ctk.CTkFrame(self.section, fg_color="transparent")
 
         self.pomotimer_container = ctk.CTkFrame(self.center_frame)
@@ -251,7 +251,7 @@ class TimersConfigFrame(ctk.CTkFrame):
             self.long_timer_container, textvariable=self.long_value_label, font=("Roboto", 20))
 
         self.save_btn = ctk.CTkButton(
-            self.center_frame, text="Apply", fg_color=Colors.PRIMARY_COLOR,
+            self.center_frame, text="Apply", fg_color=Colors.PRIMARY,
             command=self.save_timers)
 
     def load_widgets(self) -> None:
@@ -322,7 +322,7 @@ class AboutFrame(ctk.CTkFrame):
 
         self.tabview = ctk.CTkTabview(self, fg_color="white", bg_color="white",
             corner_radius=10, segmented_button_fg_color="black", text_color="white",
-            segmented_button_selected_color=Colors.PRIMARY_COLOR)
+            segmented_button_selected_color=Colors.PRIMARY)
         self.about_tab = self.tabview.add("About")
         self.credits_tab = self.tabview.add("Credits")
         self.license_tab = self.tabview.add("License")

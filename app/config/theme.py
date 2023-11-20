@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class Colors():
-    PRIMARY_COLOR = "#442BB5"
-    SECONDARY_COLOR = "#2BB589"
+    PRIMARY = "#442BB5"
+    SECONDARY = "#2BB589"
     BACKGROUND = "#1A3243"
     BG_PROJECTS = "#CF5135"
     TRANSPARENT = "transparent"
@@ -13,3 +13,4 @@ class Colors():
     BG_CARDS = "#328C62"
     GREY = "#3F4C5C"
     INFO = "#2B57B5"
+    HOVER = ""
