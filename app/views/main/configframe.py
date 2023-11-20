@@ -28,15 +28,15 @@ class ConfigWindow(ctk.CTkToplevel):
         self.general_btn = ctk.CTkButton(
             self.menu_frame, text="General", font=("Roboto", 20),
             width=250, height=100, fg_color=Colors.BG_SECOND,
-            command=lambda: self.switch_section(0))
+            hover_color=Colors.BACKGROUND, command=lambda: self.switch_section(0))
         self.timer_btn = ctk.CTkButton(
             self.menu_frame, text="Timers", font=("Roboto", 20),
             width=250, height=100, fg_color=Colors.GREY,
-            command=lambda: self.switch_section(1))
+            hover_color=Colors.BACKGROUND, command=lambda: self.switch_section(1))
         self.about_btn = ctk.CTkButton(
             self.menu_frame, text="About", font=("Roboto", 20),
             width=250, height=100, fg_color=Colors.GREY,
-            command=lambda: self.switch_section(2))
+            hover_color=Colors.BACKGROUND, command=lambda: self.switch_section(2))
 
         self.logout_btn = ctk.CTkButton(
             self.menu_frame, text="Logout", fg_color=Colors.ERROR,
@@ -117,11 +117,11 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.select_last_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Last created project",
             variable=self.init_mode_var, value=1, fg_color=Colors.PRIMARY,
-            hover_color=Colors.PRIMARY, command=self.update_init)
+            hover_color=Colors.PRIMARY_HOVER, command=self.update_init)
         self.select_project_mode = ctk.CTkRadioButton(
             self.startup_radio_container, text="Selected project",
             variable=self.init_mode_var, value=2, fg_color=Colors.PRIMARY,
-            hover_color=Colors.PRIMARY, command=self.update_init)
+            hover_color=Colors.PRIMARY_HOVER, command=self.update_init)
 
         self.last_open_project_label = ctk.CTkLabel(
             self.projects_container, text="Select a project:", font=("Roboto", 16))
@@ -252,7 +252,7 @@ class TimersConfigFrame(ctk.CTkFrame):
 
         self.save_btn = ctk.CTkButton(
             self.center_frame, text="Apply", fg_color=Colors.PRIMARY,
-            command=self.save_timers)
+            hover_color=Colors.PRIMARY_HOVER, command=self.save_timers)
 
     def load_widgets(self) -> None:
         self.section.pack(pady=10, padx=20, fill="x", ipady=10)

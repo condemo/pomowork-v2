@@ -73,20 +73,20 @@ class PomoFrame(ctk.CTkFrame):
         )
         self.config_btn = ctk.CTkButton(
             self.top_frame, text="C", width=30, height=30, corner_radius=30,
-            fg_color=Colors.GREY, command=self.create_config_window
+            fg_color=Colors.GREY, hover_color=Colors.GREY_HOVER, command=self.create_config_window
         )
 
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.back_btn = ctk.CTkButton(
             self.main_frame, text="<", width=30, height=30,
             corner_radius=30, font=("Roboto", 50), fg_color="transparent",
-            command=self.back_mode
+            hover_color=Colors.PRIMARY, command=self.back_mode
         )
         self.clock_frame = ClockFrame(self.main_frame, self.data_handler)
         self.forward_btn = ctk.CTkButton(
             self.main_frame, text=">", width=30, height=30,
             corner_radius=30, font=("Roboto", 50), fg_color="transparent",
-            command=self.forward_mode
+            hover_color=Colors.PRIMARY, command=self.forward_mode
         )
 
     def load_widgets(self) -> None:
@@ -161,10 +161,10 @@ class ClockFrame(ctk.CTkFrame):
             self.main_frame, fg_color=Colors.PRIMARY)
         self.pause_btn = ctk.CTkButton(
             self.control_frame, textvariable=self.play_text, font=("Roboto", 50),
-            fg_color=Colors.SECONDARY, command=self.play)
+            fg_color=Colors.SECONDARY, hover_color=Colors.SECONDARY_HOVER, command=self.play)
         self.stop_btn = ctk.CTkButton(
             self.control_frame, text="ST", font=("Roboto", 50),
-            fg_color=Colors.ERROR, command=self.stop)
+            fg_color=Colors.ERROR, hover_color=Colors.ERROR_HOVER, command=self.stop)
 
     def load_widgets(self) -> None:
         self.mode_label.pack()

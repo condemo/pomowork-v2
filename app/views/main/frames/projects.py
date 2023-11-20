@@ -27,7 +27,7 @@ class ProjectsFrame(ctk.CTkFrame):
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(
             self.bottom_frame, text="ADD", command=self.create_project_window,
-            fg_color=Colors.SECONDARY, bg_color="transparent"
+            fg_color=Colors.SECONDARY, bg_color="transparent", hover_color=Colors.SECONDARY_HOVER
         )
 
     def load_widgets(self) -> None:

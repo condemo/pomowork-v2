@@ -158,13 +158,13 @@ class PomoCard(ctk.CTkFrame):
         self.check_box = ctk.CTkCheckBox(
             self, text=self.status_text, checkbox_width=20, checkbox_height=20,
             command=self.change_status, variable=self.check_var, fg_color=Colors.ERROR,
-            hover_color=Colors.BG_CARDS
+            hover_color=Colors.BG_CARDS_HOVER
         )
         if self.check_var.get():
             if not self.current:
                 self.configure(fg_color=Colors.BG_CARDS)
                 self.check_box.configure(
-                    fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR)
+                    fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR_HOVER)
 
     def load_widgets(self) -> None:
         self.date_label.grid(column=4, columnspan=3, row=0, sticky="nswe", pady=1)
@@ -211,11 +211,11 @@ class PomoCard(ctk.CTkFrame):
         if self.check_box.get() == 0:
             card_data = self.master.change_status(self.id, False)
             self.check_box.configure(
-                fg_color=Colors.ERROR, hover_color=Colors.BG_CARDS)
+                fg_color=Colors.ERROR, hover_color=Colors.BG_CARDS_HOVER)
         else:
             card_data = self.master.change_status(self.id, True)
             self.check_box.configure(
-                fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR)
+                fg_color=Colors.BG_CARDS, hover_color=Colors.ERROR_HOVER)
 
         self.update_data(card_data)
         self.master.data_handler.update_current_project_data()
