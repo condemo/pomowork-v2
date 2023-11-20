@@ -12,3 +12,4 @@ class Colors():
     BG_SECOND = "#243039"
     BG_CARDS = "#328C62"
     GREY = "#3F4C5C"
+    INFO = "#2B57B5"

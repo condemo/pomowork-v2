@@ -9,16 +9,14 @@ class InfoMessage(ctk.CTkFrame):
                  mode: Literal["error", "info", "success"], text: str):
         match mode:
             case "error":
-                border_color = Colors.ERROR
+                background_color = Colors.ERROR
             case "info":
-                border_color = Colors.PRIMARY_COLOR
+                background_color = Colors.INFO
             case "success":
-                border_color = Colors.SECONDARY_COLOR
+                background_color = Colors.BG_CARDS
 
         super().__init__(
-            master=master, fg_color=Colors.BG_SECOND,
-            border_width=5, border_color=border_color, corner_radius=15
-        )
+            master=master, fg_color=background_color, corner_radius=5)
 
         self.text = text
 
@@ -29,12 +27,12 @@ class InfoMessage(ctk.CTkFrame):
 
     def load_widgets(self) -> None:
         self.text_label = ctk.CTkLabel(self, text=self.text, font=("Roboto", 22))
-        self.text_label.pack(expand=True)
+        self.text_label.pack(expand=True, padx=5, pady=5)
 
     def animate(self) -> None:
         self.x_pos -= .004
         if self.x_pos >= 1 - self.relwidth:
-            self.place(relx=self.x_pos, rely=0, relwidth=self.relwidth, relheight=.09)
+            self.place(relx=self.x_pos, rely=0.01, relwidth=self.relwidth, relheight=.09)
             self.winfo_toplevel().after(20, self.animate)
         elif self.x_pos >= .74:
             self.winfo_toplevel().after(1500, self.animate)
