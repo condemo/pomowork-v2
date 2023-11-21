@@ -2,11 +2,12 @@ import customtkinter as ctk
 
 from utils.auth import login_handler
 from data.oauth2 import save_jwt, save_refresh_token
+from config.theme import Colors
 
 
 class LoginView(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=Colors.PRIMARY)
         self.pack_propagate(False)
 
         self.create_widgets()
@@ -41,8 +42,8 @@ class LoginView(ctk.CTkFrame):
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(
-            master=master, width=400, height=400,
-            border_width=5, corner_radius=15)
+            master=master, width=400, height=400, fg_color=Colors.BG_SECOND,
+            border_width=5, corner_radius=15, border_color=Colors.PRIMARY_DARK)
         self.pack_propagate(False)
 
         self.create_widgets()
@@ -72,14 +73,17 @@ class FormFrame(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         self.username_entry = ctk.CTkEntry(
-            self, placeholder_text="Username", height=40)
+            self, placeholder_text="Username", height=40,
+            fg_color=Colors.BG_SECOND)
         self.password_entry = ctk.CTkEntry(
-            self, placeholder_text="Password", height=40, show="*")
+            self, placeholder_text="Password", height=40,
+            show="*", fg_color=Colors.BG_SECOND)
 
         self.password_entry.bind("<KeyRelease-Return>", self.send_data)
 
         self.login_btn = ctk.CTkButton(
-            self, text="Ingresar", height=40, command=self.send_data)
+            self, text="Ingresar", height=40,
+            fg_color=Colors.PRIMARY, command=self.send_data)
 
     def load_widgets(self) -> None:
         self.username_entry.pack(fill="x", expand=True, pady=3)
