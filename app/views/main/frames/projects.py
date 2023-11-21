@@ -108,7 +108,13 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
         if self.active_project:
             self.active_project.configure(
-                fg_color=Colors.PRIMARY
+                fg_color=Colors.PRIMARY,
+                border_width=2,
+                border_color=Colors.PRIMARY_HOVER,
+            )
+            self.active_project.config_btn.configure(
+                fg_color=Colors.PRIMARY,
+                hover_color=Colors.PRIMARY_DARK,
             )
 
     def load_widgets(self) -> None:
@@ -138,13 +144,24 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.master.change_active_project(id)
         if self.active_project:
             self.active_project.configure(
-                fg_color=Colors.BG_PROJECTS
+                fg_color=Colors.BG_PROJECTS,
+                border_width=0,
+            )
+            self.active_project.config_btn.configure(
+                fg_color=Colors.BG_PROJECTS,
+                hover_color=Colors.CONFIG_PROJECT,
             )
         for p in self.profile_list:
             if p.id == id:
                 self.active_project = p
                 p.configure(
-                    fg_color=Colors.PRIMARY
+                    fg_color=Colors.PRIMARY,
+                    border_width=2,
+                    border_color=Colors.PRIMARY_HOVER,
+                )
+                p.config_btn.configure(
+                    fg_color=Colors.PRIMARY,
+                    hover_color=Colors.PRIMARY_DARK,
                 )
 
     def update_project_info(self, project: tuple[int, str, float]) -> None:
@@ -182,7 +199,7 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.name_label = ctk.CTkLabel(
             self, text=self.name, font=("Roboto", 18), bg_color="transparent")
         self.config_btn = ctk.CTkButton(
-            self, text="C", fg_color="brown",
+            self, text="C", fg_color=Colors.BG_PROJECTS, hover_color=Colors.CONFIG_PROJECT,
             command=lambda: self.master.master.create_project_window(
                 config=True, id=self.id, name=self.name, price=self.price))
 
