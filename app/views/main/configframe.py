@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import StringVar, IntVar
 from tkinter.messagebox import askyesno
+from CTkToolTip import CTkToolTip
 from PIL import Image
 import webbrowser
 from data.datahandlers import DataController
@@ -154,6 +155,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
         self.appearance_section.pack(pady=10, padx=20, fill="x", ipady=10)
         self.appearance_title.pack(pady=10)
         self.coming_soon_label.pack()
+
+        # TOOLTIPS
+        CTkToolTip(
+            self.select_last_mode, message="Select Last", bg_color=Colors.BG_SECOND)
+        CTkToolTip(
+            self.select_project_mode, message="Custom Select", bg_color=Colors.BG_SECOND)
 
     def load_selected_project(self) -> None:
         self.startup_project_id = self.data_handler.get_startup_project()
