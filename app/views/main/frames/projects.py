@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter.messagebox import askokcancel
+from CTkToolTip import CTkToolTip
 from typing import Optional
 from data.datahandlers import DataController
 from config.theme import Colors
@@ -38,6 +39,9 @@ class ProjectsFrame(ctk.CTkFrame):
 
         self.add_btn.pack(fill="x")
         self.bottom_frame.pack(fill="x", pady=4)
+
+        CTkToolTip(self.add_btn, message="New Project",
+                   corner_radius=20, bg_color=Colors.BG_SECOND)
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
@@ -209,6 +213,8 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.name_label.grid(
             column=0, row=0, rowspan=2, sticky="nswe", padx=5, pady=5)
         self.config_btn.grid(column=1, row=0, rowspan=2, padx=5)
+
+        CTkToolTip(self.config_btn, message="Project Config", bg_color=Colors.BG_SECOND)
 
     def switch_state(self, state: bool) -> None:
         if state:

@@ -3,6 +3,7 @@ from datetime import datetime
 import threading
 import customtkinter as ctk
 import tkinter as tk
+from CTkToolTip import CTkToolTip
 from plyer import notification
 from data.datahandlers import DataController
 from utils.infomessage import InfoMessage
@@ -73,7 +74,8 @@ class PomoFrame(ctk.CTkFrame):
         )
         self.config_btn = ctk.CTkButton(
             self.top_frame, text="C", width=30, height=30, corner_radius=30,
-            fg_color=Colors.GREY, hover_color=Colors.GREY_HOVER, command=self.create_config_window
+            fg_color=Colors.GREY, hover_color=Colors.GREY_HOVER,
+            command=self.create_config_window
         )
 
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
@@ -98,6 +100,10 @@ class PomoFrame(ctk.CTkFrame):
         self.clock_frame.show()
         self.forward_btn.pack(side="left")
         self.main_frame.pack(fill="both", expand=True, padx=2, pady=2)
+
+        CTkToolTip(self.config_btn, message="Config", bg_color=Colors.BG_SECOND)
+        CTkToolTip(self.forward_btn, message="Next Mode", bg_color=Colors.BG_SECOND)
+        CTkToolTip(self.back_btn, message="Previous Mode", bg_color=Colors.BG_SECOND)
 
     def create_config_window(self) -> None:
         if self.config_window is None or not self.config_window.winfo_exists():
@@ -175,6 +181,9 @@ class ClockFrame(ctk.CTkFrame):
         self.pause_btn.pack(side="left", padx=10)
         self.stop_btn.pack(side="left", padx=10)
         self.control_frame.pack(fill="x", pady=10)
+
+        CTkToolTip(self.pause_btn, message="Play/Pause", bg_color=Colors.BG_SECOND)
+        CTkToolTip(self.stop_btn, message="Stop", bg_color=Colors.BG_SECOND)
 
     def back_mode(self) -> None:
         if self.stopped or self.paused:

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import IntVar
+from CTkToolTip import CTkToolTip
 from lib.models import Card
 from data.datahandlers import DataController
 from config.theme import Colors
@@ -172,6 +173,8 @@ class PomoCard(ctk.CTkFrame):
         self.pomo_count_label.grid(column=4, row=1, rowspan=2, columnspan=3, sticky="nswe")
         self.total_money_label.grid(column=7, columnspan=2, row=1, rowspan=2, sticky="nswe")
         self.check_box.grid(column=8, row=0, columnspan=2, rowspan=4, sticky="e", padx=5)
+
+        CTkToolTip(self.check_box, message="Switch Status", bg_color=Colors.BG_SECOND)
 
     def set_current(self) -> None:
         self.current = True
