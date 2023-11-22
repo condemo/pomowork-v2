@@ -26,7 +26,7 @@ class CardsFrame(ctk.CTkFrame):
         self.top_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.total_time_label = ctk.CTkLabel(
             self.top_frame,
-            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} horas en total",
+            text=f"{self.total_hours[0]:02d}:{self.total_hours[1]:02d} hours in total",
             font=("Roboto", 20))
 
         self.mid_frame = CardListFrame(self, self.data_handler)

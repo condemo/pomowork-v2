@@ -240,13 +240,13 @@ class NewProjectWindow(ctk.CTkToplevel):
         super().__init__(master=master, fg_color=Colors.BACKGROUND)
         self.master = master
         self.geometry("400x150")
-        self.title("Crea un Proyecto")
+        self.title("Create a Project")
         self.columnconfigure((0, 1, 2), weight=1, uniform="a")
         self.rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.config_mode = config
 
         self.name_label = ctk.CTkLabel(
-            self, text="Nombre:", font=("Roboto", 22))
+            self, text="Name:", font=("Roboto", 22))
         self.price_label = ctk.CTkLabel(
             self, text="€/h", font=("Roboto", 22), anchor="w")
         self.name_entry = ctk.CTkEntry(
@@ -277,16 +277,16 @@ class NewProjectWindow(ctk.CTkToplevel):
 
     def load_create_widgets(self) -> None:
         self.create_btn = ctk.CTkButton(
-            self, text="Crear", font=("Roboto", 24),
+            self, text="Create", font=("Roboto", 24),
             fg_color=Colors.SECONDARY, command=self.create_project)
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
 
     def load_update_widgets(self) -> None:
         self.update_btn = ctk.CTkButton(
-            self, text="Modificar", font=("Roboto", 24),
+            self, text="Modify", font=("Roboto", 24),
             fg_color=Colors.SECONDARY, command=self.update_project)
         self.remove_btn = ctk.CTkButton(
-            self, text="B", font=("Roboto", 24), width=20,
+            self, text="D", font=("Roboto", 24), width=20,
             fg_color=Colors.ERROR, command=self.remove_project)
         self.name_entry.insert(0, self.name)
         # FIX: No funciona este insert por algún motivo
