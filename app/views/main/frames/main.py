@@ -173,7 +173,7 @@ class ClockFrame(ctk.CTkFrame):
             fg_color=Colors.ERROR, hover_color=Colors.ERROR_HOVER, command=self.stop)
 
     def load_widgets(self) -> None:
-        self.mode_label.pack()
+        self.mode_label.pack(pady=(5, 0))
 
         self.timer_label.pack()
         self.main_frame.place(relx=.5, rely=.5, anchor="center")
