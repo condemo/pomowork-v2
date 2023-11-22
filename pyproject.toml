@@ -29,4 +29,4 @@ dependencies = [
 dynamic = ["version"]
 
 [tool.setuptools.dynamic]
-version = { attr = "app.pomowork._VERSION" }
+version = { attr = "app.config._VERSION" }
