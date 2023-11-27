@@ -418,7 +418,7 @@ class InfoFrame(ctk.CTkFrame):
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
             )
             self.total_money_label.configure(
-                text=f"Total Today: {self.last_card.total_price:.2f}€", font=("Roboto", 60)
+                text=f"Total Today: {self.last_card.total_price:.2f}€", font=("Roboto", 30)
             )
         else:
             self.last_card = self.data_handler.get_current_card()
