@@ -10,9 +10,13 @@ class DataController:
         self.view = view
         self.cache_handler = CacheHandler(view)
         self.project_list = self.cache_handler.get_project_list()
-        if not config.user_conf["core"]["startup_project"] and self.project_list:
-            self.save_new_last_open_project(self.project_list[0][0])
-            self.cache_handler.update_last_open_project(self.project_list[0][0])
+        # if not config.user_conf["core"]["startup_project"] and self.project_list:
+        #     self.save_new_last_open_project(self.project_list[0][0])
+        #     self.cache_handler.update_last_open_project(self.project_list[0][0])
+        if config.user_conf["config"]["initial_mode"] == "last":
+            self.cache_handler.load_project_by_id(self.project_list[0][0])
+        elif config.user_conf["config"]["initial_mode"] == "selection":
+            self.cache_handler.load_project_by_id(config.user_conf["core"]["startup_project"])
         self.current_project: Project = self.cache_handler \
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
@@ -40,7 +44,7 @@ class DataController:
         return config.user_conf["config"]["initial_mode"]
 
     @staticmethod
-    def save_new_last_open_project(id: int) -> None:
+    def save_new_last_open_project(id: int | bool) -> None:
         config.user_conf["core"]["startup_project"] = id
         config.save_config(config.user_conf)
 

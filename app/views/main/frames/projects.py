@@ -87,21 +87,24 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
 
         self.data_handler = data_handler
         self.projects_list = self.data_handler.get_project_list()
+        self.active_project = None
         if self.projects_list:
-            self.startup_project = self.data_handler.get_startup_project()
+            self.startup_project_id = self.data_handler.get_startup_project()
+            print(self.startup_project_id)
             self.create_widgets()
             self.load_widgets()
-        else:
-            self.active_project = None
+        # else:
+            # self.active_project = None
 
     def create_widgets(self) -> None:
         self.profile_list = [
             ProjectProfileCard(self, id=i[0], name=i[1], price=i[2]) for i in self.projects_list
         ]
-        if self.startup_project:
+        if self.startup_project_id:
             if self.profile_list:
                 for p in self.profile_list:
-                    if p.id == self.startup_project:
+                    print(p.id)
+                    if p.id == self.startup_project_id:
                         self.active_project = p
             else:
                 self.active_project = None
@@ -144,6 +147,7 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
                 self.profile_list.remove(project)
                 project.pack_forget()
         self.change_active_project(self.projects_list[0][0])
+        self.data_handler.save_new_last_open_project(id=False)
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)
