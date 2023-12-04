@@ -4,6 +4,7 @@ import threading
 import customtkinter as ctk
 import tkinter as tk
 from CTkToolTip import CTkToolTip
+from tkfontawesome import icon_to_image
 from plyer import notification
 from data.datahandlers import DataController
 from utils.infomessage import InfoMessage
@@ -67,28 +68,33 @@ class PomoFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
+        # ICONS
+        config_icon = icon_to_image("cog", fill="white", scale=0.042)
+        forward_icon = icon_to_image("arrow-right", fill="white", scale=0.06)
+        back_icon = icon_to_image("arrow-left", fill="white", scale=0.06)
+        # WIDGETS
         self.top_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.title_label = ctk.CTkLabel(
             self.top_frame, text=f"{self.data_handler.get_current_project_name()}",
             font=("Roboto", 28)
         )
         self.config_btn = ctk.CTkButton(
-            self.top_frame, text="C", width=30, height=30, corner_radius=30,
-            fg_color=Colors.GREY, hover_color=Colors.GREY_HOVER,
+            self.top_frame, text="", width=25, height=35, corner_radius=30,
+            fg_color=Colors.GREY, hover_color=Colors.GREY_HOVER, image=config_icon,
             command=self.create_config_window
         )
 
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.back_btn = ctk.CTkButton(
-            self.main_frame, text="<", width=30, height=30,
+            self.main_frame, text="", width=30, height=30, image=back_icon,
             corner_radius=30, font=("Roboto", 50), fg_color="transparent",
-            hover_color=Colors.PRIMARY, command=self.back_mode
+            hover_color=Colors.PRIMARY, border_spacing=6, command=self.back_mode
         )
         self.clock_frame = ClockFrame(self.main_frame, self.data_handler)
         self.forward_btn = ctk.CTkButton(
-            self.main_frame, text=">", width=30, height=30,
+            self.main_frame, text="", width=30, height=30, image=forward_icon,
             corner_radius=30, font=("Roboto", 50), fg_color="transparent",
-            hover_color=Colors.PRIMARY, command=self.forward_mode
+            hover_color=Colors.PRIMARY, border_spacing=6, command=self.forward_mode
         )
 
     def load_widgets(self) -> None:
@@ -139,9 +145,6 @@ class ClockFrame(ctk.CTkFrame):
 
         self.time = tk.StringVar(self)
 
-        self.play_text = tk.StringVar(self)
-        self.play_text.set("PL")
-
         self.stopped: bool = True
         self.paused: bool = True
 
@@ -157,6 +160,11 @@ class ClockFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
+        # ICONS
+        self.play_icon = icon_to_image("play", fill="white", scale=0.1)
+        self.pause_icon = icon_to_image("pause", fill="white", scale=0.1)
+        stop_icon = icon_to_image("stop", fill="white", scale=0.1)
+        # WIDGETS
         self.mode_label = ctk.CTkLabel(self, text=f"{self.mode}", font=("Roboto", 40))
 
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.PRIMARY)
@@ -166,10 +174,11 @@ class ClockFrame(ctk.CTkFrame):
         self.control_frame = ctk.CTkFrame(
             self.main_frame, fg_color=Colors.PRIMARY)
         self.pause_btn = ctk.CTkButton(
-            self.control_frame, textvariable=self.play_text, font=("Roboto", 50),
+            self.control_frame, image=self.play_icon, text=" ", border_spacing=6, corner_radius=10,
+            compound="right",
             fg_color=Colors.SECONDARY, hover_color=Colors.SECONDARY_HOVER, command=self.play)
         self.stop_btn = ctk.CTkButton(
-            self.control_frame, text="ST", font=("Roboto", 50),
+            self.control_frame, text="", image=stop_icon, border_spacing=6, corner_radius=10,
             fg_color=Colors.ERROR, hover_color=Colors.ERROR_HOVER, command=self.stop)
 
     def load_widgets(self) -> None:
@@ -304,19 +313,19 @@ class ClockFrame(ctk.CTkFrame):
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
             self.stopped = True
-            self.play_text.set("PL")
+            self.pause_btn.configure(text=" ", image=self.play_icon)
             self.change_timer_mode()
             self.data_handler.switch_projects_state(True)
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
         self.stop_btn.configure(state="normal")
-        if self.play_text.get() == "II":
-            self.play_text.set("PL")
+        if self.pause_btn.cget("text") == "":
+            self.pause_btn.configure(text=" ", image=self.play_icon)
             self.paused = True
             self.data_handler.switch_projects_state(True)
         else:
-            self.play_text.set("II")
+            self.pause_btn.configure(text="", image=self.pause_icon)
             self.paused = False
             self.data_handler.switch_projects_state(False)
             self.start_timer_thread()
