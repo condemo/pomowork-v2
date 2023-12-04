@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter.messagebox import askokcancel
 from CTkToolTip import CTkToolTip
+from tkfontawesome import icon_to_image
 from typing import Optional
 from data.datahandlers import DataController
 from config.theme import Colors
@@ -19,6 +20,9 @@ class ProjectsFrame(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
+        # ICON LOAD
+        add_icon = icon_to_image("plus", fill="white", scale=0.042)
+        # WIDGETS LOAD
         self.top_frame = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
         self.project_section_label = ctk.CTkLabel(
             self.top_frame, text="Projects", font=("Roboto", 20))
@@ -27,8 +31,9 @@ class ProjectsFrame(ctk.CTkFrame):
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(
-            self.bottom_frame, text="ADD", command=self.create_project_window,
-            fg_color=Colors.SECONDARY, bg_color="transparent", hover_color=Colors.SECONDARY_HOVER
+            self.bottom_frame, text="New", command=self.create_project_window, image=add_icon,
+            fg_color=Colors.SECONDARY, bg_color="transparent", hover_color=Colors.SECONDARY_HOVER,
+            font=("Roboto", 16), compound="right"
         )
 
     def load_widgets(self) -> None:
@@ -201,10 +206,14 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.load_widgets()
 
     def create_widgets(self) -> None:
+        # ICONS
+        config_icon = icon_to_image("edit", fill=Colors.ERROR_HOVER, scale=0.042)
+        # WIDGETS
         self.name_label = ctk.CTkLabel(
             self, text=self.name, font=("Roboto", 18), bg_color="transparent")
         self.config_btn = ctk.CTkButton(
-            self, text="C", fg_color=Colors.BG_PROJECTS, hover_color=Colors.CONFIG_PROJECT,
+            self, text="", fg_color=Colors.BG_PROJECTS, hover_color=Colors.CONFIG_PROJECT,
+            image=config_icon,
             command=lambda: self.master.master.create_project_window(
                 config=True, id=self.id, name=self.name, price=self.price))
 
@@ -277,17 +286,20 @@ class NewProjectWindow(ctk.CTkToplevel):
             self.load_create_widgets()
 
     def load_create_widgets(self) -> None:
+        create_icon = icon_to_image("save", fill="white", scale=0.042)
         self.create_btn = ctk.CTkButton(
-            self, text="Create", font=("Roboto", 24),
+            self, text="Create", font=("Roboto", 24), image=create_icon, compound="right",
             fg_color=Colors.SECONDARY, command=self.create_project)
         self.create_btn.grid(column=1, row=2, padx=2, pady=6)
 
     def load_update_widgets(self) -> None:
+        update_icon = icon_to_image("pencil-alt", fill="white", scale=0.042)
+        delete_icon = icon_to_image("trash-alt", fill="white", scale=0.042)
         self.update_btn = ctk.CTkButton(
-            self, text="Modify", font=("Roboto", 24),
+            self, text="Modify", font=("Roboto", 24), image=update_icon, compound="right",
             fg_color=Colors.SECONDARY, command=self.update_project)
         self.remove_btn = ctk.CTkButton(
-            self, text="D", font=("Roboto", 24), width=20,
+            self, text="", font=("Roboto", 24), width=20, image=delete_icon, compound="right",
             fg_color=Colors.ERROR, command=self.remove_project)
         self.name_entry.insert(0, self.name)
         # FIX: No funciona este insert por algún motivo
