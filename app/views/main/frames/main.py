@@ -367,7 +367,7 @@ class InfoFrame(ctk.CTkFrame):
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
             self.total_time_label = ctk.CTkLabel(
                 self.info_container_frame,
-                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}",
+                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}h",
                 font=("Roboto", 20))
 
             self.bottom_frame = ctk.CTkFrame(
@@ -424,7 +424,7 @@ class InfoFrame(ctk.CTkFrame):
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
             )
             self.total_time_label.configure(
-                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}"
+                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}h"
             )
             self.total_money_label.configure(
                 text=f"Total Today: {self.last_card.total_price:.2f}€", font=("Roboto", 30)
@@ -443,7 +443,7 @@ class InfoFrame(ctk.CTkFrame):
         self.price_h_label.configure(
             text=f"Price/h: {self.last_card.price_per_hour:.2f}€")
         self.total_time_label.configure(
-            text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}")
+            text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}h")
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(
