@@ -340,6 +340,7 @@ class InfoFrame(ctk.CTkFrame):
 
         if self.last_card:
             self.check_card_date()
+            self.card_hour, self.card_minutes = self.data_handler.get_current_card_total_hours()
         self.pomo_day_count = self.data_handler.get_pomo_day_count()
         self.create_widgets()
         self.load_widgets()
@@ -364,6 +365,10 @@ class InfoFrame(ctk.CTkFrame):
             self.pomo_num_label = ctk.CTkLabel(
                 self.info_container_frame,
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50))
+            self.total_time_label = ctk.CTkLabel(
+                self.info_container_frame,
+                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}",
+                font=("Roboto", 20))
 
             self.bottom_frame = ctk.CTkFrame(
                 self, fg_color=Colors.TRANSPARENT, corner_radius=15, bg_color=Colors.PRIMARY)
@@ -398,6 +403,7 @@ class InfoFrame(ctk.CTkFrame):
             [self.radio_btn_list[i].select() for i in range(self.pomo_day_count)]
 
             self.pomo_num_label.pack(pady=5)
+            self.total_time_label.pack()
             self.info_container_frame.pack(expand=True)
             self.main_frame.pack(expand=True, fill="both", padx=3)
 
@@ -417,6 +423,9 @@ class InfoFrame(ctk.CTkFrame):
             self.pomo_num_label.configure(
                 text=f"Pomodoros: {self.last_card.pomo_count}", font=("Roboto", 50)
             )
+            self.total_time_label.configure(
+                text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}"
+            )
             self.total_money_label.configure(
                 text=f"Total Today: {self.last_card.total_price:.2f}€", font=("Roboto", 30)
             )
@@ -428,8 +437,13 @@ class InfoFrame(ctk.CTkFrame):
 
     def update_data(self, updated_card) -> None:
         self.last_card = updated_card
+        self.card_hour, self.card_minutes = self.data_handler.get_current_card_total_hours(
+            updated_card)
+
         self.price_h_label.configure(
             text=f"Price/h: {self.last_card.price_per_hour:.2f}€")
+        self.total_time_label.configure(
+            text=f"Time Today: {self.card_hour:02d}:{self.card_minutes:02d}")
         self.pomo_num_label.configure(
             text=f"Pomodoros: {self.last_card.pomo_count}")
         self.total_money_label.configure(

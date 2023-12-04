@@ -92,6 +92,16 @@ class DataController:
             self.current_card = self.card_list[0]
             return self.current_card
 
+    def get_current_card_total_hours(self, card: Optional[Card] = None) -> tuple[int, int]:
+        if card:
+            total_minutes = card.pomo_count * int(config.user_conf["pomo"]["pomo_timer"])
+        else:
+            total_minutes = self.current_card.pomo_count * \
+                int(config.user_conf["pomo"]["pomo_timer"])
+        hours, minutes = divmod(total_minutes, 60)
+        print(total_minutes)
+        return (hours, minutes)
+
     def get_project_total_info(self) -> tuple[float, float, float]:
         if self.current_project:
             return (
