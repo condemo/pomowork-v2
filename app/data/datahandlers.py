@@ -10,9 +10,6 @@ class DataController:
         self.view = view
         self.cache_handler = CacheHandler(view)
         self.project_list = self.cache_handler.get_project_list()
-        # if not config.user_conf["core"]["startup_project"] and self.project_list:
-        #     self.save_new_last_open_project(self.project_list[0][0])
-        #     self.cache_handler.update_last_open_project(self.project_list[0][0])
         if config.user_conf["config"]["initial_mode"] == "last":
             self.cache_handler.load_project_by_id(self.project_list[0][0])
         elif config.user_conf["config"]["initial_mode"] == "selection":
@@ -99,7 +96,6 @@ class DataController:
             total_minutes = self.current_card.pomo_count * \
                 int(config.user_conf["pomo"]["pomo_timer"])
         hours, minutes = divmod(total_minutes, 60)
-        print(total_minutes)
         return (hours, minutes)
 
     def get_project_total_info(self) -> tuple[float, float, float]:
