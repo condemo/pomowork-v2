@@ -168,11 +168,12 @@ class GeneralConfigFrame(ctk.CTkFrame):
             if p[0] == self.startup_project_id:
                 self.startup_project_name = p[1]
 
-    def update_start_project(self, choice) -> None:
+    def update_start_project(self, choice: str, show_msg: bool = True) -> None:
         for project in self.project_list:
             if project[1] == choice:
                 self.data_handler.save_new_last_open_project(project[0])
-        InfoMessage(self, "success", "Config Updated")
+        if show_msg:
+            InfoMessage(self, "success", "Config Updated")
 
     def check_selection(self) -> None:
         match self.init_mode_selected:
@@ -196,6 +197,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 self.last_open_project_label.configure(text_color="white")
                 if self.projects_box.get() == "":
                     self.projects_box.set(self.projects_names[0])
+                    self.update_start_project(self.projects_names[0])
                 self.data_handler.update_config_settings("initial_mode", "selection")
                 InfoMessage(self, "success", "Config Updated")
 
