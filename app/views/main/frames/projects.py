@@ -90,11 +90,8 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         self.active_project = None
         if self.projects_list:
             self.startup_project_id = self.data_handler.get_startup_project()
-            print(self.startup_project_id)
             self.create_widgets()
             self.load_widgets()
-        # else:
-            # self.active_project = None
 
     def create_widgets(self) -> None:
         self.profile_list = [
@@ -103,7 +100,6 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
         if self.startup_project_id:
             if self.profile_list:
                 for p in self.profile_list:
-                    print(p.id)
                     if p.id == self.startup_project_id:
                         self.active_project = p
             else:
