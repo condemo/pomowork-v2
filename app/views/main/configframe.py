@@ -197,7 +197,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 self.last_open_project_label.configure(text_color="white")
                 if self.projects_box.get() == "":
                     self.projects_box.set(self.projects_names[0])
-                    self.update_start_project(self.projects_names[0])
+                    self.update_start_project(self.projects_names[0], show_msg=False)
                 self.data_handler.update_config_settings("initial_mode", "selection")
                 InfoMessage(self, "success", "Config Updated")
 
