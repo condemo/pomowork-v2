@@ -31,7 +31,7 @@ class ProjectsFrame(ctk.CTkFrame):
 
         self.bottom_frame = ctk.CTkFrame(self)
         self.add_btn = ctk.CTkButton(
-            self.bottom_frame, text="New", command=self.create_project_window, image=add_icon,
+            self.bottom_frame, text="", command=self.create_project_window, image=add_icon,
             fg_color=Colors.SECONDARY, bg_color="transparent", hover_color=Colors.SECONDARY_HOVER,
             font=("Roboto", 16), compound="right"
         )
