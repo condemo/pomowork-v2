@@ -248,9 +248,6 @@ class ProjectProfileCard(ctk.CTkFrame):
     def clicked(self, event) -> None:
         if self.master.data_handler.get_ui_status():
             self.master.change_active_project(self.id)
-        else:
-            InfoMessage(self.winfo_toplevel(), mode="info",
-                        text="Timer is running")
 
 
 class NewProjectWindow(ctk.CTkToplevel):
