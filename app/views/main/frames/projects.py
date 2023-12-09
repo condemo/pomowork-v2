@@ -57,11 +57,12 @@ class ProjectsFrame(ctk.CTkFrame):
     def create_project_window(
             self, config: bool = False, id: Optional[int] = None,
             name: Optional[str] = None, price: Optional[float] = None) -> None:
-        if self.create_window is None or not self.create_window.winfo_exists():
-            self.create_window = NewProjectWindow(
-                self, config=config, id=id, name=name, price=price)
-        else:
-            self.create_window.focus()
+        if self.data_handler.get_ui_status():
+            if self.create_window is None or not self.create_window.winfo_exists():
+                self.create_window = NewProjectWindow(
+                    self, config=config, id=id, name=name, price=price)
+            else:
+                self.create_window.focus()
 
     def create_project(self, name: str, price: float = 0) -> None:
         new_project = self.data_handler.create_project({
@@ -241,7 +242,8 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.pack(fill="x", pady=5)
 
     def clicked(self, event) -> None:
-        self.master.change_active_project(self.id)
+        if self.master.data_handler.get_ui_status():
+            self.master.change_active_project(self.id)
 
 
 class NewProjectWindow(ctk.CTkToplevel):

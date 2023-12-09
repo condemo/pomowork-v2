@@ -112,16 +112,19 @@ class PomoFrame(ctk.CTkFrame):
         CTkToolTip(self.back_btn, message="Previous Mode", bg_color=Colors.BG_SECOND)
 
     def create_config_window(self) -> None:
-        if self.config_window is None or not self.config_window.winfo_exists():
-            self.config_window = ConfigWindow(self, self.data_handler)
-        else:
-            self.config_window.focus()
+        if self.data_handler.get_ui_status():
+            if self.config_window is None or not self.config_window.winfo_exists():
+                self.config_window = ConfigWindow(self, self.data_handler)
+            else:
+                self.config_window.focus()
 
     def back_mode(self) -> None:
-        self.clock_frame.back_mode()
+        if self.data_handler.get_ui_status():
+            self.clock_frame.back_mode()
 
     def forward_mode(self) -> None:
-        self.clock_frame.forward_mode()
+        if self.data_handler.get_ui_status():
+            self.clock_frame.forward_mode()
 
     def update_title(self) -> None:
         self.title_label.configure(
@@ -316,6 +319,7 @@ class ClockFrame(ctk.CTkFrame):
             self.pause_btn.configure(text=" ", image=self.play_icon)
             self.change_timer_mode()
             self.data_handler.switch_projects_state(True)
+            self.data_handler.switch_ui_status(True)
             self.stop_btn.configure(state="disable")
 
     def play(self) -> None:
@@ -324,11 +328,13 @@ class ClockFrame(ctk.CTkFrame):
             self.pause_btn.configure(text=" ", image=self.play_icon)
             self.paused = True
             self.data_handler.switch_projects_state(True)
+            self.data_handler.switch_ui_status(True)
         else:
             self.pause_btn.configure(text="", image=self.pause_icon)
             self.paused = False
             self.data_handler.switch_projects_state(False)
             self.start_timer_thread()
+            self.data_handler.switch_ui_status(False)
 
     def reload_timers(self, timers: tuple[int]) -> None:
         self.pomo_timer, self.short_timer, self.long_timer = timers

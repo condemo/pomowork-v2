@@ -18,6 +18,10 @@ class DataController:
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
         self.pomo_day_count = config.user_conf["pomo"]["pomo_day_count"]
+        self.ui_active = True
+
+    def get_ui_status(self) -> bool:
+        return self.ui_active
 
     def get_project_list(self) -> list[tuple[int, str, float]]:
         return self.project_list
@@ -77,6 +81,9 @@ class DataController:
 
     def switch_projects_state(self, state: bool) -> None:
         self.view.switch_projects_state(state)
+
+    def switch_ui_status(self, state: bool) -> None:
+        self.ui_active = state
 
     def change_current_project(self, id: int) -> Project:
         self.current_project = self.cache_handler.load_project_by_id(id)
