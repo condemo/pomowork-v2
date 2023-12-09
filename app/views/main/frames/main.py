@@ -117,14 +117,23 @@ class PomoFrame(ctk.CTkFrame):
                 self.config_window = ConfigWindow(self, self.data_handler)
             else:
                 self.config_window.focus()
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="info",
+                        text="Timer is running")
 
     def back_mode(self) -> None:
         if self.data_handler.get_ui_status():
             self.clock_frame.back_mode()
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="info",
+                        text="Timer is running")
 
     def forward_mode(self) -> None:
         if self.data_handler.get_ui_status():
             self.clock_frame.forward_mode()
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="info",
+                        text="Timer is running")
 
     def update_title(self) -> None:
         self.title_label.configure(

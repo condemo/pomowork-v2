@@ -4,6 +4,7 @@ from CTkToolTip import CTkToolTip
 from tkfontawesome import icon_to_image
 from typing import Optional
 from data.datahandlers import DataController
+from utils.infomessage import InfoMessage
 from config.theme import Colors
 
 
@@ -63,6 +64,9 @@ class ProjectsFrame(ctk.CTkFrame):
                     self, config=config, id=id, name=name, price=price)
             else:
                 self.create_window.focus()
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="info",
+                        text="Timer is running")
 
     def create_project(self, name: str, price: float = 0) -> None:
         new_project = self.data_handler.create_project({
@@ -244,6 +248,9 @@ class ProjectProfileCard(ctk.CTkFrame):
     def clicked(self, event) -> None:
         if self.master.data_handler.get_ui_status():
             self.master.change_active_project(self.id)
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="info",
+                        text="Timer is running")
 
 
 class NewProjectWindow(ctk.CTkToplevel):
