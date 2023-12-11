@@ -65,7 +65,7 @@ class ProjectsFrame(ctk.CTkFrame):
             else:
                 self.create_window.focus()
         else:
-            InfoMessage(self.winfo_toplevel(), mode="info",
+            InfoMessage(self.winfo_toplevel(), mode="error",
                         text="Timer is running")
 
     def create_project(self, name: str, price: float = 0) -> None:
@@ -248,6 +248,8 @@ class ProjectProfileCard(ctk.CTkFrame):
     def clicked(self, event) -> None:
         if self.master.data_handler.get_ui_status():
             self.master.change_active_project(self.id)
+        else:
+            InfoMessage(self.winfo_toplevel(), mode="error", text="Timer is running")
 
 
 class NewProjectWindow(ctk.CTkToplevel):
