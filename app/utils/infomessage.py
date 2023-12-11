@@ -10,13 +10,17 @@ class InfoMessage(ctk.CTkFrame):
         match mode:
             case "error":
                 background_color = Colors.ERROR
+                border_color = Colors.ERROR_LIGHT
             case "info":
                 background_color = Colors.INFO
+                border_color = Colors.INFO_LIGHT
             case "success":
                 background_color = Colors.BG_CARDS
+                border_color = Colors.SECONDARY
 
         super().__init__(
-            master=master, fg_color=background_color, corner_radius=5)
+            master=master, fg_color=background_color, corner_radius=5, border_color=border_color,
+            border_width=4)
 
         self.text = text
 

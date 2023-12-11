@@ -11,6 +11,7 @@ class Colors():
     SECONDARY_HOVER = "#4E927D"
 
     ERROR = "#B52B57"
+    ERROR_LIGHT = "#D54E79"
     ERROR_HOVER = "#924E64"
 
     GREY = "#3F4C5C"
@@ -24,4 +25,6 @@ class Colors():
     BACKGROUND = "#1A3243"
     BG_SECOND = "#243039"
     TRANSPARENT = "transparent"
+
     INFO = "#2B57B5"
+    INFO_LIGHT = "#7395DE"
