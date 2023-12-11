@@ -27,10 +27,10 @@ class InfoMessage(ctk.CTkFrame):
 
     def load_widgets(self) -> None:
         self.text_label = ctk.CTkLabel(self, text=self.text, font=("Roboto", 22))
-        self.text_label.pack(expand=True, padx=5, pady=5)
+        self.text_label.pack(expand=True, padx=2, pady=2)
 
     def animate(self) -> None:
-        self.x_pos -= .008
+        self.x_pos -= .006
         if self.x_pos >= 1 - self.relwidth:
             self.place(relx=self.x_pos, rely=0.01, relwidth=self.relwidth, relheight=.09)
             self.winfo_toplevel().after(20, self.animate)
