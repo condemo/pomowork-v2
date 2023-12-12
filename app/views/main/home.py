@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from data.datahandlers import DataController
 from views.main.frames import ProjectsFrame, CardsFrame, MainFrame
+from views.changelog import ChangelogPopupWindow
 from config.theme import Colors
 
 
@@ -13,6 +14,11 @@ class HomeView(ctk.CTkFrame):
         self.winfo_toplevel().protocol("WM_DELETE_WINDOW", self.reset_pomo_day_count)
         self.create_widgets()
         self.load_widgets()
+
+        self.created_window = None
+        if self.data_handler.get_version_status():
+            if self.created_window is None or not self.created_window.winfo_exists():
+                self.created_window = ChangelogPopupWindow(self)
 
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.data_handler)

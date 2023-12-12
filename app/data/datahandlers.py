@@ -45,6 +45,10 @@ class DataController:
         return config.user_conf["config"]["initial_mode"]
 
     @staticmethod
+    def get_version_status() -> bool:
+        return config.user_conf["core"]["new_version"]
+
+    @staticmethod
     def save_new_last_open_project(id: int | bool) -> None:
         config.user_conf["core"]["startup_project"] = id
         config.save_config(config.user_conf)
