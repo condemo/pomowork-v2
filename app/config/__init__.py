@@ -45,6 +45,11 @@ def load_config() -> dict:
     else:
         user_conf.update({"config": {"initial_mode": "last"}})
 
+    if "new_version" in user_conf["core"]:
+        pass
+    else:
+        user_conf["core"].update({"new_version": True})
+
     return user_conf
 
 
