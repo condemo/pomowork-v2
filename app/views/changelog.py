@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from config import _VERSION
+from config import _VERSION, APP_DIR
 from config.theme import Colors
 
 
@@ -12,8 +12,13 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
         self.geometry("500x600+%d+%d" % (x + 430, y + 190))
         self.title("New Version Changelog")
 
+        self.read_changelog()
         self.create_widgets()
         self.load_widgets()
+
+    def read_changelog(self) -> None:
+        with open(APP_DIR / "CHANGELOG", "r") as file:
+            self.text = file.read().split("----------------------------------------")
 
     def create_widgets(self) -> None:
         self.version_label = ctk.CTkLabel(
@@ -23,7 +28,7 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.BG_SECOND)
         # TODO: Cargar dinamicamente el texto
         self.text_label = ctk.CTkLabel(
-            self.main_frame, text="", font=("Roboto", 18), anchor="w")
+            self.main_frame, text=self.text[0], font=("Roboto", 18), anchor="w")
 
         self.exit_frame = ctk.CTkFrame(
             self, fg_color=Colors.BG_SECOND)
