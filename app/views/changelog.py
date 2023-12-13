@@ -18,7 +18,7 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
     def create_widgets(self) -> None:
         self.version_label = ctk.CTkLabel(
             self, text=f"What's new in version {_VERSION}?",
-            font=("Roboto", 24), text_color="yellow")
+            font=("Roboto", 24), fg_color=Colors.PRIMARY)
 
         self.main_frame = ctk.CTkFrame(self, fg_color=Colors.BG_SECOND)
         # TODO: Cargar dinamicamente el texto
