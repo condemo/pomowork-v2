@@ -18,7 +18,7 @@ class HomeView(ctk.CTkFrame):
         self.created_window = None
         if self.data_handler.get_version_status():
             if self.created_window is None or not self.created_window.winfo_exists():
-                self.created_window = ChangelogPopupWindow(self)
+                self.created_window = ChangelogPopupWindow(self, self.data_handler)
 
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.data_handler)

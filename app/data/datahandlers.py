@@ -45,6 +45,11 @@ class DataController:
         return config.user_conf["config"]["initial_mode"]
 
     @staticmethod
+    def switch_new_version_status(status: bool) -> None:
+        config.user_conf["core"]["new_version"] = status
+        config.save_config(config.user_conf)
+
+    @staticmethod
     def get_version_status() -> bool:
         return config.user_conf["core"]["new_version"]
 
