@@ -1,0 +1,6 @@
+VERSION 0.5.3-alpha
+
+- ui freezes while timer runs
+- added info msg after click with ui freeze
+
+----------------------------------------
