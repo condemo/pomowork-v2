@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import requests
-from config import _VERSION, APP_DIR
+from config import _VERSION
 from config.theme import Colors
 from data.datahandlers import DataController
 
@@ -14,6 +14,8 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
         y = self.master.winfo_height()
         self.geometry("500x600+%d+%d" % (x + 430, y + 190))
         self.title("New Version Changelog")
+
+        self.protocol("WM_DELETE_WINDOW", self.remove)
 
         self.read_changelog()
         self.create_widgets()
@@ -39,17 +41,17 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
             self, fg_color=Colors.BG_SECOND)
         self.exit_btn = ctk.CTkButton(
             self.exit_frame, text="Close", fg_color=Colors.PRIMARY,
-            font=("Roboto", 16), command=self.remove)
+            hover_color=Colors.PRIMARY_HOVER, font=("Roboto", 16), command=self.remove)
 
     def load_widgets(self) -> None:
         self.version_label.pack(pady=5)
 
         self.main_frame.pack(expand=True, fill="both")
-        self.text_label.pack()
+        self.text_label.pack(pady=10)
 
         self.exit_frame.pack(pady=3)
         self.exit_btn.pack()
 
     def remove(self) -> None:
-        # self.data_handler.switch_new_version_status(False)
+        self.data_handler.switch_new_version_status(False)
         self.destroy()
