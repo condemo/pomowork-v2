@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import requests
 from config import _VERSION, APP_DIR
 from config.theme import Colors
 from data.datahandlers import DataController
@@ -19,9 +20,9 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
         self.load_widgets()
 
     def read_changelog(self) -> None:
-        with open(APP_DIR / "CHANGELOG", "r") as file:
-            self.text = file.read().split("----------------------------------------")
-            print(self.text)
+        res = requests.get(
+            "https://raw.githubusercontent.com/condemo/pomowork-v2/main/CHANGELOG")
+        self.text = res.text.split("----------------------------------------")
 
     def create_widgets(self) -> None:
         self.version_label = ctk.CTkLabel(
@@ -50,5 +51,5 @@ class ChangelogPopupWindow(ctk.CTkToplevel):
         self.exit_btn.pack()
 
     def remove(self) -> None:
-        self.data_handler.switch_new_version_status(False)
+        # self.data_handler.switch_new_version_status(False)
         self.destroy()
