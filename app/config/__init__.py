@@ -55,7 +55,7 @@ def load_config() -> dict:
 
 def create_config() -> dict:
     initial_config = {
-        "core": {"startup_project": False},
+        "core": {"startup_project": False, "new_version": True},
         "pomo": {
             "pomo_day_count": 0,
             "pomo_timer": 30,
