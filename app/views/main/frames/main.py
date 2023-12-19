@@ -9,7 +9,12 @@ from plyer import notification
 from data.datahandlers import DataController
 from utils.infomessage import InfoMessage
 from views.main.configframe import ConfigWindow
+from config import ASSETS_DIR
 from config.theme import Colors
+from playsound import playsound
+
+
+BELL_FILE = ASSETS_DIR / "bell.ogg"
 
 
 class MainFrame(ctk.CTkFrame):
@@ -273,7 +278,8 @@ class ClockFrame(ctk.CTkFrame):
                 case "Work":
                     self.data_handler.update_card(1)
                     self.data_handler.update_current_project_data()
-                    self.play_text.set("PL")
+                    self.pause_btn.configure(text=" ", image=self.play_icon)
+                    self.data_handler.switch_ui_status(True)
                     self.stopped = True
                     self.count += 1
                     if self.count == 9:
@@ -293,9 +299,11 @@ class ClockFrame(ctk.CTkFrame):
                             app_icon="",
                             timeout=5
                         )
+                    playsound(BELL_FILE)
                 case "Short Break":
-                    self.play_text.set("PL")
                     self.stopped = True
+                    self.pause_btn.configure(text=" ", image=self.play_icon)
+                    self.data_handler.switch_ui_status(True)
                     self.back_mode()
                     InfoMessage(self.winfo_toplevel(), "info", "Descanso acabado")
                     if not self.winfo_toplevel().focus_displayof():
@@ -305,9 +313,11 @@ class ClockFrame(ctk.CTkFrame):
                             app_icon="",
                             timeout=5
                         )
+                    playsound(BELL_FILE)
                 case "Long Break":
-                    self.play_text.set("PL")
                     self.stopped = True
+                    self.pause_btn.configure(text=" ", image=self.play_icon)
+                    self.data_handler.switch_ui_status(True)
                     if self.count == 8:
                         self.count = 0
                         self.data_handler.save_pomo_day_count(self.count)
@@ -321,6 +331,7 @@ class ClockFrame(ctk.CTkFrame):
                             app_icon="",
                             timeout=5
                         )
+                    playsound(BELL_FILE)
 
     def stop(self) -> None:
         if self.stop_btn.cget("state") == "normal":
