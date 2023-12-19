@@ -1,3 +1,14 @@
+VERSION 0.5.4-alpha
+
+- New notification speed
+- Added notification border
+- Added a window with the information of the new version
+- Added ogg sound when timer is finished
+- Some visual tweaks
+- Some bug fixes
+
+----------------------------------------
+
 VERSION 0.5.3-alpha
 
 - ui freezes while timer runs
