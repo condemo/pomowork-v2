@@ -1,4 +1,5 @@
 import os
+from typing import Any
 import pathlib
 import tomlkit
 
@@ -34,55 +35,6 @@ REFRESH_HEADERS = {
     "accept": "application/json",
     "Authorization": "",
 }
-
-
-def load_config() -> dict:
-    with open(USER_CONF_FILE, "rt", encoding="utf-8") as file:
-        user_conf = tomlkit.load(file)
-
-    if "config" in user_conf:
-        pass
-    else:
-        user_conf.update({"config": {"initial_mode": "last"}})
-
-    if "new_version" in user_conf["core"]:
-        pass
-    else:
-        user_conf["core"].update({"new_version": True})
-
-    return user_conf
-
-
-def create_config() -> dict:
-    initial_config = {
-        "core": {"startup_project": False, "new_version": True},
-        "pomo": {
-            "pomo_day_count": 0,
-            "pomo_timer": 30,
-            "short_break": 5,
-            "long_break": 15
-            },
-        "config": {
-            "initial_mode": "last"
-        }
-    }
-    with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
-        tomlkit.dump(initial_config, file)
-
-    return initial_config
-
-
-def save_config(user_conf: dict) -> None:
-    with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
-        tomlkit.dump(user_conf, file)
-
-
-if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
-    user_conf: dict = load_config()
-else:
-    user_conf: dict = create_config()
-
-
 LICENSE_RESUME = """
 GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
@@ -91,3 +43,56 @@ GNU GENERAL PUBLIC LICENSE
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 """
+
+
+class UserConf:
+    def __init__(self) -> None:
+        if os.path.isfile(f"{CONFIG_FOLDER}/user_conf.toml"):
+            self.conf: dict = self.load_config()
+        else:
+            self.conf: dict = self.create_config()
+
+    def load_config(self) -> dict:
+        with open(USER_CONF_FILE, "rt", encoding="utf-8") as file:
+            user_conf = tomlkit.load(file)
+
+        return user_conf
+
+    @staticmethod
+    def create_config() -> dict:
+        initial_config = {
+            "core": {"new_version": True, "welcome": True},
+            "timers": {
+                "pomo_day_count": False,
+                "work_timer": 30,
+                "short_break_timer": 5,
+                "long_break_timer": 15
+                },
+            "projects": {"initial_mode": "last", "startup_project": False}
+        }
+        with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
+            tomlkit.dump(initial_config, file)
+
+        return initial_config
+
+    def save(self) -> None:
+        with open(USER_CONF_FILE, "wt", encoding="utf-8") as file:
+            tomlkit.dump(self.conf, file)
+
+    def get_core_prop(self, prop: str) -> int | bool:
+        return self.conf["core"][prop]
+
+    def set_core_prop(self, prop: str, val: Any) -> None:
+        self.conf["core"][prop] = val
+
+    def get_timers_prop(self, prop: str) -> int:
+        return self.conf["timers"][prop]
+
+    def set_timers_prop(self, prop: str, val: Any) -> None:
+        self.conf["timers"][prop] = val
+
+    def get_projects_prop(self, prop: str) -> int | str:
+        return self.conf["projects"][prop]
+
+    def set_projects_prop(self, prop: str, val: Any) -> None:
+        self.conf["projects"][prop] = val

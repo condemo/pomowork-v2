@@ -2,23 +2,25 @@ from typing import Optional
 from lib.models import Card, Project
 from lib.views import View
 from data.cache import CacheHandler
-import config
+from config import UserConf
 
 
 class DataController:
     def __init__(self, view: View):
         self.view = view
-        self.cache_handler = CacheHandler(view)
+        self.user_conf = UserConf()
+        self.cache_handler = CacheHandler(view, self.user_conf)
         self.project_list = self.cache_handler.get_project_list()
-        if config.user_conf["config"]["initial_mode"] == "last":
-            if config.user_conf["core"]["startup_project"]:
+        self.startup_project = self.user_conf.get_projects_prop("startup_project")
+        if self.user_conf.get_projects_prop("initial_mode") == "last":
+            if self.startup_project:
                 self.cache_handler.load_project_by_id(self.project_list[0][0])
-        elif config.user_conf["config"]["initial_mode"] == "selection":
-            self.cache_handler.load_project_by_id(config.user_conf["core"]["startup_project"])
+        elif self.user_conf.get_projects_prop("initial_mode") == "selection":
+            self.cache_handler.load_project_by_id(self.startup_project)
         self.current_project: Project = self.cache_handler \
             .get_current_project()
         self.card_list = self.cache_handler.get_current_card_list()
-        self.pomo_day_count = config.user_conf["pomo"]["pomo_day_count"]
+        self.pomo_day_count = self.user_conf.get_timers_prop("pomo_day_count")
         self.ui_active = True
 
     def get_ui_status(self) -> bool:
@@ -37,56 +39,49 @@ class DataController:
     def get_pomo_day_count(self) -> int:
         return self.pomo_day_count
 
-    @staticmethod
-    def get_startup_project() -> int:
-        return config.user_conf["core"]["startup_project"]
+    def get_startup_project(self) -> int:
+        return self.startup_project
 
-    @staticmethod
-    def get_init_mode() -> str:
-        return config.user_conf["config"]["initial_mode"]
+    def get_init_mode(self) -> str:
+        return self.user_conf.get_projects_prop("startup_project")
 
-    @staticmethod
-    def switch_new_version_status(status: bool) -> None:
-        config.user_conf["core"]["new_version"] = status
-        config.save_config(config.user_conf)
+    def switch_new_version_status(self, status: bool) -> None:
+        self.user_conf.set_core_prop("new_version", status)
+        self.user_conf.save()
 
-    @staticmethod
-    def get_version_status() -> bool:
-        return config.user_conf["core"]["new_version"]
+    def get_version_status(self) -> bool:
+        return self.user_conf.get_core_prop("new_version")
 
-    @staticmethod
-    def save_new_last_open_project(id: int | bool) -> None:
-        config.user_conf["core"]["startup_project"] = id
-        config.save_config(config.user_conf)
+    def save_new_last_open_project(self, id: int | bool) -> None:
+        self.user_conf.set_projects_prop("startup_project", id)
+        self.user_conf.save()
 
-    @staticmethod
-    def update_config_settings(key: str, val: str) -> None:
+    def update_projects_settings(self, key: str, val: str) -> None:
         if key == "initial_mode" and val == "last":
-            config.user_conf["core"]["startup_project"] = False
+            self.user_conf.set_projects_prop("startup_project", False)
 
-        config.user_conf["config"][key] = val
-        config.save_config(config.user_conf)
+        self.user_conf.set_projects_prop(key, val)
+        self.user_conf.save()
 
     def save_pomo_day_count(self, count: int) -> int:
         self.pomo_day_count = count
-        config.user_conf["pomo"]["pomo_day_count"] = self.pomo_day_count
-        config.save_config(config.user_conf)
+        self.user_conf.set_timers_prop("pomo_day_count", count)
+        self.user_conf.save()
         self.view.update_info_buttons(self.pomo_day_count)
         return self.pomo_day_count
 
     def save_timers_config(self, work: int, short: int, long: int) -> None:
-        config.user_conf["pomo"]["pomo_timer"] = work
-        config.user_conf["pomo"]["short_break"] = short
-        config.user_conf["pomo"]["long_break"] = long
-        config.save_config(config.user_conf)
+        self.user_conf.set_timers_prop("work_timer", work)
+        self.user_conf.set_timers_prop("short_break_timer", short)
+        self.user_conf.set_timers_prop("long_break_timer", long)
+        self.user_conf.save()
         self.view.reload_timers((work, short, long))
 
-    @staticmethod
-    def get_timers() -> tuple[int, int, int]:
+    def get_timers(self) -> tuple[int, int, int]:
         return (
-            config.user_conf["pomo"]["pomo_timer"],
-            config.user_conf["pomo"]["short_break"],
-            config.user_conf["pomo"]["long_break"],
+            self.user_conf.get_timers_prop("work_timer"),
+            self.user_conf.get_timers_prop("short_break_timer"),
+            self.user_conf.get_timers_prop("long_break_timer"),
         )
 
     def switch_projects_state(self, state: bool) -> None:
@@ -111,10 +106,10 @@ class DataController:
 
     def get_current_card_total_hours(self, card: Optional[Card] = None) -> tuple[int, int]:
         if card:
-            total_minutes = card.pomo_count * int(config.user_conf["pomo"]["pomo_timer"])
+            total_minutes = card.pomo_count * int(self.user_conf.get_timers_prop("work_timer"))
         else:
             total_minutes = self.current_card.pomo_count * \
-                int(config.user_conf["pomo"]["pomo_timer"])
+                int(self.user_conf.get_timers_prop("work_timer"))
         hours, minutes = divmod(total_minutes, 60)
         return (hours, minutes)
 
@@ -133,7 +128,7 @@ class DataController:
         if self.card_list:
             for card in self.card_list:
                 total_pomos += card.pomo_count
-            total_minutes = total_pomos * int(config.user_conf["pomo"]["pomo_timer"])
+            total_minutes = total_pomos * int(self.user_conf.get_timers_prop("work_timer"))
             hours, minutes = divmod(total_minutes, 60)
             return hours, minutes
         else:

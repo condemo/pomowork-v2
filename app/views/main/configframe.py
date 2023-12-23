@@ -190,7 +190,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
             case 1:
                 self.projects_box.configure(state="disabled")
                 self.last_open_project_label.configure(text_color="grey")
-                self.data_handler.update_config_settings("initial_mode", "last")
+                self.data_handler.update_projects_settings("initial_mode", "last")
                 InfoMessage(self, "success", "Config Updated")
             case 2:
                 self.projects_box.configure(state="normal")
@@ -198,7 +198,7 @@ class GeneralConfigFrame(ctk.CTkFrame):
                 if self.projects_box.get() == "":
                     self.projects_box.set(self.projects_names[0])
                     self.update_start_project(self.projects_names[0], show_msg=False)
-                self.data_handler.update_config_settings("initial_mode", "selection")
+                self.data_handler.update_projects_settings("initial_mode", "selection")
                 InfoMessage(self, "success", "Config Updated")
 
     def show(self) -> None:

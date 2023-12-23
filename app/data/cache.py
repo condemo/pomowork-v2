@@ -4,23 +4,25 @@ import json
 from datetime import date
 from tkinter.messagebox import showerror
 
-import config
+from config import UserConf
+from config import DATA_DIR, USER_HEADERS, PROJECTS_BASE_URL
 from lib.models import Card, Project
 from data.datasend import DataSender
 from data.oauth2 import get_token
 
 
-CACHE_FILE = config.DATA_DIR + "/data.json"
-ITEM_FILE = config.DATA_DIR + "/item.json"
+CACHE_FILE = DATA_DIR + "/data.json"
+ITEM_FILE = DATA_DIR + "/item.json"
 
 
 class CacheHandler:
-    def __init__(self, view):
+    def __init__(self, view, user_conf: UserConf):
         self.data_sender = DataSender(view)
+        self.user_conf = user_conf
         self.check_pending_com()
         self.data_fetch()
-        if config.user_conf["core"]["startup_project"]:
-            self.current_project_id = config.user_conf["core"]["startup_project"]
+        if self.user_conf.get_projects_prop("startup_project"):
+            self.current_project_id = self.user_conf.get_projects_prop("startup_project")
             self.current_project = self.load_project_by_id(self.current_project_id)
         else:
             self.current_project_id = None
@@ -51,12 +53,12 @@ class CacheHandler:
 
     @staticmethod
     def data_fetch() -> None:
-        user_credentials = config.USER_HEADERS
+        user_credentials = USER_HEADERS
         user_credentials["Authorization"] = f"Bearer {get_token('token')}"
 
         try:
             data_fetch = requests.get(
-                config.PROJECTS_BASE_URL, headers=user_credentials).json()
+                PROJECTS_BASE_URL, headers=user_credentials).json()
         except requests.exceptions.ConnectionError:
             showerror(
                 "Error de Conexión",
@@ -93,8 +95,8 @@ class CacheHandler:
         with open(CACHE_FILE, "w") as file:
             json.dump(data, file, indent=2)
 
-    def update_last_open_project(self, id: int) -> None:
-        config.user_conf["core"]["startup_project"] = id
+    def update_startup_project(self, id: int) -> None:
+        self.user_conf.set_projects_prop("startup_project", id)
         self.current_project_id = id
         self.current_project = self.load_project_by_id(id)
 
@@ -166,9 +168,9 @@ class CacheHandler:
                 project.id, project.name, project.price_per_hour
             ])
             self.save_data_file(data)
-            if config.user_conf["config"]["initial_mode"] == "last":
-                config.user_conf["core"]["startup_project"] = project.id
-                config.save_config(config.user_conf)
+            if self.user_conf.get_projects_prop("initial_mode") == "last":
+                self.user_conf.set_projects_prop("startup_project", project.id)
+                self.user_conf.save()
             return project
 
     def remove_project_by_id(self, id: int) -> bool:
