@@ -10,7 +10,7 @@ from config.theme import Colors
 
 class ProjectsFrame(ctk.CTkFrame):
     def __init__(self, master, data_handler: DataController):
-        super().__init__(master=master, fg_color=Colors.BACKGROUND, width=20)
+        super().__init__(master=master, fg_color=Colors.BACKGROUND, width=300)
         self.master = master
         self.pack_propagate(False)
 
@@ -87,7 +87,7 @@ class ProjectsFrame(ctk.CTkFrame):
             self.mid_frame.remove_project(id)
 
     def show(self) -> None:
-        self.pack(side="left", expand=True, fill="both", padx=(4, 0))
+        self.pack(side="left", fill="y", padx=(4, 0))
 
 
 class ProjectsCardFrame(ctk.CTkScrollableFrame):
@@ -243,7 +243,7 @@ class ProjectProfileCard(ctk.CTkFrame):
         self.name_label.configure(text=f"{self.name}")
 
     def show(self) -> None:
-        self.pack(fill="x", pady=5)
+        self.pack(pady=5, fill="x")
 
     def clicked(self, event) -> None:
         if self.master.data_handler.get_ui_status():

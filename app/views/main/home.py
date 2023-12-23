@@ -22,11 +22,13 @@ class HomeView(ctk.CTkFrame):
 
     def create_widgets(self) -> None:
         self.projects_frame = ProjectsFrame(self, self.data_handler)
-        self.main_frame = MainFrame(self, self.data_handler)
-        self.cards_frame = CardsFrame(self, self.data_handler)
+        self.core_view = ctk.CTkFrame(self, fg_color=Colors.TRANSPARENT)
+        self.main_frame = MainFrame(self.core_view, self.data_handler)
+        self.cards_frame = CardsFrame(self.core_view, self.data_handler)
 
     def load_widgets(self) -> None:
         self.projects_frame.show()
+        self.core_view.pack(expand=True, fill="both")
         self.main_frame.show()
         self.cards_frame.show()
 
