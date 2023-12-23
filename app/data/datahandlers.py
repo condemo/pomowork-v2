@@ -11,7 +11,8 @@ class DataController:
         self.cache_handler = CacheHandler(view)
         self.project_list = self.cache_handler.get_project_list()
         if config.user_conf["config"]["initial_mode"] == "last":
-            self.cache_handler.load_project_by_id(self.project_list[0][0])
+            if config.user_conf["core"]["startup_project"]:
+                self.cache_handler.load_project_by_id(self.project_list[0][0])
         elif config.user_conf["config"]["initial_mode"] == "selection":
             self.cache_handler.load_project_by_id(config.user_conf["core"]["startup_project"])
         self.current_project: Project = self.cache_handler \
@@ -93,6 +94,9 @@ class DataController:
 
     def switch_ui_status(self, state: bool) -> None:
         self.ui_active = state
+
+    def remove_core_view(self) -> None:
+        self.view.remove_core_view()
 
     def change_current_project(self, id: int) -> Project:
         self.current_project = self.cache_handler.load_project_by_id(id)

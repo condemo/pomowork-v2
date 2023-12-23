@@ -152,8 +152,11 @@ class ProjectsCardFrame(ctk.CTkScrollableFrame):
             if project.id == id:
                 self.profile_list.remove(project)
                 project.pack_forget()
-        self.change_active_project(self.projects_list[0][0])
-        self.data_handler.save_new_last_open_project(id=False)
+        if not self.projects_list:
+            self.data_handler.remove_core_view()
+        else:
+            self.change_active_project(self.projects_list[0][0])
+            self.data_handler.save_new_last_open_project(id=False)
 
     def change_active_project(self, id: int) -> None:
         self.master.change_active_project(id)

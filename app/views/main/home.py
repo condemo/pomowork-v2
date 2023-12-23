@@ -28,9 +28,10 @@ class HomeView(ctk.CTkFrame):
 
     def load_widgets(self) -> None:
         self.projects_frame.show()
-        self.core_view.pack(expand=True, fill="both")
-        self.main_frame.show()
-        self.cards_frame.show()
+        if self.data_handler.get_project_list():
+            self.core_view.pack(expand=True, fill="both")
+            self.main_frame.show()
+            self.cards_frame.show()
 
     def change_active_project(self, id: int) -> None:
         self.data_handler.change_current_project(id)
@@ -63,6 +64,9 @@ class HomeView(ctk.CTkFrame):
 
     def show(self) -> None:
         self.pack(expand=True, fill="both")
+
+    def remove_core_view(self) -> None:
+        self.core_view.destroy()
 
     def remove(self) -> None:
         self.pack_forget()
